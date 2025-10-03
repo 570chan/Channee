@@ -1,124 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flocus by Gridfiti</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-image: url('https://huggingface.co/spaces/myzu/flocus-nature-dashboard-zen/resolve/main/images/IMG_20251003_115011.jpg');
-background-size: cover;
-            background-position: center;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-        .vibration {
-            animation: vibrate 0.3s linear infinite;
-        }
-        @keyframes vibrate {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>flocus by GRIDFITI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: url('https://huggingface.co/spaces/myzu/flocus-nature-dashboard-zen/resolve/main/images/IMG_20251003_115011.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    .notif-glass {
+      background: rgba(24,24,24,0.75);
+      color: #fff;
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: 400;
+      min-width: 260px;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.15);
+      padding: 14px 20px 14px 48px;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      z-index: 50;
+      display: flex;
+      align-items: flex-start;
+    }
+    .notif-glass i { position: absolute; left: 18px; top: 17px; color: #b2ffb2; }
+    .notif-close { position: absolute; right: 13px; top: 11px; cursor: pointer; color: #fff; opacity: 0.6; }
+    .clock-text { font-size: 5.5rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 32px; }
+    @media (min-width: 480px) { .clock-text { font-size: 7.5rem; } }
+    .footer-btn { @apply flex items-center justify-center transition-all duration-150 p-3 mx-1 rounded-full; background: rgba(40,40,60,0.18); }
+    .footer-btn.active, .footer-btn:hover { background: rgba(148, 97, 255, 0.18); }
+    ::-webkit-scrollbar { width: 0 !important }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
-<body class="text-white flex flex-col">
-    <!-- Header Section -->
-    <header class="flex justify-between items-center p-6">
-        <div class="flex items-center space-x-2">
-            <i data-feather="layers" class="w-6 h-6 text-green-300"></i>
-            <span class="text-xl font-bold">flocus by GRIDFITI</span>
-        </div>
-        <div class="glass-card px-4 py-2 flex items-center space-x-2 animate-pulse">
-            <i data-feather="check-circle" class="w-4 h-4 text-green-300"></i>
-            <span class="text-sm">✨ Settings updated – Latest settings have been downloaded</span>
-        </div>
-    </header>
+<body>
+  <!-- Notification -->
+  <div id="notif" class="notif-glass" style="display: flex;">
+    <i data-feather="check-circle" class="w-5 h-5"></i>
+    <div>
+      <b>✨ Settings updated</b><br>
+      <span class="text-xs" style="opacity:.8;">Latest settings have been downloaded</span>
+    </div>
+    <i id="notif-close" data-feather="x" class="notif-close w-4 h-4"></i>
+  </div>
+  <!-- Header -->
+  <header class="flex items-center justify-between w-full px-6 pt-6" style="z-index:10; position:relative;">
+    <div class="flex items-center space-x-2 select-none">
+      <span style="font-size:2.2rem; font-weight:700; letter-spacing:-0.05em;">flocus</span>
+      <span class="text-xs text-gray-300 ml-2" style="font-family: 'Inter', sans-serif;">by GRIDFITI</span>
+    </div>
+    <div></div>
+  </header>
+  <!-- Main content -->
+  <main class="flex flex-col items-center justify-center text-center" style="min-height: 85vh; z-index:2; position:relative;">
+    <div id="greeting" class="text-xl sm:text-2xl font-medium mb-2 mt-32 sm:mt-36 select-none drop-shadow" style="text-shadow: 0 2px 12px rgba(0,0,0,0.28);">
+      Good morning, Ochiluna. Let's conquer Friday!
+    </div>
+    <div id="clock" class="clock-text select-none drop-shadow" style="text-shadow: 0 2px 18px rgba(0,0,0,0.16);">00:00</div>
+  </main>
+  <!-- Footer controls -->
+  <footer class="w-full flex items-end justify-between absolute bottom-0 left-0 px-6 pb-5 z-10">
+    <div class="flex items-center">
+      <button class="footer-btn" aria-label="music">
+        <i data-feather="music" class="w-5 h-5 text-white"></i>
+      </button>
+      <button class="footer-btn" aria-label="ambient">
+        <i data-feather="bar-chart-2" class="w-5 h-5 text-purple-300"></i>
+      </button>
+    </div>
+    <div class="flex items-center">
+      <button class="footer-btn" aria-label="leaf">
+        <i data-feather="leaf" class="w-5 h-5 text-green-300"></i>
+      </button>
+      <button class="footer-btn active" aria-label="home">
+        <i data-feather="home" class="w-5 h-5 text-purple-300"></i>
+      </button>
+      <button class="footer-btn" aria-label="settings">
+        <i data-feather="settings" class="w-5 h-5 text-purple-300"></i>
+      </button>
+      <button class="footer-btn" aria-label="gift">
+        <i data-feather="gift" class="w-5 h-5 text-purple-300"></i>
+      </button>
+      <button class="footer-btn" aria-label="maximize">
+        <i data-feather="maximize-2" class="w-5 h-5 text-purple-300"></i>
+      </button>
+    </div>
+  </footer>
+  <script>
+    // Đồng hồ theo giờ Hồ Chí Minh
+    function updateClock() {
+      const now = new Date();
+      const vnTime = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Ho_Chi_Minh'
+      });
+      document.getElementById('clock').textContent = vnTime;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    <!-- Main Content -->
-    <main class="flex-1 flex flex-col items-center justify-center">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-light mb-4">Welcome to Flocus</h1>
-            <h2 class="text-2xl md:text-3xl font-medium">Find your zen moment</h2>
-</div>
-        
-        <div class="text-center mb-16">
-            <div id="clock" class="text-8xl md:text-9xl font-bold tracking-tighter mb-8">00:00</div>
-            <div class="glass-card px-8 py-4 rounded-full text-lg font-medium hover:bg-green-900/30 transition cursor-pointer">
-                Start Focusing
-            </div>
-</div>
-    </main>
+    // Feather icons
+    feather.replace();
 
-    <!-- Footer Section -->
-    <footer class="flex justify-between items-center p-6">
-        <div class="glass-card px-4 py-2 flex items-center space-x-2 cursor-pointer hover:bg-green-900/30 transition">
-            <i data-feather="music" class="w-5 h-5"></i>
-<div class="flex space-x-1">
-                <div class="w-1 h-4 bg-white rounded-full animate-bounce"></div>
-                <div class="w-1 h-6 bg-white rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                <div class="w-1 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
-                <div class="w-1 h-5 bg-white rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-            </div>
-        </div>
-        
-        <div class="flex space-x-4">
-            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
-                <i data-feather="leaf" class="w-5 h-5 text-green-300"></i>
-            </a>
-            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
-                <i data-feather="home" class="w-5 h-5 text-purple-300"></i>
-            </a>
-            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
-                <i data-feather="settings" class="w-5 h-5 text-purple-300"></i>
-            </a>
-            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
-                <i data-feather="gift" class="w-5 h-5 text-purple-300"></i>
-            </a>
-            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
-                <i data-feather="maximize-2" class="w-5 h-5 text-purple-300"></i>
-            </a>
-</div>
-    </footer>
+    // Notification close
+    document.getElementById('notif-close').onclick = function() {
+      document.getElementById('notif').style.display = 'none';
+    };
 
-    <script>
-        // Update clock in real-time
-        function updateClock() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            document.getElementById('clock').textContent = `${hours}:${minutes}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Feather icons
-        feather.replace();
-        
-        // Add vibration effect to notification
-        const notification = document.querySelector('.glass-card');
-        notification.addEventListener('mouseenter', () => {
-            notification.classList.add('vibration');
-        });
-        notification.addEventListener('mouseleave', () => {
-            notification.classList.remove('vibration');
-        });
-    </script>
+    // Greeting động
+    function greeting() {
+      const now = new Date();
+      const hours = now.toLocaleTimeString('en-US', {hour: '2-digit', hour12: false, timeZone: 'Asia/Ho_Chi_Minh'});
+      const h = parseInt(hours, 10);
+      let greet = "Good morning";
+      if (h >= 12 && h < 18) greet = "Good afternoon";
+      else if (h >= 18 || h < 5) greet = "Good evening";
+      const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+      const username = "Ochiluna"; // có thể cho người dùng nhập tên
+      const vnDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
+      const today = days[vnDate.getDay()];
+      document.getElementById('greeting').textContent = `${greet}, ${username}. Let's conquer ${today}!`;
+    }
+    greeting();
+    setInterval(greeting, 60000);
+  </script>
 </body>
-              </html>
+</html>
