@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Focus Dashboard</title>
+  <style>
+    body,html{margin:0;height:100%;font-family:sans-serif;color:white;}
+    .bg{position:fixed;inset:0;
+      background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+      z-index:-1;}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:-1;}
+    .center{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
+    .clock{font-size:120px;font-weight:bold;}
+    .date{font-size:20px;margin-top:8px;opacity:0.85;}
+    .greeting{font-size:22px;margin-bottom:10px;}
+    .bottom-controls{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;}
+    .btn{background:rgba(255,255,255,0.1);border:none;padding:10px 14px;border-radius:8px;color:white;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+    .btn:hover{background:rgba(255,255,255,0.2);}
+    #timerBox{margin-top:15px;font-size:24px;font-weight:600;}
+    #settingsModal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+      background:rgba(0,0,0,0.85);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);width:280px;}
+    #settingsModal h3{margin-top:0;}
+    #settingsModal input{padding:6px;margin-top:8px;width:100%;border-radius:6px;border:none;}
+    #settingsModal button{margin-top:10px;width:100%;}
+  </style>
+</head>
+<body>
+  <div class="bg" id="bg"></div>
+  <div class="overlay"></div>
+
+  <div class="center">
+    <p class="greeting">Good <span id="daytime"></span>, <span id="username">Ochiluna</span>!</p>
+    <div class="clock" id="clock">00:00</div>
+    <div class="date" id="date"></div>
+    <div id="timerBox"></div>
+  </div>
+
+  <div class="bottom-controls">
+    <div>
+      <button class="btn" id="musicBtn">🎵 Music</button>
+      <button class="btn" id="focusBtn">⏱ Focus</button>
+    </div>
+    <div>
+      <button class="btn" id="settingsBtn">⚙️ Settings</button>
+      <button class="btn" id="fullscreenBtn">⛶ Fullscreen</button>
+    </div>
+  </div>
+
+  <!-- settings modal -->
+  <div id="settingsModal">
+    <h3>⚙️ Settings</h3>
+    <label>Change Name:</label>
+    <input type="text" id="nameInput"/>
+    <label>Background URL:</label>
+    <input type="text" id="bgInput"/>
+    <button class="btn" onclick="saveSettings()">Save</button>
+    <button class="btn" onclick="closeSettings()">Close</button>
+  </div>
+
+  <!-- Nhạc nền -->
+  <audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
+  </audio>
+
+<script>
+  const clockEl=document.getElementById('clock');
+  const dateEl=document.getElementById('date');
+  const daytime=document.getElementById('daytime');
+  const usernameEl=document.getElementById('username');
+  const music=document.getElementById('bgMusic');
+  const timerBox=document.getElementById('timerBox');
+  const modal=document.getElementById('settingsModal');
+  const nameInput=document.getElementById('nameInput');
+  const bgInput=document.getElementById('bgInput');
+  const bg=document.getElementById('bg');
+
+  // Đồng hồ Hồ Chí Minh
+  function updateClock(){
+    const now=new Date();
+    const optionsTime={timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',hour12:false};
+    const optionsDate={timeZone:'Asia/Ho_Chi_Minh',day:'2-digit',month:'2-digit',year:'numeric',weekday:'long'};
+    clockEl.textContent=new Intl.DateTimeFormat('en-GB',optionsTime).format(now);
+    dateEl.textContent=new Intl.DateTimeFormat('vi-VN',optionsDate).format(now);
+
+    const h=parseInt(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit'}).format(now));
+    if(h<12) daytime.textContent='morning';
+    else if(h<18) daytime.textContent='afternoon';
+    else daytime.textContent='evening';
+  }
+  setInterval(updateClock,1000); updateClock();
+
+  // Lấy tên từ localStorage
+  usernameEl.textContent=localStorage.getItem('username')||'Ochiluna';
+
+  // 🎵 music button
+  let playing=false;
+  document.getElementById('musicBtn').onclick=()=>{
+    if(!playing){ music.play(); playing=true; document.getElementById('musicBtn').textContent='⏸ Stop Music'; }
+    else{ music.pause(); playing=false; document.getElementById('musicBtn').textContent='🎵 Music'; }
+  };
+
+  // ⏱ focus timer (25 phút)
+  let timer=null,remain=0;
+  document.getElementById('focusBtn').onclick=()=>{
+    if(timer){ // stop
+      clearInterval(timer); timer=null; timerBox.textContent=''; 
+      document.getElementById('focusBtn').textContent='⏱ Focus';
+    }else{ // start 25 min
+      remain=25*60;
+      timer=setInterval(()=>{
+        remain--;
+        const mm=Math.floor(remain/60), ss=remain%60;
+        timerBox.textContent=`Focus: ${mm}:${ss.toString().padStart(2,'0')}`;
+        if(remain<=0){clearInterval(timer);timer=null;timerBox.textContent='';alert('⏰ Hết giờ focus!');}
+      },1000);
+      document.getElementById('focusBtn').textContent='⏹ Stop';
+    }
+  };
+
+  // ⚙️ settings
+  document.getElementById('settingsBtn').onclick=()=>{
+    modal.style.display='block';
+    nameInput.value=usernameEl.textContent;
+    bgInput.value='';
+  };
+  function closeSettings(){modal.style.display='none';}
+  function saveSettings(){
+    localStorage.setItem('username',nameInput.value||'You');
+    usernameEl.textContent=nameInput.value||'You';
+    if(bgInput.value.trim()!==''){ bg.style.backgroundImage=`url('${bgInput.value}')`; }
+    closeSettings();
+  }
+
+  // ⛶ fullscreen
+  document.getElementById('fullscreenBtn').onclick=()=>{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  };
+</script>
+</body>
+      </html>
+  
