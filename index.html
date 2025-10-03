@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>flocus by GRIDFITI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/feather-icons"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
@@ -15,79 +14,150 @@
       background-size: cover;
       min-height: 100vh;
       color: #fff;
-      position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
+    /* Logo */
+    .logo-corner {
+      position: fixed;
+      top: 26px;
+      left: 32px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      user-select: none;
+    }
+    .logo-corner .flocus-main {
+      font-size: 2.3rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.07em;
+      text-shadow: 0 2px 12px rgba(0,0,0,.28);
+    }
+    .logo-corner .flocus-sub {
+      font-size: 0.85rem;
+      opacity: .76;
+      margin-left: 2px;
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+    /* Notification */
     .notif-glass {
-      background: rgba(24,24,24,0.75);
+      background: rgba(24,24,24,0.83);
       color: #fff;
-      border-radius: 12px;
-      font-size: 0.96rem;
+      border-radius: 9px;
+      font-size: 0.92rem;
       font-weight: 400;
-      min-width: 260px;
-      box-shadow: 0 6px 32px rgba(0,0,0,0.15);
-      padding: 14px 20px 14px 48px;
+      min-width: 250px;
+      max-width: 98vw;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+      padding: 10px 18px 10px 40px;
       position: fixed;
       top: 24px;
       right: 24px;
-      z-index: 50;
+      z-index: 80;
       display: flex;
       align-items: flex-start;
+      gap: 10px;
+      line-height: 1.3;
+      transition: opacity .3s;
     }
-    .notif-glass i { position: absolute; left: 18px; top: 17px; color: #b2ffb2; }
-    .notif-close { position: absolute; right: 13px; top: 11px; cursor: pointer; color: #fff; opacity: 0.6; }
-    .clock-text { font-size: 5.5rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 32px; }
-    @media (min-width: 480px) { .clock-text { font-size: 7.5rem; } }
-    .footer-btn { @apply flex items-center justify-center transition-all duration-150 p-3 mx-1 rounded-full; background: rgba(40,40,60,0.18); }
-    .footer-btn.active, .footer-btn:hover { background: rgba(148, 97, 255, 0.18); }
-    ::-webkit-scrollbar { width: 0 !important }
-    body { -ms-overflow-style: none; scrollbar-width: none; }
-    .main-content {
+    .notif-glass i { position: absolute; left: 14px; top: 13px; color: #b2ffb2; }
+    .notif-close { position: absolute; right: 10px; top: 7px; cursor: pointer; color: #fff; opacity: 0.6; }
+    /* Main center */
+    .center-content {
       flex: 1 0 auto;
+      min-height: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      min-height: 0;
+      position: relative;
       z-index: 2;
-      position: relative;
+      margin-top: 48px;
     }
-    header {
-      flex: 0 0 auto;
-      width: 100%;
+    .greeting-text {
+      font-size: 1.35rem;
+      font-weight: 500;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.28);
+      letter-spacing: -0.01em;
+    }
+    .clock-main {
+      font-size: 6.2rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.18);
+      line-height: 1.1;
+    }
+    .clock-sub {
+      font-size: 2.7rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 18px rgba(0,0,0,0.18);
+      margin-bottom: 12px;
+    }
+    /* Footer controls */
+    .footer {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      width: 100vw;
       z-index: 10;
-      position: relative;
-      padding-top: 1.5rem;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 1.5rem 1.1rem 1.5rem;
+      pointer-events: none;
+    }
+    .footer-btns {
+      display: flex;
+      gap: 7px;
+      pointer-events: auto;
+    }
+    .footer-btn {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      background: rgba(40,40,60,0.20);
+      border: none;
+      outline: none;
+      padding: 9px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background .16s;
+      pointer-events: auto;
     }
-    footer {
-      flex: 0 0 auto;
-      width: 100%;
-      z-index: 10;
-      position: relative;
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      padding-bottom: 1.25rem;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+    .footer-btn.active, .footer-btn:hover {
+      background: rgba(148, 97, 255, 0.18);
     }
-    /* Fix for small screens: prevent footer overlap */
+    .footer-btn i { pointer-events:none;}
+    @media (max-width: 600px) {
+      .logo-corner { top: 16px; left: 9px; }
+      .notif-glass { right: 8px; left:auto; top:12px; padding:9px 13px 9px 38px;}
+      .center-content { margin-top: 34px; }
+      .clock-main { font-size: 4.4rem; }
+      .clock-sub { font-size: 1.6rem; }
+    }
     @media (max-height: 600px) {
-      .main-content { justify-content: flex-start; margin-top: 48px; }
-      .clock-text { font-size: 4rem; }
+      .center-content { justify-content: flex-start; margin-top: 15px; }
+      .clock-main { font-size: 3.1rem; }
+      .clock-sub { font-size: 1.1rem; }
     }
+    ::-webkit-scrollbar { width: 0 !important }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
+  <!-- Logo corner -->
+  <div class="logo-corner">
+    <span class="flocus-main">flocus</span>
+    <span class="flocus-sub">by GRIDFITI</span>
+  </div>
   <!-- Notification -->
   <div id="notif" class="notif-glass" style="display: flex;">
     <i data-feather="check-circle" class="w-5 h-5"></i>
@@ -97,24 +167,15 @@
     </div>
     <i id="notif-close" data-feather="x" class="notif-close w-4 h-4"></i>
   </div>
-  <!-- Header -->
-  <header>
-    <div class="flex items-center space-x-2 select-none">
-      <span style="font-size:2.2rem; font-weight:700; letter-spacing:-0.05em;">flocus</span>
-      <span class="text-xs text-gray-300 ml-2" style="font-family: 'Inter', sans-serif;">by GRIDFITI</span>
-    </div>
-    <div></div>
-  </header>
-  <!-- Main content -->
-  <main class="main-content">
-    <div id="greeting" class="text-xl sm:text-2xl font-medium mb-2 select-none drop-shadow" style="text-shadow: 0 2px 12px rgba(0,0,0,0.28);">
-      Good morning, Ochiluna. Let's conquer Friday!
-    </div>
-    <div id="clock" class="clock-text select-none drop-shadow" style="text-shadow: 0 2px 18px rgba(0,0,0,0.16);">00:00</div>
+  <!-- Main center content -->
+  <main class="center-content">
+    <div id="greeting" class="greeting-text"></div>
+    <div id="clock-main" class="clock-main">00:00</div>
+    <div id="clock-sub" class="clock-sub">00:00</div>
   </main>
   <!-- Footer controls -->
-  <footer>
-    <div class="flex items-center">
+  <footer class="footer">
+    <div class="footer-btns">
       <button class="footer-btn" aria-label="music">
         <i data-feather="music" class="w-5 h-5 text-white"></i>
       </button>
@@ -122,7 +183,7 @@
         <i data-feather="bar-chart-2" class="w-5 h-5 text-purple-300"></i>
       </button>
     </div>
-    <div class="flex items-center">
+    <div class="footer-btns">
       <button class="footer-btn" aria-label="leaf">
         <i data-feather="leaf" class="w-5 h-5 text-green-300"></i>
       </button>
@@ -141,16 +202,26 @@
     </div>
   </footer>
   <script>
-    // Đồng hồ theo giờ Hồ Chí Minh
+    // Đồng hồ chính/phụ dạng tách
     function updateClock() {
       const now = new Date();
+      // Giờ phút
       const vnTime = now.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
         timeZone: 'Asia/Ho_Chi_Minh'
       });
-      document.getElementById('clock').textContent = vnTime;
+      // Phút giây
+      const vnSec = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+        timeZone: 'Asia/Ho_Chi_Minh'
+      });
+      document.getElementById('clock-main').textContent = vnTime;
+      document.getElementById('clock-sub').textContent = vnSec;
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -160,7 +231,8 @@
 
     // Notification close
     document.getElementById('notif-close').onclick = function() {
-      document.getElementById('notif').style.display = 'none';
+      document.getElementById('notif').style.opacity = '0';
+      setTimeout(()=>{document.getElementById('notif').style.display='none';},300);
     };
 
     // Greeting động
@@ -172,10 +244,10 @@
       if (h >= 12 && h < 18) greet = "Good afternoon";
       else if (h >= 18 || h < 5) greet = "Good evening";
       const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-      const username = "Ochiluna"; // có thể cho người dùng nhập tên
+      const username = "Ochiluna"; // cho phép đổi tên sau
       const vnDate = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Ho_Chi_Minh' }));
       const today = days[vnDate.getDay()];
-      document.getElementById('greeting').textContent = `${greet}, ${username}. Let's conquer ${today}!`;
+      document.getElementById('greeting').textContent = `${greet}, Ochiluna. Let's conquer ${today}!`;
     }
     greeting();
     setInterval(greeting, 60000);
