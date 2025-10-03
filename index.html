@@ -17,6 +17,9 @@
       color: #fff;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
     .notif-glass {
       background: rgba(24,24,24,0.75);
@@ -27,7 +30,7 @@
       min-width: 260px;
       box-shadow: 0 6px 32px rgba(0,0,0,0.15);
       padding: 14px 20px 14px 48px;
-      position: absolute;
+      position: fixed;
       top: 24px;
       right: 24px;
       z-index: 50;
@@ -42,6 +45,46 @@
     .footer-btn.active, .footer-btn:hover { background: rgba(148, 97, 255, 0.18); }
     ::-webkit-scrollbar { width: 0 !important }
     body { -ms-overflow-style: none; scrollbar-width: none; }
+    .main-content {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 0;
+      z-index: 2;
+      position: relative;
+    }
+    header {
+      flex: 0 0 auto;
+      width: 100%;
+      z-index: 10;
+      position: relative;
+      padding-top: 1.5rem;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    footer {
+      flex: 0 0 auto;
+      width: 100%;
+      z-index: 10;
+      position: relative;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-bottom: 1.25rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    /* Fix for small screens: prevent footer overlap */
+    @media (max-height: 600px) {
+      .main-content { justify-content: flex-start; margin-top: 48px; }
+      .clock-text { font-size: 4rem; }
+    }
   </style>
 </head>
 <body>
@@ -55,7 +98,7 @@
     <i id="notif-close" data-feather="x" class="notif-close w-4 h-4"></i>
   </div>
   <!-- Header -->
-  <header class="flex items-center justify-between w-full px-6 pt-6" style="z-index:10; position:relative;">
+  <header>
     <div class="flex items-center space-x-2 select-none">
       <span style="font-size:2.2rem; font-weight:700; letter-spacing:-0.05em;">flocus</span>
       <span class="text-xs text-gray-300 ml-2" style="font-family: 'Inter', sans-serif;">by GRIDFITI</span>
@@ -63,14 +106,14 @@
     <div></div>
   </header>
   <!-- Main content -->
-  <main class="flex flex-col items-center justify-center text-center" style="min-height: 85vh; z-index:2; position:relative;">
-    <div id="greeting" class="text-xl sm:text-2xl font-medium mb-2 mt-32 sm:mt-36 select-none drop-shadow" style="text-shadow: 0 2px 12px rgba(0,0,0,0.28);">
+  <main class="main-content">
+    <div id="greeting" class="text-xl sm:text-2xl font-medium mb-2 select-none drop-shadow" style="text-shadow: 0 2px 12px rgba(0,0,0,0.28);">
       Good morning, Ochiluna. Let's conquer Friday!
     </div>
     <div id="clock" class="clock-text select-none drop-shadow" style="text-shadow: 0 2px 18px rgba(0,0,0,0.16);">00:00</div>
   </main>
   <!-- Footer controls -->
-  <footer class="w-full flex items-end justify-between absolute bottom-0 left-0 px-6 pb-5 z-10">
+  <footer>
     <div class="flex items-center">
       <button class="footer-btn" aria-label="music">
         <i data-feather="music" class="w-5 h-5 text-white"></i>
