@@ -1,143 +1,124 @@
-<!doctype html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Focus Dashboard</title>
-  <style>
-    body,html{margin:0;height:100%;font-family:sans-serif;color:white;}
-    .bg{position:fixed;inset:0;
-      background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
-      z-index:-1;}
-    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:-1;}
-    .center{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
-    .clock{font-size:120px;font-weight:bold;}
-    .date{font-size:20px;margin-top:8px;opacity:0.85;}
-    .greeting{font-size:22px;margin-bottom:10px;}
-    .bottom-controls{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 20px;}
-    .btn{background:rgba(255,255,255,0.1);border:none;padding:10px 14px;border-radius:8px;color:white;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
-    .btn:hover{background:rgba(255,255,255,0.2);}
-    #timerBox{margin-top:15px;font-size:24px;font-weight:600;}
-    #settingsModal{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-      background:rgba(0,0,0,0.85);padding:20px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.6);width:280px;}
-    #settingsModal h3{margin-top:0;}
-    #settingsModal input{padding:6px;margin-top:8px;width:100%;border-radius:6px;border:none;}
-    #settingsModal button{margin-top:10px;width:100%;}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flocus by Gridfiti</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://huggingface.co/spaces/myzu/flocus-nature-dashboard-zen/resolve/main/images/IMG_20251003_115011.jpg');
+background-size: cover;
+            background-position: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        .vibration {
+            animation: vibrate 0.3s linear infinite;
+        }
+        @keyframes vibrate {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
 </head>
-<body>
-  <div class="bg" id="bg"></div>
-  <div class="overlay"></div>
+<body class="text-white flex flex-col">
+    <!-- Header Section -->
+    <header class="flex justify-between items-center p-6">
+        <div class="flex items-center space-x-2">
+            <i data-feather="layers" class="w-6 h-6 text-green-300"></i>
+            <span class="text-xl font-bold">flocus by GRIDFITI</span>
+        </div>
+        <div class="glass-card px-4 py-2 flex items-center space-x-2 animate-pulse">
+            <i data-feather="check-circle" class="w-4 h-4 text-green-300"></i>
+            <span class="text-sm">✨ Settings updated – Latest settings have been downloaded</span>
+        </div>
+    </header>
 
-  <div class="center">
-    <p class="greeting">Good <span id="daytime"></span>, <span id="username">Ochiluna</span>!</p>
-    <div class="clock" id="clock">00:00</div>
-    <div class="date" id="date"></div>
-    <div id="timerBox"></div>
-  </div>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-light mb-4">Welcome to Flocus</h1>
+            <h2 class="text-2xl md:text-3xl font-medium">Find your zen moment</h2>
+</div>
+        
+        <div class="text-center mb-16">
+            <div id="clock" class="text-8xl md:text-9xl font-bold tracking-tighter mb-8">00:00</div>
+            <div class="glass-card px-8 py-4 rounded-full text-lg font-medium hover:bg-green-900/30 transition cursor-pointer">
+                Start Focusing
+            </div>
+</div>
+    </main>
 
-  <div class="bottom-controls">
-    <div>
-      <button class="btn" id="musicBtn">🎵 Music</button>
-      <button class="btn" id="focusBtn">⏱ Focus</button>
-    </div>
-    <div>
-      <button class="btn" id="settingsBtn">⚙️ Settings</button>
-      <button class="btn" id="fullscreenBtn">⛶ Fullscreen</button>
-    </div>
-  </div>
+    <!-- Footer Section -->
+    <footer class="flex justify-between items-center p-6">
+        <div class="glass-card px-4 py-2 flex items-center space-x-2 cursor-pointer hover:bg-green-900/30 transition">
+            <i data-feather="music" class="w-5 h-5"></i>
+<div class="flex space-x-1">
+                <div class="w-1 h-4 bg-white rounded-full animate-bounce"></div>
+                <div class="w-1 h-6 bg-white rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                <div class="w-1 h-3 bg-white rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                <div class="w-1 h-5 bg-white rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+            </div>
+        </div>
+        
+        <div class="flex space-x-4">
+            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
+                <i data-feather="leaf" class="w-5 h-5 text-green-300"></i>
+            </a>
+            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
+                <i data-feather="home" class="w-5 h-5 text-purple-300"></i>
+            </a>
+            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
+                <i data-feather="settings" class="w-5 h-5 text-purple-300"></i>
+            </a>
+            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
+                <i data-feather="gift" class="w-5 h-5 text-purple-300"></i>
+            </a>
+            <a href="#" class="glass-card p-3 rounded-full hover:bg-purple-900/30 transition">
+                <i data-feather="maximize-2" class="w-5 h-5 text-purple-300"></i>
+            </a>
+</div>
+    </footer>
 
-  <!-- settings modal -->
-  <div id="settingsModal">
-    <h3>⚙️ Settings</h3>
-    <label>Change Name:</label>
-    <input type="text" id="nameInput"/>
-    <label>Background URL:</label>
-    <input type="text" id="bgInput"/>
-    <button class="btn" onclick="saveSettings()">Save</button>
-    <button class="btn" onclick="closeSettings()">Close</button>
-  </div>
+    <script>
+        // Update clock in real-time
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-  <!-- Nhạc nền -->
-  <audio id="bgMusic" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"/>
-  </audio>
-
-<script>
-  const clockEl=document.getElementById('clock');
-  const dateEl=document.getElementById('date');
-  const daytime=document.getElementById('daytime');
-  const usernameEl=document.getElementById('username');
-  const music=document.getElementById('bgMusic');
-  const timerBox=document.getElementById('timerBox');
-  const modal=document.getElementById('settingsModal');
-  const nameInput=document.getElementById('nameInput');
-  const bgInput=document.getElementById('bgInput');
-  const bg=document.getElementById('bg');
-
-  // Đồng hồ Hồ Chí Minh
-  function updateClock(){
-    const now=new Date();
-    const optionsTime={timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',hour12:false};
-    const optionsDate={timeZone:'Asia/Ho_Chi_Minh',day:'2-digit',month:'2-digit',year:'numeric',weekday:'long'};
-    clockEl.textContent=new Intl.DateTimeFormat('en-GB',optionsTime).format(now);
-    dateEl.textContent=new Intl.DateTimeFormat('vi-VN',optionsDate).format(now);
-
-    const h=parseInt(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit'}).format(now));
-    if(h<12) daytime.textContent='morning';
-    else if(h<18) daytime.textContent='afternoon';
-    else daytime.textContent='evening';
-  }
-  setInterval(updateClock,1000); updateClock();
-
-  // Lấy tên từ localStorage
-  usernameEl.textContent=localStorage.getItem('username')||'Ochiluna';
-
-  // 🎵 music button
-  let playing=false;
-  document.getElementById('musicBtn').onclick=()=>{
-    if(!playing){ music.play(); playing=true; document.getElementById('musicBtn').textContent='⏸ Stop Music'; }
-    else{ music.pause(); playing=false; document.getElementById('musicBtn').textContent='🎵 Music'; }
-  };
-
-  // ⏱ focus timer (25 phút)
-  let timer=null,remain=0;
-  document.getElementById('focusBtn').onclick=()=>{
-    if(timer){ // stop
-      clearInterval(timer); timer=null; timerBox.textContent=''; 
-      document.getElementById('focusBtn').textContent='⏱ Focus';
-    }else{ // start 25 min
-      remain=25*60;
-      timer=setInterval(()=>{
-        remain--;
-        const mm=Math.floor(remain/60), ss=remain%60;
-        timerBox.textContent=`Focus: ${mm}:${ss.toString().padStart(2,'0')}`;
-        if(remain<=0){clearInterval(timer);timer=null;timerBox.textContent='';alert('⏰ Hết giờ focus!');}
-      },1000);
-      document.getElementById('focusBtn').textContent='⏹ Stop';
-    }
-  };
-
-  // ⚙️ settings
-  document.getElementById('settingsBtn').onclick=()=>{
-    modal.style.display='block';
-    nameInput.value=usernameEl.textContent;
-    bgInput.value='';
-  };
-  function closeSettings(){modal.style.display='none';}
-  function saveSettings(){
-    localStorage.setItem('username',nameInput.value||'You');
-    usernameEl.textContent=nameInput.value||'You';
-    if(bgInput.value.trim()!==''){ bg.style.backgroundImage=`url('${bgInput.value}')`; }
-    closeSettings();
-  }
-
-  // ⛶ fullscreen
-  document.getElementById('fullscreenBtn').onclick=()=>{
-    if(!document.fullscreenElement) document.documentElement.requestFullscreen();
-    else document.exitFullscreen();
-  };
-</script>
+        // Feather icons
+        feather.replace();
+        
+        // Add vibration effect to notification
+        const notification = document.querySelector('.glass-card');
+        notification.addEventListener('mouseenter', () => {
+            notification.classList.add('vibration');
+        });
+        notification.addEventListener('mouseleave', () => {
+            notification.classList.remove('vibration');
+        });
+    </script>
 </body>
-      </html>
-  
+              </html>
