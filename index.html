@@ -179,20 +179,20 @@
         function updateClock() {
             const now = new Date();
             // Always use Ho Chi Minh timezone
-            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
             const timeStr = now.toLocaleTimeString('en-US', optionsTime);
-            const [hours, minutes] = timeStr.split(':');
+            const [hours, minutes, seconds] = timeStr.split(':');
             const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             const dateStr = now.toLocaleDateString('en-US', optionsDate);
             // Example dateStr: "Saturday, October 5, 2025"
             const [dayName, monthDayYear] = dateStr.split(', ');
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
             document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
         }
 
-        // Update clock immediately and then every minute
+        // Update clock immediately and then every second (fix)
         updateClock();
-        setInterval(updateClock, 60000);
+        setInterval(updateClock, 1000);
 
         // Initialize feather icons
         feather.replace();
