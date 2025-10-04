@@ -164,18 +164,16 @@
     <script>
         function updateClock() {
             const now = new Date();
-            // Set to Vietnam timezone (GMT+7)
-            const vietnamTime = new Date(now.getTime() + 7 * 60 * 60 * 1000);
-            const hours = vietnamTime.getHours().toString().padStart(2, '0');
-            const minutes = vietnamTime.getMinutes().toString().padStart(2, '0');
-            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            const dayName = days[vietnamTime.getDay()];
-            const monthName = months[vietnamTime.getMonth()];
-            const date = vietnamTime.getDate();
-            const year = vietnamTime.getFullYear();
+            // Always use Ho Chi Minh timezone
+            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+            const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+            const [hours, minutes] = timeStr.split(':');
+            const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', optionsDate);
+            // Example dateStr: "Saturday, October 5, 2025"
+            const [dayName, monthDayYear] = dateStr.split(', ');
             document.getElementById('time').textContent = `${hours}:${minutes}`;
-            document.getElementById('date').textContent = `${dayName}, ${monthName} ${date}, ${year}`;
+            document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
         }
 
         // Update clock immediately and then every minute
