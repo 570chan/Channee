@@ -217,12 +217,11 @@
             });
         });
 
-        // Fullscreen logic for Reading List (true fullscreen with dedicated icon)
+        // Fullscreen logic for Reading List (click toàn bộ box đều được)
         (function(){
             const readingListBox = document.getElementById('reading-list-box');
             const fullscreenEnter = document.getElementById('fullscreen-enter');
             const fullscreenExit = document.getElementById('fullscreen-exit');
-            const fullscreenTrigger = document.getElementById('reading-fullscreen-trigger');
             let isFullscreen = false;
 
             function showEnterIcon() {
@@ -234,13 +233,11 @@
                 fullscreenExit.classList.remove('hidden');
             }
 
-            // Request fullscreen for the entire document
+            // Request fullscreen cho riêng box
             function enterFullscreen() {
                 if (isFullscreen) return;
                 isFullscreen = true;
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen();
-                }
+                readingListBox.requestFullscreen();
                 showExitIcon();
             }
 
@@ -254,9 +251,9 @@
                 showEnterIcon();
             }
 
-            // Click only on icon to toggle fullscreen
-            fullscreenTrigger.addEventListener('click', function(e){
-                e.stopPropagation();
+            // Cho phép click vào bất cứ đâu trong box để toggle fullscreen
+            readingListBox.addEventListener('click', function(e){
+                // Nếu đang ở fullscreen thì thoát, không thì vào
                 if (!isFullscreen) {
                     enterFullscreen();
                 } else {
@@ -264,15 +261,15 @@
                 }
             });
 
-            // Also allow click on the exit icon to exit
+            // Cho icon exit riêng vẫn có thể thoát mà không bật lại fullscreen
             fullscreenExit.addEventListener('click', function(e){
                 e.stopPropagation();
                 exitFullscreen();
             });
 
-            // Also allow ESC or browser exit fullscreen
+            // Xử lý thay đổi trạng thái fullscreen từ phía trình duyệt
             document.addEventListener('fullscreenchange', function() {
-                if (document.fullscreenElement) {
+                if (document.fullscreenElement === readingListBox) {
                     isFullscreen = true;
                     showExitIcon();
                 } else {
@@ -283,4 +280,4 @@
         })();
     </script>
 </body>
-    </html>
+</html>
