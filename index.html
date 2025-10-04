@@ -177,8 +177,8 @@
                         <i id="fullscreen-exit" data-feather="minimize" class="fullscreen-svg text-green-500 hidden"></i>
                     </div>
                     <div>
-                        <h3 class="font-medium text-gray-800 drop-shadow-text">Reading List</h3>
-                        <p class="text-sm text-gray-500 drop-shadow-text">Books I'm currently reading</p>
+                        <h3 class="font-medium text-gray-800 drop-shadow-text">Full screen</h3>
+                        <p class="text-sm text-gray-500 drop-shadow-text">Press to enable full screen feature</p>
                     </div>
                 </div>
                 <ul class="mt-3 space-y-1 text-sm text-gray-700">
@@ -217,7 +217,7 @@
             });
         });
 
-        // Fullscreen logic for Reading List (click toàn bộ box đều được)
+        // Fullscreen logic: click vào box hoặc icon đều sẽ full screen toàn website
         (function(){
             const readingListBox = document.getElementById('reading-list-box');
             const fullscreenEnter = document.getElementById('fullscreen-enter');
@@ -233,11 +233,11 @@
                 fullscreenExit.classList.remove('hidden');
             }
 
-            // Request fullscreen cho riêng box
+            // Request fullscreen cho toàn website
             function enterFullscreen() {
                 if (isFullscreen) return;
                 isFullscreen = true;
-                readingListBox.requestFullscreen();
+                document.documentElement.requestFullscreen();
                 showExitIcon();
             }
 
@@ -269,7 +269,7 @@
 
             // Xử lý thay đổi trạng thái fullscreen từ phía trình duyệt
             document.addEventListener('fullscreenchange', function() {
-                if (document.fullscreenElement === readingListBox) {
+                if (document.fullscreenElement === document.documentElement) {
                     isFullscreen = true;
                     showExitIcon();
                 } else {
