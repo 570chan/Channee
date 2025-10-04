@@ -29,8 +29,6 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
@@ -93,10 +91,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 38px;
-            height: 38px;
-            min-width: 38px;
-            min-height: 38px;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
             border-radius: 8px;
             transition: background 0.18s;
         }
@@ -104,8 +102,8 @@
             background: rgba(16,185,129,0.13);
         }
         .fullscreen-svg {
-            width: 1.8rem;
-            height: 1.8rem;
+            width: 20px;
+            height: 20px;
             display: block;
         }
 #reading-list-box {
@@ -130,14 +128,7 @@
 #reading-list-box:hover {
   background: rgba(200, 255, 200, 0.85);
 }
-
-/* Icon nhỏ để vừa trong box 24px */
-.fullscreen-svg {
-  width: 14px;
-  height: 14px;
-}
-
-</style>
+    </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
     <!-- Background Video -->
@@ -194,16 +185,21 @@
         </div>
     </div>
     <!-- Reading List (fullscreen toggle, no book icon, fullscreen icon centered) -->
-            <div id="reading-list-box" tabindex="0"
-                class="block link-card glass-card p-4 rounded-lg hover:shadow-md transition-all cursor-pointer relative"
-                style="outline: none;">
-                <div class="flex items-center">
-                    <div class="mr-4 fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen">
-                        <i id="fullscreen-enter" data-feather="maximize" class="fullscreen-svg text-gray-600"></i>
-                        <i id="fullscreen-exit" data-feather="minimize" class="fullscreen-svg text-green-500 hidden"></i>
-                    </div>
-                    
-
+    <div id="reading-list-box" tabindex="0"
+        class="glass-card"
+        style="outline: none;">
+        <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen">
+            <!-- Inline SVG for maximize (enter fullscreen) -->
+            <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+            </svg>
+            <!-- Inline SVG for minimize (exit fullscreen), initially hidden -->
+            <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
+            </svg>
+        </span>
+    </div>
+    <script src="https://unpkg.com/feather-icons"></script>
     <script>
         function updateClock() {
         const now = new Date();
@@ -222,7 +218,7 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-        // Initialize feather icons
+        // Initialize feather icons (for social icons, not fullscreen)
         feather.replace();
 
         // Fade in animation for all content (in case more than 1 .fade-in on page)
@@ -240,12 +236,12 @@
             let isFullscreen = false;
 
             function showEnterIcon() {
-                fullscreenEnter.classList.remove('hidden');
-                fullscreenExit.classList.add('hidden');
+                fullscreenEnter.style.display = '';
+                fullscreenExit.style.display = 'none';
             }
             function showExitIcon() {
-                fullscreenEnter.classList.add('hidden');
-                fullscreenExit.classList.remove('hidden');
+                fullscreenEnter.style.display = 'none';
+                fullscreenExit.style.display = '';
             }
 
             // Request fullscreen cho toàn website
