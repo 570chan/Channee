@@ -108,27 +108,30 @@
             height: 1.8rem;
             display: block;
         }
-        /* Box fullscreen nhỏ gọn chỉ có icon */
+/* Box fullscreen nhỏ gọn */
 #reading-list-box {
   position: fixed;
   left: 12px;
   bottom: 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 8px;
+  width: 24px;       /* box nhỏ hơn */
+  height: 24px;      /* box nhỏ hơn */
+  border-radius: 6px;
   z-index: 9999;
   background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   border: 1px solid #ccc;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center;    /* căn giữa dọc */
+  justify-content: center;/* căn giữa ngang */
   cursor: pointer;
   transition: background 0.2s ease;
+  padding: 3px;           /* icon cách mép 3px */
 }
+
 #reading-list-box:hover {
-  background: rgba(200, 255, 200, 0.8);
+  background: rgba(200, 255, 200, 0.85);
 }
+
 .fullscreen-svg {
   width: 22px;
   height: 22px;
