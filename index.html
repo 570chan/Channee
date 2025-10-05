@@ -131,6 +131,10 @@
         #reading-list-box:hover {
             background: rgba(200, 255, 200, 0.85);
         }
+        /* New for delayed fade-in */
+        .fade-in-delayed {
+            opacity: 0;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -141,7 +145,7 @@
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="background">
     </video>
     <!-- SỬA: Font cho nechannee sẽ hoạt động -->
-    <div class="knewave-regular text-4xl mb-4">nechannee</div>
+    <div class="knewave-regular text-4xl mb-4 fade-in-delayed" id="nechannee-title">nechannee</div>
     <div class="max-w-md w-full mx-auto fade-in">
         <div class="glass-card p-8 mb-8 text-center">
             <div class="flex justify-center mb-6">
@@ -224,8 +228,22 @@
 
         // Fade in animation for all content (in case more than 1 .fade-in on page)
         window.addEventListener('DOMContentLoaded', () => {
+            // fade-in các box khác trước
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.classList.add('fade-in');
+            });
+
+            // Chờ tất cả các .fade-in hoàn thành animation, sau đó fade-in nechannee
+            const fadeInEls = document.querySelectorAll('.fade-in');
+            let count = 0;
+            fadeInEls.forEach(el => {
+                el.addEventListener('animationend', () => {
+                    count++;
+                    if (count === fadeInEls.length) {
+                        // Sau khi tất cả các box đã fade-in xong, mới fade-in nechannee
+                        document.getElementById('nechannee-title').classList.add('fade-in');
+                    }
+                }, { once: true });
             });
         });
 
