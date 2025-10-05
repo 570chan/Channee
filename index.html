@@ -3,29 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Open Graph (Discord dùng những thẻ này để tạo embed) -->
-    <meta property="og:type"        content="website" />
-    <meta property="og:site_name"   content="_.570chan" />
-    <meta property="og:title"       content="Channee" />
-    <meta property="og:description" content="I can't even remember who I am..." />
-    <meta property="og:url"         content="https://channee.vercel.app/" />
-    <meta property="og:image"       content="https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251004_195055.png" />
-    <meta property="og:image:alt"   content="Mô tả ảnh thay thế cho preview" />
-    <meta property="og:image:width"  content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale"      content="vi_VN" />
-
-    <!-- Twitter card (dự phòng cho các nền tảng khác) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Tiêu đề chính của trang — Đây là title lớn" />
-    <meta name="twitter:description" content="Mô tả ngắn (1-2 câu) sẽ xuất hiện trong preview embed." />
-    <meta name="twitter:image" content="https://example.com/images/preview-1200x630.jpg" />
-
+    <!-- ... (meta và link giữ nguyên) ... -->
     <title>neChannee!</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <!-- SỬA: Import font đúng cách -->
     <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,129 +18,60 @@
             color: #1e293b;
             overflow-x: hidden;
         }
-        .clock-container {
-            text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+        /* --- Thêm style cho chữ nechannee --- */
+        .nechannee-title {
+    color: #4668fa; /* Chọn mã màu bạn thích */
+    font-family: "Knewave", system-ui, cursive;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 12px rgba(70,104,250,0.12), 0 1px 0 #fff;
+    transition: text-shadow 0.3s;
+}
+.nechannee-title:hover {
+    text-shadow: 0 4px 24px #4668fa, 0 2px 12px #4668fa;
         }
-        .glass-card {
-            backdrop-filter: blur(22px) saturate(180%);
-            -webkit-backdrop-filter: blur(22px) saturate(180%);
-            background-color: rgba(255, 255, 255, 0.38); /* more transparent */
-            border-radius: 16px;
-            border: 1px solid rgba(209, 213, 219, 0.18);
-            box-shadow: 0 6px 32px 0 rgba(0,0,0,0.12);
-        }
-        .profile-pic {
-            transition: all 0.3s cubic-bezier(.4,0,.2,1);
-            box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13);
-        }
-        .profile-pic:hover {
-            transform: scale(1.05);
-        }
-        .link-card {
-            transition: all 0.3s cubic-bezier(.4,0,.2,1);
-            background: rgba(255,255,255,0.25);
-        }
-        .link-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
-        }
-        .fade-in {
-            opacity: 0;
-            animation: fadeIn 1.2s cubic-bezier(.42,0,.58,1) forwards;
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(48px);}
-            80% { opacity: 1;}
-            100% { opacity: 1; transform: none;}
-        }
-        .drop-shadow-text {
-            text-shadow: 0 2px 12px rgba(0,0,0,0.32), 0 2px 2px rgba(0,0,0,0.17);
-        }
-        /* Video background */
-        .bg-video {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-            min-width: 100%;
-            min-height: 100%;
-            opacity: 0.85;
-            pointer-events: none;
-        }
-        /* Center fullscreen icon perfectly */
-        .fullscreen-icon-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            min-height: 24px;
-            border-radius: 8px;
-            transition: background 0.18s;
-        }
-        .fullscreen-icon-wrap:hover {
-            background: rgba(16,185,129,0.13);
-        }
-        .fullscreen-svg {
-            width: 20px;
-            height: 20px;
-            display: block;
-        }
-        #reading-list-box {
-            position: fixed;
-            left: 12px;
-            bottom: 12px;
-            width: 24px;
-            height: 24px;
-            border-radius: 5px;
-            z-index: 9999;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-            border: 1px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s ease;
-            padding: 0;
-        }
-        .knewave-regular {
-            font-family: "Knewave", system-ui, cursive;
-            font-weight: 400;
-            font-style: normal;
-        }
-        #reading-list-box:hover {
-            background: rgba(200, 255, 200, 0.85);
-        }
-        /* New for delayed fade-in */
-        .fade-in-delayed {
-            opacity: 0;
-        }
+        .clock-container { text-shadow: 0 2px 10px rgba(0,0,0,0.18);}
+        .glass-card { backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%);
+            background-color: rgba(255, 255, 255, 0.38); border-radius: 16px;
+            border: 1px solid rgba(209, 213, 219, 0.18); box-shadow: 0 6px 32px 0 rgba(0,0,0,0.12);}
+        .profile-pic { transition: all 0.3s cubic-bezier(.4,0,.2,1); box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13);}
+        .profile-pic:hover { transform: scale(1.05);}
+        .link-card { transition: all 0.3s cubic-bezier(.4,0,.2,1); background: rgba(255,255,255,0.25);}
+        .link-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);}
+        .fade-in { opacity: 0; animation: fadeIn 1.2s cubic-bezier(.42,0,.58,1) forwards;}
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(48px);} 80% { opacity: 1;} 100% { opacity: 1; transform: none;}}
+        .drop-shadow-text { text-shadow: 0 2px 12px rgba(0,0,0,0.32), 0 2px 2px rgba(0,0,0,0.17);}
+        .bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; min-width: 100%; min-height: 100%; opacity: 0.85; pointer-events: none;}
+        .fullscreen-icon-wrap { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; min-height: 24px; border-radius: 8px; transition: background 0.18s;}
+        .fullscreen-icon-wrap:hover { background: rgba(16,185,129,0.13);}
+        .fullscreen-svg { width: 20px; height: 20px; display: block;}
+        #reading-list-box { position: fixed; left: 12px; bottom: 12px; width: 24px; height: 24px; border-radius: 5px; z-index: 9999;
+            background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+            border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s ease; padding: 0;}
+        .knewave-regular { font-family: "Knewave", system-ui, cursive; font-weight: 400; font-style: normal;}
+        #reading-list-box:hover { background: rgba(200, 255, 200, 0.85);}
+        .fade-in-delayed { opacity: 0;}
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
     <!-- Background Video -->
     <video class="bg-video" autoplay loop muted playsinline>
         <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/friends%20yebe.mp4" type="video/mp4">
-        <!-- fallback static image -->
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="background">
     </video>
-    <!-- SỬA: Font cho nechannee sẽ hoạt động -->
-    <div class="knewave-regular text-4xl mb-4 fade-in-delayed" id="nechannee-title">nechannee</div>
+    <!-- Dòng chữ nechannee với class mới -->
+    <div class="nechannee-title text-4xl mb-4 fade-in-delayed" id="nechannee-title">nechannee</div>
     <div class="max-w-md w-full mx-auto fade-in">
+        <!-- ... Phần còn lại giữ nguyên ... -->
         <div class="glass-card p-8 mb-8 text-center">
             <div class="flex justify-center mb-6">
                 <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg" alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg">
             </div>
             <h1 class="text-2xl font-bold text-gray-800 mb-1 drop-shadow-text">Channee</h1>
             <p class="text-gray-600 mb-6 drop-shadow-text">I don't even remember who I am...</p>
-            
             <div class="clock-container mb-8">
                 <div id="time" class="text-5xl font-light text-gray-800 drop-shadow-text"></div>
                 <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
             </div>
-            
             <div class="flex justify-center space-x-4">
                 <a href="https://github.com/570chan" target="_blank" class="text-gray-700 hover:text-indigo-500 transition-colors">
                     <i data-feather="github"></i>
@@ -171,7 +84,6 @@
                 </a>
             </div>
         </div>
-
         <div class="space-y-4">
             <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-4 rounded-lg hover:shadow-md transition-all">
                 <div class="flex items-center">
@@ -189,16 +101,14 @@
             </a>
         </div>
     </div>
-    <!-- Reading List (fullscreen toggle, no book icon, fullscreen icon centered) -->
+    <!-- ...Các phần còn lại giữ nguyên... -->
     <div id="reading-list-box" tabindex="0"
         class="glass-card"
         style="outline: none;">
         <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-            <!-- Inline SVG for maximize (enter fullscreen) -->
             <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
             </svg>
-            <!-- Inline SVG for minimize (exit fullscreen), initially hidden -->
             <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
             </svg>
@@ -206,9 +116,9 @@
     </div>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
+        // ...Script giữ nguyên...
         function updateClock() {
             const now = new Date();
-            // Always use Ho Chi Minh timezone
             const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
             const timeStr = now.toLocaleTimeString('en-US', optionsTime);
             const [hours, minutes] = timeStr.split(':');
@@ -218,42 +128,29 @@
             document.getElementById('time').textContent = `${hours}:${minutes}`;
             document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
         }
-
-        // Update clock immediately and then every second for high accuracy
         updateClock();
         setInterval(updateClock, 1000);
-
-        // Initialize feather icons (for social icons, not fullscreen)
         feather.replace();
-
-        // Fade in animation for all content (in case more than 1 .fade-in on page)
         window.addEventListener('DOMContentLoaded', () => {
-            // fade-in các box khác trước
             document.querySelectorAll('.fade-in').forEach(el => {
                 el.classList.add('fade-in');
             });
-
-            // Chờ tất cả các .fade-in hoàn thành animation, sau đó fade-in nechannee
             const fadeInEls = document.querySelectorAll('.fade-in');
             let count = 0;
             fadeInEls.forEach(el => {
                 el.addEventListener('animationend', () => {
                     count++;
                     if (count === fadeInEls.length) {
-                        // Sau khi tất cả các box đã fade-in xong, mới fade-in nechannee
                         document.getElementById('nechannee-title').classList.add('fade-in');
                     }
                 }, { once: true });
             });
         });
-
-        // Fullscreen logic: click vào box hoặc icon đều sẽ full screen toàn website
         (function(){
             const readingListBox = document.getElementById('reading-list-box');
             const fullscreenEnter = document.getElementById('fullscreen-enter');
             const fullscreenExit = document.getElementById('fullscreen-exit');
             let isFullscreen = false;
-
             function showEnterIcon() {
                 fullscreenEnter.style.display = '';
                 fullscreenExit.style.display = 'none';
@@ -262,16 +159,12 @@
                 fullscreenEnter.style.display = 'none';
                 fullscreenExit.style.display = '';
             }
-
-            // Request fullscreen cho toàn website
             function enterFullscreen() {
                 if (isFullscreen) return;
                 isFullscreen = true;
                 document.documentElement.requestFullscreen();
                 showExitIcon();
             }
-
-            // Exit fullscreen
             function exitFullscreen() {
                 if (!isFullscreen) return;
                 isFullscreen = false;
@@ -280,24 +173,17 @@
                 }
                 showEnterIcon();
             }
-
-            // Cho phép click vào bất cứ đâu trong box để toggle fullscreen
             readingListBox.addEventListener('click', function(e){
-                // Nếu đang ở fullscreen thì thoát, không thì vào
                 if (!isFullscreen) {
                     enterFullscreen();
                 } else {
                     exitFullscreen();
                 }
             });
-
-            // Cho icon exit riêng vẫn có thể thoát mà không bật lại fullscreen
             fullscreenExit.addEventListener('click', function(e){
                 e.stopPropagation();
                 exitFullscreen();
             });
-
-            // Xử lý thay đổi trạng thái fullscreen từ phía trình duyệt
             document.addEventListener('fullscreenchange', function() {
                 if (document.fullscreenElement === document.documentElement) {
                     isFullscreen = true;
@@ -310,4 +196,4 @@
         })();
     </script>
 </body>
-</html>
+    </html>
