@@ -3,33 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- --- Open Graph (Discord dùng những thẻ này để tạo embed) --- -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:site_name"   content="_.570chan" />
-  <meta property="og:title"       content="Channee" />
-  <meta property="og:description" content="I can't even remember who I am..." />
-  <meta property="og:url"         content="https://channee.vercel.app/" />
-  <meta property="og:image"       content="https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251004_195055.png" />
-  <meta property="og:image:alt"   content="Mô tả ảnh thay thế cho preview" />
-  <meta property="og:image:width"  content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:locale"      content="vi_VN" />
+    <!-- Open Graph (Discord dùng những thẻ này để tạo embed) -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:site_name"   content="_.570chan" />
+    <meta property="og:title"       content="Channee" />
+    <meta property="og:description" content="I can't even remember who I am..." />
+    <meta property="og:url"         content="https://channee.vercel.app/" />
+    <meta property="og:image"       content="https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251004_195055.png" />
+    <meta property="og:image:alt"   content="Mô tả ảnh thay thế cho preview" />
+    <meta property="og:image:width"  content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale"      content="vi_VN" />
 
-  <!-- Twitter card (dự phòng cho các nền tảng khác) -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tiêu đề chính của trang — Đây là title lớn" />
-  <meta name="twitter:description" content="Mô tả ngắn (1-2 câu) sẽ xuất hiện trong preview embed." />
-  <meta name="twitter:image" content="https://example.com/images/preview-1200x630.jpg" />
-    
+    <!-- Twitter card (dự phòng cho các nền tảng khác) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tiêu đề chính của trang — Đây là title lớn" />
+    <meta name="twitter:description" content="Mô tả ngắn (1-2 câu) sẽ xuất hiện trong preview embed." />
+    <meta name="twitter:image" content="https://example.com/images/preview-1200x630.jpg" />
+
     <title>neChannee!</title>
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com">
-    @import url('https://fonts.googleapis.com/css2?family=Knewave&display=swap');
-    </script>
+    <!-- SỬA: Import font đúng cách -->
+    <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
@@ -105,34 +105,32 @@
             height: 20px;
             display: block;
         }
-#reading-list-box {
-  position: fixed;
-  left: 12px;
-  bottom: 12px;
-  width: 24px;       /* box 24x24 */
-  height: 24px;
-  border-radius: 5px;
-  z-index: 9999;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-  border: 1px solid #ccc;
-  display: flex;
-  align-items: center;    /* căn giữa dọc */
-  justify-content: center;/* căn giữa ngang */
-  cursor: pointer;
-  transition: background 0.2s ease;
-  padding: 0;             /* bỏ padding để icon vừa khít */
-}
-
-.knewave-regular {
-  font-family: "Knewave", system-ui;
-  font-weight: 400;
-  font-style: normal;
-}
-
-    #reading-list-box:hover {
-  background: rgba(200, 255, 200, 0.85);
-}
+        #reading-list-box {
+            position: fixed;
+            left: 12px;
+            bottom: 12px;
+            width: 24px;
+            height: 24px;
+            border-radius: 5px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+            border: 1px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            padding: 0;
+        }
+        .knewave-regular {
+            font-family: "Knewave", system-ui, cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+        #reading-list-box:hover {
+            background: rgba(200, 255, 200, 0.85);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -142,7 +140,8 @@
         <!-- fallback static image -->
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="background">
     </video>
-    <div class="knewave-regular">nechannee</div>
+    <!-- SỬA: Font cho nechannee sẽ hoạt động -->
+    <div class="knewave-regular text-4xl mb-4">nechannee</div>
     <div class="max-w-md w-full mx-auto fade-in">
         <div class="glass-card p-8 mb-8 text-center">
             <div class="flex justify-center mb-6">
@@ -157,16 +156,13 @@
             </div>
             
             <div class="flex justify-center space-x-4">
-                <a href="https://github.com/570chan" target="_blank" 
-                 href="#" class="text-gray-700 hover:text-indigo-500 transition-colors">
+                <a href="https://github.com/570chan" target="_blank" class="text-gray-700 hover:text-indigo-500 transition-colors">
                     <i data-feather="github"></i>
                 </a>
-                <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" 
-                 href="#" class="text-gray-700 hover:text-pink-500 transition-colors">
+                <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-gray-700 hover:text-pink-500 transition-colors">
                     <i data-feather="facebook"></i>
                 </a>
-                <a href="https://linkedin.com/in/your-profile" target="_blank" 
-                 href="#" class="text-gray-700 hover:text-blue-600 transition-colors">
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-gray-700 hover:text-blue-600 transition-colors">
                     <i data-feather="linkedin"></i>
                 </a>
             </div>
@@ -176,8 +172,8 @@
             <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-4 rounded-lg hover:shadow-md transition-all">
                 <div class="flex items-center">
                     <div class="mr-4 flex items-center">
-                     <i class="fab fa-discord text-indigo-500 text-2xl"></i>
-                     </div>
+                        <i class="fab fa-discord text-indigo-500 text-2xl"></i>
+                    </div>
                     <div>
                         <h3 class="font-medium text-gray-800 drop-shadow-text">Server discord</h3>
                         <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
@@ -187,14 +183,13 @@
                     <li>• <b>server</b> by _.570chan</li>
                 </ul>
             </a>
-            </div>
         </div>
     </div>
     <!-- Reading List (fullscreen toggle, no book icon, fullscreen icon centered) -->
     <div id="reading-list-box" tabindex="0"
         class="glass-card"
         style="outline: none;">
-        <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen">
+        <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
             <!-- Inline SVG for maximize (enter fullscreen) -->
             <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
@@ -208,21 +203,21 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
         function updateClock() {
-        const now = new Date();
-        // Always use Ho Chi Minh timezone
-        const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
-        const timeStr = now.toLocaleTimeString('en-US', optionsTime);
-        const [hours, minutes] = timeStr.split(':');
-        const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const dateStr = now.toLocaleDateString('en-US', optionsDate);
-        const [dayName, monthDayYear] = dateStr.split(', ');
-        document.getElementById('time').textContent = `${hours}:${minutes}`;
-        document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
-    }
+            const now = new Date();
+            // Always use Ho Chi Minh timezone
+            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+            const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+            const [hours, minutes] = timeStr.split(':');
+            const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', optionsDate);
+            const [dayName, monthDayYear] = dateStr.split(', ');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
+        }
 
-    // Update clock immediately and then every second for high accuracy
-    updateClock();
-    setInterval(updateClock, 1000);
+        // Update clock immediately and then every second for high accuracy
+        updateClock();
+        setInterval(updateClock, 1000);
 
         // Initialize feather icons (for social icons, not fullscreen)
         feather.replace();
