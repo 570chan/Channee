@@ -50,6 +50,15 @@
         .knewave-regular { font-family: "Knewave", system-ui, cursive; font-weight: 400; font-style: normal;}
         #reading-list-box:hover { background: rgba(200, 255, 200, 0.85);}
         .fade-in-delayed { opacity: 0;}
+        .link-card.active {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
+    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn chọn */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+                   }
+                               
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -194,6 +203,37 @@
                 }
             });
         })();
+        
+document.addEventListener('DOMContentLoaded', () => {
+    const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
+    let isActive = false;
+    let redirectTimeout;
+
+    if (discordBox) {
+        discordBox.addEventListener('click', (e) => {
+            e.preventDefault(); // Ngăn mở link ngay
+            if (isActive) return; // Nếu đang active thì bỏ qua
+
+            // Thêm class active để tạo hiệu ứng + nền
+            discordBox.classList.add('active');
+            isActive = true;
+
+            // Sau 1 giây thì mở URL
+            redirectTimeout = setTimeout(() => {
+                window.open(discordBox.href, '_blank');
+            }, 1000);
+        });
+
+        // Nếu click ra ngoài -> bỏ hiệu ứng + hủy redirect
+        document.addEventListener('click', (e) => {
+            if (isActive && !discordBox.contains(e.target)) {
+                discordBox.classList.remove('active');
+                isActive = false;
+                clearTimeout(redirectTimeout);
+            }
+        });
+    }
+});
     </script>
 </body>
     </html>
