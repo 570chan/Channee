@@ -58,7 +58,12 @@
     background-position: center;
     color: #fff;
                    }
-                               
+           /* Hiệu ứng hover sáng hơn, nổi lên */
+.link-card[href*="discord.gg"]:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.15);
+                          }                    
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -206,33 +211,17 @@
         
 document.addEventListener('DOMContentLoaded', () => {
     const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
-    let isActive = false;
-    let redirectTimeout;
+    if (!discordBox) return;
 
-    if (discordBox) {
-        discordBox.addEventListener('click', (e) => {
-            e.preventDefault(); // Ngăn mở link ngay
-            if (isActive) return; // Nếu đang active thì bỏ qua
+    discordBox.addEventListener('click', (e) => {
+        e.preventDefault(); // Ngăn chuyển ngay lập tức
+        discordBox.style.transform = 'scale(0.98)'; // hiệu ứng nhấn nhẹ
 
-            // Thêm class active để tạo hiệu ứng + nền
-            discordBox.classList.add('active');
-            isActive = true;
-
-            // Sau 1 giây thì mở URL
-            redirectTimeout = setTimeout(() => {
-                window.open(discordBox.href, '_blank');
-            }, 1000);
-        });
-
-        // Nếu click ra ngoài -> bỏ hiệu ứng + hủy redirect
-        document.addEventListener('click', (e) => {
-            if (isActive && !discordBox.contains(e.target)) {
-                discordBox.classList.remove('active');
-                isActive = false;
-                clearTimeout(redirectTimeout);
-            }
-        });
-    }
+        setTimeout(() => {
+            window.open(discordBox.href, '_blank');
+            discordBox.style.transform = ''; // khôi phục
+        }, 1000); // delay 1s
+    });
 });
     </script>
 </body>
