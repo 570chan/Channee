@@ -58,12 +58,13 @@
     background-position: center;
     color: #fff;
                    }
-           /* Hiệu ứng hover sáng hơn, nổi lên */
-.link-card[href*="discord.gg"]:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
-    filter: brightness(1.15);
-                          }                    
+           /* Cho box Discord luôn có ảnh nền, giữ nguyên hover cũ */
+.link-card[href*="discord.gg"] {
+    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn muốn */
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* chỉnh chữ sáng lên cho dễ đọc */
+}                   
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
