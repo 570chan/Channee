@@ -1,170 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>neChannee!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ... (meta và link giữ nguyên) ... -->
+    <title>neChannee!</title>
+   <!--  Open Graph / Discord Embed Meta -->
+<meta property="og:title" content="neChannene! " />
+<meta property="og:description" content="where i sleep at night🌙" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://channee.vercel.app" />
+<meta property="og:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
 
-<!-- OG tags -->
-<meta property="og:title" content="neChannene!">
-<meta property="og:description" content="where i sleep at night🌙">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://channee.vercel.app">
-<meta property="og:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="neChannee!">
-<meta name="twitter:description" content="Join our cozy Discord — where I take a nap and vibe with friends 🌙">
-<meta name="twitter:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg">
+<!-- Optional: Thêm Twitter card (Discord cũng đọc được) -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="neChannee! " />
+<meta name="twitter:description" content="Join our cozy Discord — where I take a nap and vibe with friends 🌙" />
+<meta name="twitter:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
 
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="manifest" href="/site.webmanifest">
-<link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/feather-icons"></script>
-
-<style>
-body {font-family:'Inter',sans-serif;background-color:#f8fafc;color:#1e293b;overflow-x:hidden;}
-.nechannee-title{color:#FAFAD2;font-family:"Knewave",cursive;letter-spacing:2px;text-shadow:0 2px 12px rgba(70,104,250,0.12),0 1px 0 #fff;transition:text-shadow .3s;}
-.nechannee-title:hover{text-shadow:0 4px 24px #4668fa,0 2px 12px #4668fa;}
-.glass-card{background:transparent;border:2px solid #fff;border-radius:16px;box-shadow:0 0 32px rgba(255,255,255,0.25);transition:box-shadow .3s ease,transform .3s ease;}
-.profile-pic{transition:all .3s cubic-bezier(.4,0,.2,1);box-shadow:0 2px 18px 0 rgba(0,0,0,.13);}
-.profile-pic:hover{transform:scale(1.05);}
-.link-card{transition:all .3s cubic-bezier(.4,0,.2,1);background:rgba(255,255,255,0.25);}
-.link-card:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 10px 25px -5px rgba(0,0,0,0.14);}
-.bg-video{position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;opacity:1;pointer-events:none;}
-/* New Profile Box + Timer Flip */
-.profile-wrapper{width:320px;height:340px;position:relative;perspective:1000px;margin:auto;}
-.profile-box{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(.45,.05,.55,.95);}
-.profile-face{position:absolute;width:100%;height:100%;border-radius:18px;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.4);box-shadow:0 4px 18px rgba(0,0,0,0.2);}
-.profile-front{z-index:2;transform:rotateY(0deg);}
-.profile-timer{transform:rotateY(180deg);}
-.profile-box.flipped{transform:rotateY(180deg);}
-.profile-name{font-family:"Knewave",cursive;font-size:1.8rem;color:#f97316;text-shadow:0 2px 4px rgba(0,0,0,0.3);}
-.bio{color:#475569;font-style:italic;}
-#timer-display{font-size:3rem;font-weight:bold;color:#fff;text-shadow:0 0 10px rgba(255,255,255,0.3);margin-bottom:1.5rem;}
-.timer-buttons{display:flex;gap:16px;}
-.circle-btn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,0.6);background:rgba(255,255,255,0.1);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(255,255,255,0.15);transition:all 0.25s ease;}
-.circle-btn:hover{background:rgba(255,255,255,0.25);transform:scale(1.1);}
-.circle-btn i{width:22px;height:22px;}
-</style>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        /* --- Thêm style cho chữ nechannee --- */
+        .nechannee-title {
+    color: #FAFAD2; /* Chọn mã màu bạn thích */
+    font-family: "Knewave", system-ui, cursive;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 12px rgba(70,104,250,0.12), 0 1px 0 #fff;
+    transition: text-shadow 0.3s;
+}
+.nechannee-title:hover {
+    text-shadow: 0 4px 24px #4668fa, 0 2px 12px #4668fa;
+        }
+        .clock-container { text-shadow: 0 2px 10px rgba(0,0,0,0.18);}
+        .glass-card {
+    background: transparent; /* Không nền */
+    border: 2px solid #fff;  /* Viền trắng rõ */
+    border-radius: 16px;     /* Bo góc mềm */
+    box-shadow: 0 0 32px rgba(255, 255, 255, 0.25);
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Hiệu ứng mượt */
+}
+        .profile-pic { transition: all 0.3s cubic-bezier(.4,0,.2,1); box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13);}
+        .profile-pic:hover { transform: scale(1.05);}
+        .link-card { transition: all 0.3s cubic-bezier(.4,0,.2,1); background: rgba(255,255,255,0.25);}
+        .link-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);}
+        .fade-in { opacity: 0; animation: fadeIn 1.2s cubic-bezier(.42,0,.58,1) forwards;}
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(48px);} 80% { opacity: 1;} 100% { opacity: 1; transform: none;}}
+        .drop-shadow-text { text-shadow: 0 2px 12px rgba(0,0,0,0.32), 0 2px 2px rgba(0,0,0,0.17);}
+        .bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; min-width: 100%; min-height: 100%; opacity: 1.0; pointer-events: none;}
+        .fullscreen-icon-wrap { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; min-height: 24px; border-radius: 8px; transition: background 0.18s;}
+        .fullscreen-icon-wrap:hover { background: rgba(16,185,129,0.13);}
+        .fullscreen-svg { width: 20px; height: 20px; display: block;}
+        #reading-list-box { position: fixed; left: 12px; bottom: 12px; width: 24px; height: 24px; border-radius: 5px; z-index: 9999;
+            background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+            border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s ease; padding: 0;}
+        .knewave-regular { font-family: "Knewave", system-ui, cursive; font-weight: 400; font-style: normal;}
+        #reading-list-box:hover { background: rgba(200, 255, 200, 0.85);}
+        .fade-in-delayed { opacity: 0;}
+        .link-card.active {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
+    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn chọn */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+                   }
+           /* Cho box Discord luôn có ảnh nền, giữ nguyên hover cũ */
+.link-card[href*="discord.gg"] {
+    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn muốn */
+    background-size: cover;
+    background-position: center;
+    color: #fff; /* chỉnh chữ sáng lên cho dễ đọc */
+}                   
+    </style>
 </head>
-
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
-<video class="bg-video" autoplay loop muted playsinline>
-<source src="https://s3.tebi.io/ely.bucket.s0.io.biti/newl.mp4" type="video/mp4">
-</video>
-
-<!-- Profile + Timer box -->
-<div class="profile-wrapper">
-  <div class="profile-box" id="profileBox">
-    <!-- Profile Face -->
-    <div class="profile-face profile-front">
-      <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg" alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg">
-      <h1 class="profile-name">Channee</h1>
-      <p class="bio">I don't even remember who I am...</p>
-      <div class="clock-container mt-4">
-        <div id="time" class="text-5xl font-light text-[#F0FFF0] drop-shadow-text"></div>
-        <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
-      </div>
-      <div class="flex justify-center space-x-4 mt-6">
-        <a href="https://github.com/570chan" target="_blank" class="text-white hover:text-indigo-500 transition-colors"><i data-feather="github"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-white hover:text-pink-500 transition-colors"><i data-feather="facebook"></i></a>
-        <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-white hover:text-orange-400 transition-colors"><i data-feather="linkedin"></i></a>
-      </div>
+    <!-- Background Video -->
+    <video class="bg-video" autoplay loop muted playsinline>
+        <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/newl.mp4" type="video/mp4">
+        <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" alt="background">
+    </video>
+    
+    <div class="max-w-md w-full mx-auto fade-in">
+        <!-- ... Phần còn lại giữ nguyên ... -->
+        <div class="glass-card p-8 mb-8 text-center">
+            <div class="flex justify-center mb-6">
+                <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg" alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg">
+            </div>
+            <h1 class="text-2xl font-bold text-black mb-1 drop-shadow-text knewave-regular">Channee</h1>
+            <p class="text-gray-600 mb-6 drop-shadow-text">I don't even remember who I am...</p>
+            <div class="clock-container mb-8">
+                <div id="time" class="text-5xl font-light text-[#F0FFF0] drop-shadow-text"></div>
+                <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
+            </div>
+            <div class="flex justify-center space-x-4">
+                <a href="https://github.com/570chan" target="_blank" class="text-white hover:text-indigo-500 transition-colors">
+                    <i data-feather="github"></i>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-white hover:text-pink-500 transition-colors">
+                    <i data-feather="facebook"></i>
+                </a>
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-white hover:text-orange-400 transition-colors">
+                    <i data-feather="linkedin"></i>
+                </a>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
+                <div class="flex items-center">
+                    <div class="mr-4 flex items-center">
+                        <i class="fab fa-discord text-indigo-500 text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-800 drop-shadow-text">Server discord</h3>
+                        <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
+                    </div>
+                </div>
+                <ul class="mt-3 space-y-1 text-sm text-gray-700">
+                    <li>• <b>server</b> by _.570chan</li>
+                </ul>
+            </a>
+        </div>
     </div>
-
-    <!-- Timer Face -->
-    <div class="profile-face profile-timer">
-      <div id="timer-display">25:00</div>
-      <div class="timer-buttons">
-        <button id="start-timer" class="circle-btn" title="Start"><i data-feather="play"></i></button>
-        <button id="pause-timer" class="circle-btn" title="Pause"><i data-feather="pause"></i></button>
-        <button id="reset-timer" class="circle-btn" title="Reset"><i data-feather="rotate-ccw"></i></button>
-      </div>
+    <!-- ...Các phần còn lại giữ nguyên... -->
+    <div id="reading-list-box" tabindex="0"
+        class="glass-card"
+        style="outline: none;">
+        <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
+            <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+            </svg>
+            <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
+            </svg>
+        </span>
     </div>
-  </div>
-</div>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+        // ...Script giữ nguyên...
+        function updateClock() {
+            const now = new Date();
+            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+            const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+            const [hours, minutes] = timeStr.split(':');
+            const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateStr = now.toLocaleDateString('en-US', optionsDate);
+            const [dayName, monthDayYear] = dateStr.split(', ');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+            document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+        feather.replace();
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.classList.add('fade-in');
+            });
+            const fadeInEls = document.querySelectorAll('.fade-in');
+            let count = 0;
+            fadeInEls.forEach(el => {
+                el.addEventListener('animationend', () => {
+                    count++;
+                    if (count === fadeInEls.length) {
+                        document.getElementById('nechannee-title').classList.add('fade-in');
+                    }
+                }, { once: true });
+            });
+        });
+        (function(){
+            const readingListBox = document.getElementById('reading-list-box');
+            const fullscreenEnter = document.getElementById('fullscreen-enter');
+            const fullscreenExit = document.getElementById('fullscreen-exit');
+            let isFullscreen = false;
+            function showEnterIcon() {
+                fullscreenEnter.style.display = '';
+                fullscreenExit.style.display = 'none';
+            }
+            function showExitIcon() {
+                fullscreenEnter.style.display = 'none';
+                fullscreenExit.style.display = '';
+            }
+            function enterFullscreen() {
+                if (isFullscreen) return;
+                isFullscreen = true;
+                document.documentElement.requestFullscreen();
+                showExitIcon();
+            }
+            function exitFullscreen() {
+                if (!isFullscreen) return;
+                isFullscreen = false;
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+                showEnterIcon();
+            }
+            readingListBox.addEventListener('click', function(e){
+                if (!isFullscreen) {
+                    enterFullscreen();
+                } else {
+                    exitFullscreen();
+                }
+            });
+            fullscreenExit.addEventListener('click', function(e){
+                e.stopPropagation();
+                exitFullscreen();
+            });
+            document.addEventListener('fullscreenchange', function() {
+                if (document.fullscreenElement === document.documentElement) {
+                    isFullscreen = true;
+                    showExitIcon();
+                } else {
+                    isFullscreen = false;
+                    showEnterIcon();
+                }
+            });
+        })();
+        
+document.addEventListener('DOMContentLoaded', () => {
+    const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
+    if (!discordBox) return;
 
-<!-- Discord Link (giữ nguyên cũ) -->
-<div class="space-y-4 mt-10">
-  <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
-    <div class="flex items-center">
-      <div class="mr-4 flex items-center"><i class="fab fa-discord text-indigo-500 text-2xl"></i></div>
-      <div>
-        <h3 class="font-medium text-gray-800 drop-shadow-text">Server discord</h3>
-        <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
-      </div>
-    </div>
-    <ul class="mt-3 space-y-1 text-sm text-gray-700">
-      <li>• <b>server</b> by _.570chan</li>
-    </ul>
-  </a>
-</div>
+    discordBox.addEventListener('click', (e) => {
+        e.preventDefault(); // Ngăn chuyển ngay lập tức
+        discordBox.style.transform = 'scale(0.98)'; // hiệu ứng nhấn nhẹ
 
-<!-- Fullscreen icon (giữ nguyên) -->
-<div id="reading-list-box" tabindex="0" class="glass-card" style="outline:none;">
-  <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-    <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
-    </svg>
-    <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display:none;">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
-    </svg>
-  </span>
-</div>
-
-<script>
-/* Clock */
-function updateClock(){
- const now=new Date();
- const tOpts={timeZone:'Asia/Ho_Chi_Minh',hour12:false,hour:'2-digit',minute:'2-digit'};
- const timeStr=now.toLocaleTimeString('en-US',tOpts);
- const [h,m]=timeStr.split(':');
- const dOpts={timeZone:'Asia/Ho_Chi_Minh',weekday:'long',year:'numeric',month:'long',day:'numeric'};
- const dateStr=now.toLocaleDateString('en-US',dOpts);
- document.getElementById('time').textContent=`${h}:${m}`;
- document.getElementById('date').textContent=dateStr;
-}
-updateClock(); setInterval(updateClock,1000);
-
-/* Swipe flip logic */
-const profileBox=document.getElementById('profileBox');
-let startX=0,endX=0;
-profileBox.addEventListener('touchstart',e=>startX=e.changedTouches[0].screenX);
-profileBox.addEventListener('touchend',e=>{endX=e.changedTouches[0].screenX;handleSwipe();});
-function handleSwipe(){
- const diff=endX-startX;
- if(diff<-50) profileBox.classList.add('flipped');
- else if(diff>50) profileBox.classList.remove('flipped');
-}
-
-/* Pomodoro Timer logic */
-let timer,isRunning=false,timeLeft=25*60;
-const display=document.getElementById('timer-display');
-const startBtn=document.getElementById('start-timer');
-const pauseBtn=document.getElementById('pause-timer');
-const resetBtn=document.getElementById('reset-timer');
-function updateDisplay(){
- const min=Math.floor(timeLeft/60),sec=timeLeft%60;
- display.textContent=`${min.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
-}
-startBtn.addEventListener('click',()=>{
- if(isRunning)return;
- isRunning=true;
- timer=setInterval(()=>{
-  if(timeLeft>0){timeLeft--;updateDisplay();}
-  else{clearInterval(timer);isRunning=false;alert('⏰ Time’s up!');}
- },1000);
+        setTimeout(() => {
+            window.open(discordBox.href, '_blank');
+            discordBox.style.transform = ''; // khôi phục
+        }, 1000); // delay 1s
+    });
 });
-pauseBtn.addEventListener('click',()=>{clearInterval(timer);isRunning=false;});
-resetBtn.addEventListener('click',()=>{clearInterval(timer);isRunning=false;timeLeft=25*60;updateDisplay();});
-updateDisplay();
-
-/* Feather icons */
-feather.replace();
-</script>
+    </script>
 </body>
-</html>
+    </html>
