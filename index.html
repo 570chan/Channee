@@ -144,6 +144,24 @@
   #timer-display { font-size: 2.25rem; }
   .timer-controls button { padding: 8px 10px; gap: 6px; }
 }
+      
+.timer-transition {
+  transition: all 0.5s ease;
+  will-change: opacity, transform, filter;
+}
+
+.timer-show {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.timer-hide {
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(6px);
+                              }
+      
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -399,7 +417,34 @@ document.addEventListener('DOMContentLoaded', () => {
         timerContainer.classList.add('timer-hidden');
         showingTimer = false;
       }
+      function showTimerView() {
+  if (showingTimer) return;
 
+  // Ẩn profile con
+  children.forEach(ch => ch.style.display = 'none');
+  timerContainer.classList.remove('timer-hidden');
+  timerContainer.classList.add('timer-transition', 'timer-hide');
+  setTimeout(() => {
+    timerContainer.classList.replace('timer-hide', 'timer-show');
+  }, 10);
+
+  showingTimer = true;
+  renderTimer();
+  feather.replace();
+}
+
+function hideTimerView() {
+  if (!showingTimer) return;
+
+  timerContainer.classList.replace('timer-show', 'timer-hide');
+  setTimeout(() => {
+    timerContainer.classList.add('timer-hidden');
+    children.forEach(ch => (ch.style.display = ''));
+  }, 500); // = 0.5s trùng với CSS transition
+
+  showingTimer = false;
+        }
+                                     
       function toggleTimerView() {
         if (showingTimer) hideTimerView();
         else showTimerView();
