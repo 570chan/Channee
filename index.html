@@ -125,10 +125,17 @@
   border-color: rgba(70,104,250,0.95);
 }
 .timer-controls .btn-muted {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
-  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: #F0FFF0;
+  border: 1px solid rgba(255,255,255,0.4);
 }
+
+.timer-controls button:hover {
+  background: rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
+        
 /* ensure timer text visible against card background */
 #timer-display, .timer-controls button { color: #F0FFF0; }
 
@@ -170,21 +177,23 @@
                 </a>
             </div>
 
-            <!-- TIMER CONTAINER (tạo bổ sung nhưng KHÔNG xóa / thay thế phần profile) -->
-            <!-- Mặc định ẩn — sẽ hiển thị khi người dùng trượt trái/phải trên toàn bộ .glass-card -->
-            <div id="timer-container" class="timer-hidden mt-2">
-                <div id="timer-display" class="text-5xl font-light">30:00</div>
-                <div class="timer-controls">
-                    <button id="start-pause-btn" class="btn-primary" title="Start / Pause">
-                        <i data-feather="play"></i>
-                        <span class="sr-only">Start / Pause</span>
-                    </button>
-                    <button id="reset-btn" class="btn-muted" title="Reset">
-                        <i data-feather="refresh-cw"></i>
-                        <span class="sr-only">Reset</span>
-                    </button>
-                </div>
-            </div>
+            <!-- TIMER CONTAINER (cập nhật với chữ nhỏ + bỏ màu nút) -->
+<div id="timer-container" class="timer-hidden mt-2">
+    <p class="text-sm text-gray-200 mb-2 opacity-80 tracking-wide">
+        ⏳ Countdown Timer — 30 phút thư giãn
+    </p>
+    <div id="timer-display" class="text-5xl font-light">30:00</div>
+    <div class="timer-controls">
+        <button id="start-pause-btn" class="btn-muted" title="Start / Pause">
+            <i data-feather="play"></i>
+            <span class="sr-only">Start / Pause</span>
+        </button>
+        <button id="reset-btn" class="btn-muted" title="Reset">
+            <i data-feather="refresh-cw"></i>
+            <span class="sr-only">Reset</span>
+        </button>
+    </div>
+</div>
         </div>
         <div class="space-y-4">
             <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
