@@ -311,12 +311,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000); // delay 1s
     });
 });
-    </script>
-
-    <!-- === SCRIPT BỔ SUNG: Swipe -> toggle timer (30 phút), reset, start/pause with feather icons === -->
-    <script>
+       // SCRIPT BỔ SUNG: Swipe -> toggle timer (30 phút), reset, start/pause with feather icons 
     (function(){
-      // Elements
       const profileCard = document.querySelector('.glass-card.p-8.mb-8.text-center');
       if (!profileCard) return;
 
@@ -325,17 +321,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const startPauseBtn = document.getElementById('start-pause-btn');
       const resetBtn = document.getElementById('reset-btn');
 
-      // We'll hide/show the profile content (everything inside the .glass-card except #timer-container)
+      // Tất cả phần tử trong profile trừ đồng hồ
       const children = Array.from(profileCard.children).filter(ch => ch.id !== 'timer-container');
 
-      // Timer state
-      const INITIAL_SECONDS = 30 * 60; // 30 minutes
+      const INITIAL_SECONDS = 30 * 60;
       let remaining = INITIAL_SECONDS;
       let timerInterval = null;
       let running = false;
       let showingTimer = false;
 
-      // Helpers
       function formatTime(sec) {
         const m = Math.floor(sec / 60).toString().padStart(2,'0');
         const s = Math.floor(sec % 60).toString().padStart(2,'0');
@@ -349,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
       function startTimer() {
         if (running) return;
         running = true;
-        // change icon to pause
         startPauseBtn.innerHTML = '<i data-feather="pause"></i>';
         feather.replace();
         timerInterval = setInterval(() => {
@@ -360,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(timerInterval);
             timerInterval = null;
             running = false;
-            // show play icon when finished
             startPauseBtn.innerHTML = '<i data-feather="play"></i>';
             feather.replace();
           }
@@ -379,113 +371,107 @@ document.addEventListener('DOMContentLoaded', () => {
       function resetTimer() {
         remaining = INITIAL_SECONDS;
         renderTimer();
-        // if running, keep running from reset time
-        if (!running) {
-          startPauseBtn.innerHTML = '<i data-feather="play"></i>';
-          feather.replace();
-        } else {
-          // if running, keep showing pause icon
-          startPauseBtn.innerHTML = '<i data-feather="pause"></i>';
-          feather.replace();
-        }
-      }
-
-      // Toggle between profile and timer view
-      function showTimerView() {
-        if (showingTimer) return;
-        // hide profile children (but keep timer container inside same card)
-        children.forEach(ch => {
-          if (ch) ch.style.display = 'none';
-        });
-        timerContainer.classList.remove('timer-hidden');
-        showingTimer = true;
-        // ensure timer rendered and icons set
-        renderTimer();
         startPauseBtn.innerHTML = running ? '<i data-feather="pause"></i>' : '<i data-feather="play"></i>';
-        resetBtn.innerHTML = '<i data-feather="refresh-cw"></i>';
         feather.replace();
       }
+
+      function showTimerView() {
+        if (showingTimer) return;
+        children.forEach(ch => ch.style.display = 'none');
+        timerContainer.classList.remove('timer-hidden');
+        showingTimer = true;
+        renderTimer();
+        feather.replace();
+      }
+
       function hideTimerView() {
         if (!showingTimer) return;
-        children.forEach(ch => {
-          if (ch) ch.style.display = '';
-        });
+        children.forEach(ch => ch.style.display = '');
         timerContainer.classList.add('timer-hidden');
         showingTimer = false;
       }
+
       function toggleTimerView() {
         if (showingTimer) hideTimerView();
         else showTimerView();
       }
 
-      // Buttons
-      startPauseBtn.addEventListener('click', (e) => {
+      startPauseBtn.addEventListener('click', e => {
         e.stopPropagation();
         if (running) pauseTimer();
         else startTimer();
       });
-      resetBtn.addEventListener('click', (e) => {
+      resetBtn.addEventListener('click', e => {
         e.stopPropagation();
         resetTimer();
       });
 
-      // Initialize icons in case feather hasn't rendered these dynamic buttons yet.
       feather.replace();
 
-      // Swipe detection (touch + mouse drag for testing)
-      let touchStartX = null;
-      let touchStartY = null;
-      const THRESHOLD = 40; // px minimum to consider a swipe
+      let touchStartX = null, touchStartY = null;
+      const THRESHOLD = 40;
 
-      profileCard.addEventListener('touchstart', (e) => {
+      function handleSwipe(dx, dy) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
+          toggleTimerView();
+        }
+      }
+
+      // --- SWIPE CHO PROFILE CARD ---
+      profileCard.addEventListener('touchstart', e => {
         const t = e.touches[0];
         touchStartX = t.clientX;
         touchStartY = t.clientY;
       }, {passive:true});
 
-      profileCard.addEventListener('touchend', (e) => {
+      profileCard.addEventListener('touchend', e => {
         if (touchStartX === null) return;
         const t = e.changedTouches[0];
-        const dx = t.clientX - touchStartX;
-        const dy = t.clientY - touchStartY;
-        // ignore near-vertical moves
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
-          // left or right swipe -> toggle timer view
-          toggleTimerView();
-        }
+        handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
         touchStartX = null;
         touchStartY = null;
       });
 
-      // Also support mouse drag left/right (desktop)
+      // --- SWIPE CHO CHÍNH TIMER CONTAINER ---
+      timerContainer.addEventListener('touchstart', e => {
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+      }, {passive:true});
+
+      timerContainer.addEventListener('touchend', e => {
+        if (touchStartX === null) return;
+        const t = e.changedTouches[0];
+        handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
+        touchStartX = null;
+        touchStartY = null;
+      });
+
+      // --- Cũng hỗ trợ chuột (trượt ngang) ---
       let mouseDown = false;
       let mouseStartX = 0;
-      profileCard.addEventListener('mousedown', (e) => {
+      profileCard.addEventListener('mousedown', e => {
         mouseDown = true;
         mouseStartX = e.clientX;
       });
-      window.addEventListener('mouseup', (e) => {
+      timerContainer.addEventListener('mousedown', e => {
+        mouseDown = true;
+        mouseStartX = e.clientX;
+      });
+      window.addEventListener('mouseup', e => {
         if (!mouseDown) return;
         mouseDown = false;
         const dx = e.clientX - mouseStartX;
-        if (Math.abs(dx) > THRESHOLD) {
-          toggleTimerView();
-        }
+        if (Math.abs(dx) > THRESHOLD) toggleTimerView();
       });
 
-      // Accessibility: also toggle by double-click / double-tap
-      profileCard.addEventListener('dblclick', (e) => {
-        toggleTimerView();
-      });
+      profileCard.addEventListener('dblclick', toggleTimerView);
+      timerContainer.addEventListener('dblclick', toggleTimerView);
 
-      // Ensure timer display initial value
       renderTimer();
-
-      // If user navigates away or card is removed clear interval
-      window.addEventListener('beforeunload', () => {
-        if (timerInterval) clearInterval(timerInterval);
-      });
+      window.addEventListener('beforeunload', () => timerInterval && clearInterval(timerInterval));
     })();
+
     </script>
 </body>
     </html>
