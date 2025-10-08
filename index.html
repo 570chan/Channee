@@ -184,6 +184,17 @@
   #arrow-left { left: 4%; }
   #arrow-right { right: 4%; }
         }
+    /* === Cho khung đếm ngược bằng với profile box === */
+#timer-container {
+  width: 100%;              /* chiếm trọn chiều rộng box cha */
+  height: 100%;             /* chiếm toàn bộ chiều cao (tự co nếu cần) */
+  display: flex;            /* căn giữa nội dung */
+  flex-direction: column;   /* xếp theo chiều dọc */
+  justify-content: center;  /* căn giữa theo chiều dọc */
+  align-items: center;      /* căn giữa theo chiều ngang */
+  padding: 2rem 1rem;       /* đồng bộ với p-8 của profile box */
+  box-sizing: border-box;   /* tính cả padding vào kích thước */
+        }
     
     </style>
 </head>
