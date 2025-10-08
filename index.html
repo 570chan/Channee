@@ -595,16 +595,33 @@ showArrowsRepeatedly();
 /* === Nhạc khi đếm ngược === */
 let audio;
 function playMusic() {
-  if (!audio) {
-    audio = new Audio("https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSounds.mp3");
-    audio.loop = true;
-    audio.volume = 0.6;
+  try {
+    if (!audio) {
+      audio = new Audio("https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSounds.mp3"); // link nhạc mẫu an toàn HTTPS
+      audio.loop = true;
+      audio.volume = 0.6;
+    }
+    // chỉ phát khi người dùng đã click "Start"
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => console.log("🎵 Nhạc đang phát"))
+        .catch(err => {
+          console.warn("⚠️ Trình duyệt chặn phát nhạc, cần tương tác người dùng:", err);
+        });
+    }
+  } catch (err) {
+    console.error("Lỗi phát nhạc:", err);
   }
-  audio.play().catch(err => console.log('Không thể phát nhạc:', err));
 }
+
 function stopMusic() {
-  if (audio) audio.pause();
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
 }
+
 
 // override hành vi start & quay lại profile
 const _startTimer = startTimer;
