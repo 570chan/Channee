@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- ... (meta và link giữ nguyên) ... -->
     <title>neChannee!</title>
-   <!--  Open Graph / Discord Embed Meta -->
-<meta property="og:title" content="neChannene! " />
-<meta property="og:description" content="where i sleep at night🌙" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://channee.vercel.app" />
-<meta property="og:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
-<meta property="og:image:type" content="image/jpeg" />
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
 
-<!-- Optional: Thêm Twitter card (Discord cũng đọc được) -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="neChannee! " />
-<meta name="twitter:description" content="Join our cozy Discord — where I take a nap and vibe with friends 🌙" />
-<meta name="twitter:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
+    <!--  Open Graph / Discord Embed Meta -->
+    <meta property="og:title" content="neChannene! " />
+    <meta property="og:description" content="where i sleep at night🌙" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://channee.vercel.app" />
+    <meta property="og:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Optional: Thêm Twitter card (Discord cũng đọc được) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="neChannee! " />
+    <meta name="twitter:description" content="Join our cozy Discord — where I take a nap and vibe with friends 🌙" />
+    <meta name="twitter:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="manifest" href="/site.webmanifest">
@@ -28,613 +29,806 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
-            overflow-x: hidden;
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8fafc;
+        color: #1e293b;
+        overflow-x: hidden;
+      }
+
+      /* --- Thêm style cho chữ nechannee --- */
+      .nechannee-title {
+        color: #FAFAD2;
+        font-family: "Knewave", system-ui, cursive;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 12px rgba(70,104,250,0.12), 0 1px 0 #fff;
+        transition: text-shadow 0.3s;
+      }
+
+      .nechannee-title:hover {
+        text-shadow: 0 4px 24px #4668fa, 0 2px 12px #4668fa;
+      }
+
+      .clock-container {
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+      }
+
+      .glass-card {
+        background: transparent;
+        border: 2px solid #fff;
+        border-radius: 16px;
+        box-shadow: 0 0 32px rgba(255, 255, 255, 0.25);
+        transition: box-shadow 0.3s ease, transform 0.3s ease;
+      }
+
+      .profile-pic {
+        transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+        box-shadow: 0 2px 18px 0 rgba(0, 0, 0, 0.13);
+      }
+
+      .profile-pic:hover {
+        transform: scale(1.05);
+      }
+
+      .link-card {
+        transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
+        background: rgba(255, 255, 255, 0.25);
+      }
+
+      .link-card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
+      }
+
+      .fade-in {
+        opacity: 0;
+        animation: fadeIn 1.2s cubic-bezier(.42, 0, .58, 1) forwards;
+      }
+
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(48px);
         }
-        /* --- Thêm style cho chữ nechannee --- */
-        .nechannee-title {
-    color: #FAFAD2; /* Chọn mã màu bạn thích */
-    font-family: "Knewave", system-ui, cursive;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 12px rgba(70,104,250,0.12), 0 1px 0 #fff;
-    transition: text-shadow 0.3s;
-}
-.nechannee-title:hover {
-    text-shadow: 0 4px 24px #4668fa, 0 2px 12px #4668fa;
+
+        80% {
+          opacity: 1;
         }
-        .clock-container { text-shadow: 0 2px 10px rgba(0,0,0,0.18);}
-        .glass-card {
-    background: transparent; /* Không nền */
-    border: 2px solid #fff;  /* Viền trắng rõ */
-    border-radius: 16px;     /* Bo góc mềm */
-    box-shadow: 0 0 32px rgba(255, 255, 255, 0.25);
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Hiệu ứng mượt */
-}
-        .profile-pic { transition: all 0.3s cubic-bezier(.4,0,.2,1); box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13);}
-        .profile-pic:hover { transform: scale(1.05);}
-        .link-card { transition: all 0.3s cubic-bezier(.4,0,.2,1); background: rgba(255,255,255,0.25);}
-        .link-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);}
-        .fade-in { opacity: 0; animation: fadeIn 1.2s cubic-bezier(.42,0,.58,1) forwards;}
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(48px);} 80% { opacity: 1;} 100% { opacity: 1; transform: none;}}
-        .drop-shadow-text { text-shadow: 0 2px 12px rgba(0,0,0,0.32), 0 2px 2px rgba(0,0,0,0.17);}
-        .bg-video { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1; min-width: 100%; min-height: 100%; opacity: 1.0; pointer-events: none;}
-        .fullscreen-icon-wrap { display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; min-width: 24px; min-height: 24px; border-radius: 8px; transition: background 0.18s;}
-        .fullscreen-icon-wrap:hover { background: rgba(16,185,129,0.13);}
-        .fullscreen-svg { width: 20px; height: 20px; display: block;}
-        #reading-list-box { position: fixed; left: 12px; bottom: 12px; width: 24px; height: 24px; border-radius: 5px; z-index: 9999;
-            background: rgba(255, 255, 255, 0.9); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-            border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s ease; padding: 0;}
-        .knewave-regular { font-family: "Knewave", system-ui, cursive; font-weight: 400; font-style: normal;}
-        #reading-list-box:hover { background: rgba(200, 255, 200, 0.85);}
-        .fade-in-delayed { opacity: 0;}
-        .link-card.active {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
-    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn chọn */
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-                   }
-           /* Cho box Discord luôn có ảnh nền, giữ nguyên hover cũ */
-.link-card[href*="discord.gg"] {
-    background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg'); /* ảnh nền bạn muốn */
-    background-size: cover;
-    background-position: center;
-    color: #fff; /* chỉnh chữ sáng lên cho dễ đọc */
-}                   
 
-/* --- Styles bổ sung cho bộ đếm thời gian (không thay đổi layout box ngoài) --- */
-.timer-hidden { display: none !important; }
-#timer-container {
-  width: 100%;
-  box-sizing: border-box;
-  /* nằm trong cùng .glass-card nên sẽ kế thừa bo góc + viền - giữ nguyên "box bao quanh" */
-}
-#timer-display {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 1px;
-  text-align: center;
-}
-.timer-controls {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  align-items: center;
-  margin-top: 16px;
-}
-.timer-controls button {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.06);
-  color: inherit;
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-}
-.timer-controls button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
-.timer-controls button:active { transform: translateY(0); }
-.timer-controls .btn-primary {
-  background: rgba(70,104,250,0.95);
-  color: #fff;
-  border-color: rgba(70,104,250,0.95);
-}
-.timer-controls .btn-muted {
-  background: rgba(255,255,255,0.06);
-  color: #F0FFF0;
-  border: 1px solid rgba(255,255,255,0.4);
-}
+        100% {
+          opacity: 1;
+          transform: none;
+        }
+      }
 
-.timer-controls button:hover {
-  background: rgba(255,255,255,0.12);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-}
-        
-/* ensure timer text visible against card background */
-#timer-display, .timer-controls button { color: #F0FFF0; }
+      .drop-shadow-text {
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32),
+          0 2px 2px rgba(0, 0, 0, 0.17);
+      }
 
-/* For small sizes keep it tight */
-@media (max-width: 420px) {
-  #timer-display { font-size: 2.25rem; }
-  .timer-controls button { padding: 8px 10px; gap: 6px; }
-}
-      
-.timer-transition {
-  transition: all 0.5s ease;
-  will-change: opacity, transform, filter;
-}
+      .bg-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        min-width: 100%;
+        min-height: 100%;
+        opacity: 1.0;
+        pointer-events: none;
+      }
 
-.timer-show {
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0);
-}
+      .fullscreen-icon-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        border-radius: 8px;
+        transition: background 0.18s;
+      }
 
-.timer-hide {
-  opacity: 0;
-  transform: scale(0.96);
-  filter: blur(6px);
-                              }
+      .fullscreen-icon-wrap:hover {
+        background: rgba(16, 185, 129, 0.13);
+      }
+
+      .fullscreen-svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      #reading-list-box {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        width: 24px;
+        height: 24px;
+        border-radius: 5px;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        padding: 0;
+      }
+
+      .knewave-regular {
+        font-family: "Knewave", system-ui, cursive;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      #reading-list-box:hover {
+        background: rgba(200, 255, 200, 0.85);
+      }
+
+      .fade-in-delayed {
+        opacity: 0;
+      }
+
+      .link-card.active {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
+        background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+      }
+
+      /* Cho box Discord luôn có ảnh nền */
+      .link-card[href*="discord.gg"] {
+        background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/7f0fbb34c7e4e4b1a898c36b6f205ca0.jpg');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+      }
+
+      /* --- Styles bổ sung cho bộ đếm thời gian --- */
+      .timer-hidden {
+        display: none !important;
+      }
+
+      #timer-container {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #timer-display {
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 1px;
+        text-align: center;
+      }
+
+      .timer-controls {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        align-items: center;
+        margin-top: 16px;
+      }
+
+      .timer-controls button {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.06);
+        color: inherit;
+        cursor: pointer;
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+      }
+
+      .timer-controls button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .timer-controls button:active {
+        transform: translateY(0);
+      }
+
+      .timer-controls .btn-primary {
+        background: rgba(70, 104, 250, 0.95);
+        color: #fff;
+        border-color: rgba(70, 104, 250, 0.95);
+      }
+
+      .timer-controls .btn-muted {
+        background: rgba(255, 255, 255, 0.06);
+        color: #F0FFF0;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .timer-controls button:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+      }
+
+      #timer-display,
+      .timer-controls button {
+        color: #F0FFF0;
+      }
+
+      @media (max-width: 420px) {
+        #timer-display {
+          font-size: 2.25rem;
+        }
+
+        .timer-controls button {
+          padding: 8px 10px;
+          gap: 6px;
+        }
+      }
+
+      .timer-transition {
+        transition: all 0.5s ease;
+        will-change: opacity, transform, filter;
+      }
+
+      .timer-show {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+      }
+
+      .timer-hide {
+        opacity: 0;
+        transform: scale(0.96);
+        filter: blur(6px);
+      }
+
       /* === Mũi tên hướng dẫn trượt ở bên ngoài profile box === */
-.hint-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2.2rem;
-  color: rgba(255, 255, 255, 0.85);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-  z-index: 50;
-  text-shadow: 0 0 12px rgba(255,255,255,0.5);
-}
-.hint-arrow.show {
-  opacity: 1;
-}
-#arrow-left { left: 12%; }
-#arrow-right { right: 12%; }
+      .hint-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2.2rem;
+        color: rgba(255, 255, 255, 0.85);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        z-index: 50;
+        text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+      }
 
-@media (max-width: 640px) {
-  #arrow-left { left: 4%; }
-  #arrow-right { right: 4%; }
+      .hint-arrow.show {
+        opacity: 1;
+      }
+
+      #arrow-left {
+        left: 12%;
+      }
+
+      #arrow-right {
+        right: 12%;
+      }
+
+      @media (max-width: 640px) {
+        #arrow-left {
+          left: 4%;
         }
-    /* === Cho khung đếm ngược bằng với profile box === */
-#timer-container {
-  width: 100%;              /* chiếm trọn chiều rộng box cha */
-  height: 100%;             /* chiếm toàn bộ chiều cao (tự co nếu cần) */
-  display: flex;            /* căn giữa nội dung */
-  flex-direction: column;   /* xếp theo chiều dọc */
-  justify-content: center;  /* căn giữa theo chiều dọc */
-  align-items: center;      /* căn giữa theo chiều ngang */
-  padding: 2rem 1rem;       /* đồng bộ với p-8 của profile box */
-  box-sizing: border-box;   /* tính cả padding vào kích thước */
+
+        #arrow-right {
+          right: 4%;
         }
-    
+      }
+
+      /* === Cho khung đếm ngược bằng với profile box === */
+      #timer-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+        box-sizing: border-box;
+      }
     </style>
-</head>
-<body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
+      </head>
+
+  <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
     <!-- Background Video -->
     <video class="bg-video" autoplay loop muted playsinline>
-        <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/newl.mp4" type="video/mp4">
-        <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" alt="background">
+      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/newl.mp4" type="video/mp4">
+      <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" alt="background">
     </video>
-    
+
     <div class="max-w-md w-full mx-auto fade-in">
-        <!-- ... Phần còn lại giữ nguyên ... -->
-        <div class="glass-card p-8 mb-8 text-center">
-            <div class="flex justify-center mb-6">
-                <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg" alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg">
-            </div>
-            <h1 class="text-2xl font-bold text-black mb-1 drop-shadow-text knewave-regular">Channee</h1>
-            <p class="text-gray-600 mb-6 drop-shadow-text">I don't even remember who I am...</p>
-            <div class="clock-container mb-8">
-                <div id="time" class="text-5xl font-light text-[#F0FFF0] drop-shadow-text"></div>
-                <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
-            </div>
-            <div class="flex justify-center space-x-4">
-                <a href="https://github.com/570chan" target="_blank" class="text-white hover:text-indigo-500 transition-colors">
-                    <i data-feather="github"></i>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-white hover:text-pink-500 transition-colors">
-                    <i data-feather="facebook"></i>
-                </a>
-                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-white hover:text-orange-400 transition-colors">
-                    <i data-feather="linkedin"></i>
-                </a>
-            </div>
+      <!-- PROFILE CARD -->
+      <div class="glass-card p-8 mb-8 text-center">
+        <div class="flex justify-center mb-6">
+          <img
+            src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg"
+            alt="Profile"
+            class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg">
+        </div>
 
-            <!-- TIMER CONTAINER (cập nhật với chữ nhỏ + bỏ màu nút) -->
-<div id="timer-container" class="timer-hidden mt-2">
-    <p class="text-sm text-gray-200 mb-2 opacity-80 tracking-wide">
-        ⏳ Countdown Timer — 30 phút thư giãn
-    </p>
-    <div id="timer-display" class="text-5xl font-light">30:00</div>
-    <div class="timer-controls">
-        <button id="start-pause-btn" class="btn-muted" title="Start / Pause">
-            <i data-feather="play"></i>
-            <span class="sr-only">Start / Pause</span>
-        </button>
-        <button id="reset-btn" class="btn-muted" title="Reset">
-            <i data-feather="refresh-cw"></i>
-            <span class="sr-only">Reset</span>
-        </button>
-    </div>
-</div>
-            <!-- Hai mũi tên gợi ý trượt (ngoài profile box) -->
-<div id="arrow-left" class="hint-arrow">←</div>
-<div id="arrow-right" class="hint-arrow">→</div>
-    
+        <h1 class="text-2xl font-bold text-black mb-1 drop-shadow-text knewave-regular">
+          Channee
+        </h1>
+        <p class="text-gray-600 mb-6 drop-shadow-text">
+          I don't even remember who I am...
+        </p>
+
+        <!-- CLOCK -->
+        <div class="clock-container mb-8">
+          <div id="time" class="text-5xl font-light text-[#F0FFF0] drop-shadow-text"></div>
+          <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
         </div>
-        <div class="space-y-4">
-            <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
-                <div class="flex items-center">
-                    <div class="mr-4 flex items-center">
-                        <i class="fab fa-discord text-indigo-500 text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800 drop-shadow-text">Server discord</h3>
-                        <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
-                    </div>
-                </div>
-                <ul class="mt-3 space-y-1 text-sm text-gray-700">
-                    <li>• <b>server</b> by _.570chan</li>
-                </ul>
-            </a>
+
+        <!-- SOCIAL LINKS -->
+        <div class="flex justify-center space-x-4">
+          <a href="https://github.com/570chan" target="_blank" class="text-white hover:text-indigo-500 transition-colors">
+            <i data-feather="github"></i>
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-white hover:text-pink-500 transition-colors">
+            <i data-feather="facebook"></i>
+          </a>
+          <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-white hover:text-orange-400 transition-colors">
+            <i data-feather="linkedin"></i>
+          </a>
         </div>
+
+        <!-- TIMER CONTAINER -->
+        <div id="timer-container" class="timer-hidden mt-2">
+          <p class="text-sm text-gray-200 mb-2 opacity-80 tracking-wide">
+            ⏳ Countdown Timer — 30 phút thư giãn
+          </p>
+          <div id="timer-display" class="text-5xl font-light">30:00</div>
+
+          <div class="timer-controls">
+            <button id="start-pause-btn" class="btn-muted" title="Start / Pause">
+              <i data-feather="play"></i>
+              <span class="sr-only">Start / Pause</span>
+            </button>
+            <button id="reset-btn" class="btn-muted" title="Reset">
+              <i data-feather="refresh-cw"></i>
+              <span class="sr-only">Reset</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MŨI TÊN GỢI Ý -->
+        <div id="arrow-left" class="hint-arrow">←</div>
+        <div id="arrow-right" class="hint-arrow">→</div>
+      </div>
+
+      <!-- DISCORD BOX -->
+      <div class="space-y-4">
+        <a href="https://discord.gg/jEJZV5nCRA"
+           class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
+          <div class="flex items-center">
+            <div class="mr-4 flex items-center">
+              <i class="fab fa-discord text-indigo-500 text-2xl"></i>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-800 drop-shadow-text">Server discord</h3>
+              <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
+            </div>
+          </div>
+          <ul class="mt-3 space-y-1 text-sm text-gray-700">
+            <li>• <b>server</b> by _.570chan</li>
+          </ul>
+        </a>
+      </div>
     </div>
-    <!-- ...Các phần còn lại giữ nguyên... -->
-    <div id="reading-list-box" tabindex="0"
-        class="glass-card"
-        style="outline: none;">
-        <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-            <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
-            </svg>
-            <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
-            </svg>
-        </span>
+
+    <!-- FULLSCREEN BUTTON -->
+    <div id="reading-list-box"
+         tabindex="0"
+         class="glass-card"
+         style="outline: none;">
+      <span class="fullscreen-icon-wrap"
+            id="reading-fullscreen-trigger"
+            title="Toggle fullscreen"
+            aria-label="Toggle fullscreen">
+
+        <svg id="fullscreen-enter"
+             xmlns="http://www.w3.org/2000/svg"
+             class="fullscreen-svg text-gray-600"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor">
+          <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"/>
+        </svg>
+
+        <svg id="fullscreen-exit"
+             xmlns="http://www.w3.org/2000/svg"
+             class="fullscreen-svg text-green-500"
+             fill="none"
+             viewBox="0 0 24 24"
+             stroke="currentColor"
+             style="display: none;">
+          <path stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4"/>
+        </svg>
+
+      </span>
     </div>
+
     <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-        // ...Script giữ nguyên...
-        function updateClock() {
-            const now = new Date();
-            const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
-            const timeStr = now.toLocaleTimeString('en-US', optionsTime);
-            const [hours, minutes] = timeStr.split(':');
-            const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateStr = now.toLocaleDateString('en-US', optionsDate);
-            const [dayName, monthDayYear] = dateStr.split(', ');
-            document.getElementById('time').textContent = `${hours}:${minutes}`;
-            document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-        feather.replace();
-        window.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.fade-in').forEach(el => {
-                el.classList.add('fade-in');
-            });
-            const fadeInEls = document.querySelectorAll('.fade-in');
-            let count = 0;
-            fadeInEls.forEach(el => {
-                el.addEventListener('animationend', () => {
-                    count++;
-                    if (count === fadeInEls.length) {
-                        document.getElementById('nechannee-title').classList.add('fade-in');
-                    }
-                }, { once: true });
-            });
-        });
-        (function(){
-            const readingListBox = document.getElementById('reading-list-box');
-            const fullscreenEnter = document.getElementById('fullscreen-enter');
-            const fullscreenExit = document.getElementById('fullscreen-exit');
-            let isFullscreen = false;
-            function showEnterIcon() {
-                fullscreenEnter.style.display = '';
-                fullscreenExit.style.display = 'none';
-            }
-            function showExitIcon() {
-                fullscreenEnter.style.display = 'none';
-                fullscreenExit.style.display = '';
-            }
-            function enterFullscreen() {
-                if (isFullscreen) return;
-                isFullscreen = true;
-                document.documentElement.requestFullscreen();
-                showExitIcon();
-            }
-            function exitFullscreen() {
-                if (!isFullscreen) return;
-                isFullscreen = false;
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                }
-                showEnterIcon();
-            }
-            readingListBox.addEventListener('click', function(e){
-                if (!isFullscreen) {
-                    enterFullscreen();
-                } else {
-                    exitFullscreen();
-                }
-            });
-            fullscreenExit.addEventListener('click', function(e){
-                e.stopPropagation();
-                exitFullscreen();
-            });
-            document.addEventListener('fullscreenchange', function() {
-                if (document.fullscreenElement === document.documentElement) {
-                    isFullscreen = true;
-                    showExitIcon();
-                } else {
-                    isFullscreen = false;
-                    showEnterIcon();
-                }
-            });
-        })();
-        
-document.addEventListener('DOMContentLoaded', () => {
-    const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
-    if (!discordBox) return;
+        <script>
+      // --- Đồng hồ thời gian ---
+      function updateClock() {
+        const now = new Date();
+        const optionsTime = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit'
+        };
+        const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+        const [hours, minutes] = timeStr.split(':');
 
-    discordBox.addEventListener('click', (e) => {
-        e.preventDefault(); // Ngăn chuyển ngay lập tức
-        discordBox.style.transform = 'scale(0.98)'; // hiệu ứng nhấn nhẹ
+        const optionsDate = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        const dateStr = now.toLocaleDateString('en-US', optionsDate);
+        const [dayName, monthDayYear] = dateStr.split(', ');
 
-        setTimeout(() => {
-            window.open(discordBox.href, '_blank');
-            discordBox.style.transform = ''; // khôi phục
-        }, 1000); // delay 1s
-    });
-});
-       // SCRIPT BỔ SUNG: Swipe -> toggle timer (30 phút), reset, start/pause with feather icons 
-    (function(){
-      const profileCard = document.querySelector('.glass-card.p-8.mb-8.text-center');
-      if (!profileCard) return;
-
-      const timerContainer = document.getElementById('timer-container');
-      const timerDisplay = document.getElementById('timer-display');
-      const startPauseBtn = document.getElementById('start-pause-btn');
-      const resetBtn = document.getElementById('reset-btn');
-
-      // Tất cả phần tử trong profile trừ đồng hồ
-      const children = Array.from(profileCard.children).filter(ch => ch.id !== 'timer-container');
-
-      const INITIAL_SECONDS = 30 * 60;
-      let remaining = INITIAL_SECONDS;
-      let timerInterval = null;
-      let running = false;
-      let showingTimer = false;
-
-      function formatTime(sec) {
-        const m = Math.floor(sec / 60).toString().padStart(2,'0');
-        const s = Math.floor(sec % 60).toString().padStart(2,'0');
-        return `${m}:${s}`;
+        document.getElementById('time').textContent = `${hours}:${minutes}`;
+        document.getElementById('date').textContent = `${dayName}, ${monthDayYear}`;
       }
 
-      function renderTimer() {
-        timerDisplay.textContent = formatTime(remaining);
-      }
-
-      function startTimer() {
-        if (running) return;
-        running = true;
-        startPauseBtn.innerHTML = '<i data-feather="pause"></i>';
-        feather.replace();
-        timerInterval = setInterval(() => {
-          if (remaining > 0) {
-            remaining--;
-            renderTimer();
-          } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            running = false;
-            startPauseBtn.innerHTML = '<i data-feather="play"></i>';
-            feather.replace();
-          }
-        }, 1000);
-      }
-
-      function pauseTimer() {
-        if (!running) return;
-        running = false;
-        clearInterval(timerInterval);
-        timerInterval = null;
-        startPauseBtn.innerHTML = '<i data-feather="play"></i>';
-        feather.replace();
-      }
-
-      function resetTimer() {
-        remaining = INITIAL_SECONDS;
-        renderTimer();
-        startPauseBtn.innerHTML = running ? '<i data-feather="pause"></i>' : '<i data-feather="play"></i>';
-        feather.replace();
-      }
-
-      function showTimerView() {
-        if (showingTimer) return;
-        children.forEach(ch => ch.style.display = 'none');
-        timerContainer.classList.remove('timer-hidden');
-        showingTimer = true;
-        renderTimer();
-        feather.replace();
-      }
-
-      function hideTimerView() {
-        if (!showingTimer) return;
-        children.forEach(ch => ch.style.display = '');
-        timerContainer.classList.add('timer-hidden');
-        showingTimer = false;
-      }
-      function showTimerView() {
-  if (showingTimer) return;
-
-  // Ẩn profile con
-  children.forEach(ch => ch.style.display = 'none');
-  timerContainer.classList.remove('timer-hidden');
-  timerContainer.classList.add('timer-transition', 'timer-hide');
-  setTimeout(() => {
-    timerContainer.classList.replace('timer-hide', 'timer-show');
-  }, 10);
-
-  showingTimer = true;
-  renderTimer();
-  feather.replace();
-}
-
-function hideTimerView() {
-  if (!showingTimer) return;
-
-  timerContainer.classList.replace('timer-show', 'timer-hide');
-  setTimeout(() => {
-    timerContainer.classList.add('timer-hidden');
-    children.forEach(ch => (ch.style.display = ''));
-  }, 500); // = 0.5s trùng với CSS transition
-
-  showingTimer = false;
-        }
-                                     
-      function toggleTimerView() {
-        if (showingTimer) hideTimerView();
-        else showTimerView();
-      }
-
-      startPauseBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        if (running) pauseTimer();
-        else startTimer();
-      });
-      resetBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        resetTimer();
-      });
-
+      updateClock();
+      setInterval(updateClock, 1000);
       feather.replace();
 
-      let touchStartX = null, touchStartY = null;
-      const THRESHOLD = 40;
+      // --- Hiệu ứng fade in khi DOM sẵn sàng ---
+      window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.fade-in').forEach(el => {
+          el.classList.add('fade-in');
+        });
 
-      function handleSwipe(dx, dy) {
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) {
-          toggleTimerView();
+        const fadeInEls = document.querySelectorAll('.fade-in');
+        let count = 0;
+
+        fadeInEls.forEach(el => {
+          el.addEventListener('animationend', () => {
+            count++;
+            if (count === fadeInEls.length) {
+              document.getElementById('nechannee-title')?.classList.add('fade-in');
+            }
+          }, { once: true });
+        });
+      });
+
+      // --- Fullscreen Toggle ---
+      (function () {
+        const readingListBox = document.getElementById('reading-list-box');
+        const fullscreenEnter = document.getElementById('fullscreen-enter');
+        const fullscreenExit = document.getElementById('fullscreen-exit');
+        let isFullscreen = false;
+
+        function showEnterIcon() {
+          fullscreenEnter.style.display = '';
+          fullscreenExit.style.display = 'none';
+        }
+
+        function showExitIcon() {
+          fullscreenEnter.style.display = 'none';
+          fullscreenExit.style.display = '';
+        }
+
+        function enterFullscreen() {
+          if (isFullscreen) return;
+          isFullscreen = true;
+          document.documentElement.requestFullscreen();
+          showExitIcon();
+        }
+
+        function exitFullscreen() {
+          if (!isFullscreen) return;
+          isFullscreen = false;
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          }
+          showEnterIcon();
+        }
+
+        readingListBox.addEventListener('click', e => {
+          if (!isFullscreen) enterFullscreen();
+          else exitFullscreen();
+        });
+
+        fullscreenExit.addEventListener('click', e => {
+          e.stopPropagation();
+          exitFullscreen();
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+          if (document.fullscreenElement === document.documentElement) {
+            isFullscreen = true;
+            showExitIcon();
+          } else {
+            isFullscreen = false;
+            showEnterIcon();
+          }
+        });
+      })();
+
+      // --- Discord Box Click Delay ---
+      document.addEventListener('DOMContentLoaded', () => {
+        const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
+        if (!discordBox) return;
+
+        discordBox.addEventListener('click', (e) => {
+          e.preventDefault();
+          discordBox.style.transform = 'scale(0.98)';
+
+          setTimeout(() => {
+            window.open(discordBox.href, '_blank');
+            discordBox.style.transform = '';
+          }, 1000);
+        });
+      });
+
+      // --- TIMER LOGIC (Swipe, Timer, Music, etc.) ---
+      (function () {
+        const profileCard = document.querySelector('.glass-card.p-8.mb-8.text-center');
+        if (!profileCard) return;
+
+        const timerContainer = document.getElementById('timer-container');
+        const timerDisplay = document.getElementById('timer-display');
+        const startPauseBtn = document.getElementById('start-pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const children = Array.from(profileCard.children).filter(ch => ch.id !== 'timer-container');
+
+        const INITIAL_SECONDS = 30 * 60;
+        let remaining = INITIAL_SECONDS;
+        let timerInterval = null;
+        let running = false;
+        let showingTimer = false;
+
+        function formatTime(sec) {
+          const m = Math.floor(sec / 60).toString().padStart(2, '0');
+          const s = Math.floor(sec % 60).toString().padStart(2, '0');
+          return `${m}:${s}`;
+        }
+
+        function renderTimer() {
+          timerDisplay.textContent = formatTime(remaining);
+        }
+
+        function startTimer() {
+          if (running) return;
+          running = true;
+          startPauseBtn.innerHTML = '<i data-feather="pause"></i>';
+          feather.replace();
+
+          timerInterval = setInterval(() => {
+            if (remaining > 0) {
+              remaining--;
+              renderTimer();
+            } else {
+              clearInterval(timerInterval);
+              timerInterval = null;
+              running = false;
+              startPauseBtn.innerHTML = '<i data-feather="play"></i>';
+              feather.replace();
+            }
+          }, 1000);
+        }
+
+        function pauseTimer() {
+          if (!running) return;
+          running = false;
+          clearInterval(timerInterval);
+          timerInterval = null;
+          startPauseBtn.innerHTML = '<i data-feather="play"></i>';
+          feather.replace();
+        }
+
+        function resetTimer() {
+          remaining = INITIAL_SECONDS;
+          renderTimer();
+          startPauseBtn.innerHTML = running ? '<i data-feather="pause"></i>' : '<i data-feather="play"></i>';
+          feather.replace();
+        }
+
+        // --- Hiển thị & ẩn timer với hiệu ứng ---
+        function showTimerView() {
+          if (showingTimer) return;
+
+          children.forEach(ch => ch.style.display = 'none');
+          timerContainer.classList.remove('timer-hidden');
+          timerContainer.classList.add('timer-transition', 'timer-hide');
+
+          setTimeout(() => {
+            timerContainer.classList.replace('timer-hide', 'timer-show');
+          }, 10);
+
+          showingTimer = true;
+          renderTimer();
+          feather.replace();
+        }
+
+        function hideTimerView() {
+          if (!showingTimer) return;
+
+          timerContainer.classList.replace('timer-show', 'timer-hide');
+          setTimeout(() => {
+            timerContainer.classList.add('timer-hidden');
+            children.forEach(ch => (ch.style.display = ''));
+          }, 500);
+
+          showingTimer = false;
+        }
+
+        function toggleTimerView() {
+          if (showingTimer) hideTimerView();
+          else showTimerView();
+        }
+
+        startPauseBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          if (running) pauseTimer();
+          else startTimer();
+        });
+
+        resetBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          resetTimer();
+        });
+
+        feather.replace();
+
+        // --- Swipe Event ---
+        let touchStartX = null, touchStartY = null;
+        const THRESHOLD = 40;
+
+        function handleSwipe(dx, dy) {
+          if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) toggleTimerView();
+        }
+
+        profileCard.addEventListener('touchstart', e => {
+          const t = e.touches[0];
+          touchStartX = t.clientX;
+          touchStartY = t.clientY;
+        }, { passive: true });
+
+        profileCard.addEventListener('touchend', e => {
+          if (touchStartX === null) return;
+          const t = e.changedTouches[0];
+          handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
+          touchStartX = null;
+          touchStartY = null;
+        });
+
+        timerContainer.addEventListener('touchstart', e => {
+          const t = e.touches[0];
+          touchStartX = t.clientX;
+          touchStartY = t.clientY;
+        }, { passive: true });
+
+        timerContainer.addEventListener('touchend', e => {
+          if (touchStartX === null) return;
+          const t = e.changedTouches[0];
+          handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
+          touchStartX = null;
+          touchStartY = null;
+        });
+
+        // --- Chuột ---
+        let mouseDown = false;
+        let mouseStartX = 0;
+
+        profileCard.addEventListener('mousedown', e => {
+          mouseDown = true;
+          mouseStartX = e.clientX;
+        });
+
+        timerContainer.addEventListener('mousedown', e => {
+          mouseDown = true;
+          mouseStartX = e.clientX;
+        });
+
+        window.addEventListener('mouseup', e => {
+          if (!mouseDown) return;
+          mouseDown = false;
+          const dx = e.clientX - mouseStartX;
+          if (Math.abs(dx) > THRESHOLD) toggleTimerView();
+        });
+
+        profileCard.addEventListener('dblclick', toggleTimerView);
+        timerContainer.addEventListener('dblclick', toggleTimerView);
+
+        renderTimer();
+        window.addEventListener('beforeunload', () => timerInterval && clearInterval(timerInterval));
+      })();
+
+      /* === Mũi tên gợi ý trượt + nhạc khi đếm ngược === */
+      const arrowLeft = document.getElementById('arrow-left');
+      const arrowRight = document.getElementById('arrow-right');
+      let arrowShowCount = 0;
+      let arrowInterval;
+
+      function showArrowsRepeatedly() {
+        if (!arrowLeft || !arrowRight) return;
+        arrowShowCount = 0;
+        clearInterval(arrowInterval);
+        arrowInterval = setInterval(() => {
+          if (arrowShowCount >= 5) {
+            arrowLeft.remove();
+            arrowRight.remove();
+            clearInterval(arrowInterval);
+            return;
+          }
+          arrowShowCount++;
+          arrowLeft.classList.add('show');
+          arrowRight.classList.add('show');
+          setTimeout(() => {
+            arrowLeft.classList.remove('show');
+            arrowRight.classList.remove('show');
+          }, 2000);
+        }, 5000);
+      }
+
+      showArrowsRepeatedly();
+
+      /* === Nhạc khi đếm ngược === */
+      let audio;
+
+      function playMusic() {
+        try {
+          if (!audio) {
+            audio = new Audio("https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSounds.mp3");
+            audio.loop = true;
+            audio.volume = 0.6;
+          }
+
+          const playPromise = audio.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => console.log("🎵 Nhạc đang phát"))
+              .catch(err => console.warn("⚠️ Trình duyệt chặn phát nhạc:", err));
+          }
+        } catch (err) {
+          console.error("Lỗi phát nhạc:", err);
         }
       }
 
-      // --- SWIPE CHO PROFILE CARD ---
-      profileCard.addEventListener('touchstart', e => {
-        const t = e.touches[0];
-        touchStartX = t.clientX;
-        touchStartY = t.clientY;
-      }, {passive:true});
+      function stopMusic() {
+        if (audio) {
+          audio.pause();
+          audio.currentTime = 0;
+        }
+      }
 
-      profileCard.addEventListener('touchend', e => {
-        if (touchStartX === null) return;
-        const t = e.changedTouches[0];
-        handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
-        touchStartX = null;
-        touchStartY = null;
-      });
+      // override hành vi start & quay lại profile
+      const _startTimer = startTimer;
+      startTimer = function () {
+        _startTimer();
+        playMusic();
+      };
 
-      // --- SWIPE CHO CHÍNH TIMER CONTAINER ---
-      timerContainer.addEventListener('touchstart', e => {
-        const t = e.touches[0];
-        touchStartX = t.clientX;
-        touchStartY = t.clientY;
-      }, {passive:true});
-
-      timerContainer.addEventListener('touchend', e => {
-        if (touchStartX === null) return;
-        const t = e.changedTouches[0];
-        handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
-        touchStartX = null;
-        touchStartY = null;
-      });
-
-      // --- Cũng hỗ trợ chuột (trượt ngang) ---
-      let mouseDown = false;
-      let mouseStartX = 0;
-      profileCard.addEventListener('mousedown', e => {
-        mouseDown = true;
-        mouseStartX = e.clientX;
-      });
-      timerContainer.addEventListener('mousedown', e => {
-        mouseDown = true;
-        mouseStartX = e.clientX;
-      });
-      window.addEventListener('mouseup', e => {
-        if (!mouseDown) return;
-        mouseDown = false;
-        const dx = e.clientX - mouseStartX;
-        if (Math.abs(dx) > THRESHOLD) toggleTimerView();
-      });
-
-      profileCard.addEventListener('dblclick', toggleTimerView);
-      timerContainer.addEventListener('dblclick', toggleTimerView);
-
-      renderTimer();
-      window.addEventListener('beforeunload', () => timerInterval && clearInterval(timerInterval));
-    })();
-/* === Mũi tên gợi ý trượt + nhạc khi đếm ngược === */
-const arrowLeft = document.getElementById('arrow-left');
-const arrowRight = document.getElementById('arrow-right');
-let arrowShowCount = 0;
-let arrowInterval;
-
-function showArrowsRepeatedly() {
-  if (!arrowLeft || !arrowRight) return;
-  arrowShowCount = 0;
-  clearInterval(arrowInterval);
-  arrowInterval = setInterval(() => {
-    if (arrowShowCount >= 5) {
-      arrowLeft.remove();
-      arrowRight.remove();
-      clearInterval(arrowInterval);
-      return;
-    }
-    arrowShowCount++;
-    arrowLeft.classList.add('show');
-    arrowRight.classList.add('show');
-    setTimeout(() => {
-      arrowLeft.classList.remove('show');
-      arrowRight.classList.remove('show');
-    }, 2000); // hiện 2s
-  }, 5000); // mỗi 5s xuất hiện
-}
-
-showArrowsRepeatedly();
-
-/* === Nhạc khi đếm ngược === */
-let audio;
-function playMusic() {
-  try {
-    if (!audio) {
-      audio = new Audio("https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSounds.mp3"); // link nhạc mẫu an toàn HTTPS
-      audio.loop = true;
-      audio.volume = 0.6;
-    }
-    // chỉ phát khi người dùng đã click "Start"
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => console.log("🎵 Nhạc đang phát"))
-        .catch(err => {
-          console.warn("⚠️ Trình duyệt chặn phát nhạc, cần tương tác người dùng:", err);
-        });
-    }
-  } catch (err) {
-    console.error("Lỗi phát nhạc:", err);
-  }
-}
-
-function stopMusic() {
-  if (audio) {
-    audio.pause();
-    audio.currentTime = 0;
-  }
-}
-
-
-// override hành vi start & quay lại profile
-const _startTimer = startTimer;
-startTimer = function() {
-  _startTimer();
-  playMusic();
-};
-const _hideTimerView = hideTimerView;
-hideTimerView = function() {
-  _hideTimerView();
-  stopMusic();
-};
-        
-    </script>
-</body>
-    </html>
+      const _hideTimerView = hideTimerView;
+      hideTimerView = function () {
+        _hideTimerView();
+        stopMusic();
+      };
+        </script>
+      </body>
+</html>
