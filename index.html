@@ -161,7 +161,30 @@
   transform: scale(0.96);
   filter: blur(6px);
                               }
-      
+      /* === Mũi tên hướng dẫn trượt ở bên ngoài profile box === */
+.hint-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.2rem;
+  color: rgba(255, 255, 255, 0.85);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 50;
+  text-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
+.hint-arrow.show {
+  opacity: 1;
+}
+#arrow-left { left: 12%; }
+#arrow-right { right: 12%; }
+
+@media (max-width: 640px) {
+  #arrow-left { left: 4%; }
+  #arrow-right { right: 4%; }
+        }
+    
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
@@ -212,6 +235,10 @@
         </button>
     </div>
 </div>
+            <!-- Hai mũi tên gợi ý trượt (ngoài profile box) -->
+<div id="arrow-left" class="hint-arrow">←</div>
+<div id="arrow-right" class="hint-arrow">→</div>
+    
         </div>
         <div class="space-y-4">
             <a href="https://discord.gg/jEJZV5nCRA" class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all">
@@ -525,7 +552,61 @@ function hideTimerView() {
       renderTimer();
       window.addEventListener('beforeunload', () => timerInterval && clearInterval(timerInterval));
     })();
+/* === Mũi tên gợi ý trượt + nhạc khi đếm ngược === */
+const arrowLeft = document.getElementById('arrow-left');
+const arrowRight = document.getElementById('arrow-right');
+let arrowShowCount = 0;
+let arrowInterval;
 
+function showArrowsRepeatedly() {
+  if (!arrowLeft || !arrowRight) return;
+  arrowShowCount = 0;
+  clearInterval(arrowInterval);
+  arrowInterval = setInterval(() => {
+    if (arrowShowCount >= 5) {
+      arrowLeft.remove();
+      arrowRight.remove();
+      clearInterval(arrowInterval);
+      return;
+    }
+    arrowShowCount++;
+    arrowLeft.classList.add('show');
+    arrowRight.classList.add('show');
+    setTimeout(() => {
+      arrowLeft.classList.remove('show');
+      arrowRight.classList.remove('show');
+    }, 2000); // hiện 2s
+  }, 5000); // mỗi 5s xuất hiện
+}
+
+showArrowsRepeatedly();
+
+/* === Nhạc khi đếm ngược === */
+let audio;
+function playMusic() {
+  if (!audio) {
+    audio = new Audio("https://cdn.pixabay.com/audio/2021/09/16/audio_cdc20d8250.mp3");
+    audio.loop = true;
+    audio.volume = 0.6;
+  }
+  audio.play().catch(err => console.log('Không thể phát nhạc:', err));
+}
+function stopMusic() {
+  if (audio) audio.pause();
+}
+
+// override hành vi start & quay lại profile
+const _startTimer = startTimer;
+startTimer = function() {
+  _startTimer();
+  playMusic();
+};
+const _hideTimerView = hideTimerView;
+hideTimerView = function() {
+  _hideTimerView();
+  stopMusic();
+};
+        
     </script>
 </body>
     </html>
