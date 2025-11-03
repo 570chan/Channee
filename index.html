@@ -1,28 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- ... (meta và link giữ nguyên) ... -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>neChannee!</title>
 
-    <!--  Open Graph / Discord Embed Meta -->
-    <meta property="og:title" content="neChannene! " />
+    <!-- Open Graph / Twitter -->
+    <meta property="og:title" content="neChannene!" />
     <meta property="og:description" content="where i sleep at night🌙" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://channee.vercel.app" />
     <meta property="og:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
-    <meta property="og:image:type" content="image/jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Optional: Thêm Twitter card (Discord cũng đọc được) -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="neChannee! " />
+    <meta name="twitter:title" content="neChannee!" />
     <meta name="twitter:description" content="Join our cozy Discord — where I take a nap and vibe with friends 🌙" />
     <meta name="twitter:image" content="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" />
 
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" href="/favicon-32x32.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet" />
@@ -30,351 +24,141 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-      /* ========= Base ========= */
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #f8fafc;
-        color: #1e293b;
-        overflow-x: hidden;
+      :root { --bg: #f8fafc; --fg: #1e293b; --glass: rgba(255,255,255,0.25); }
+      html,body{height:100%}
+      body{
+        margin:0; font-family: "Inter",system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
+        background:var(--bg); color:var(--fg); overflow-x:hidden;
+      }
+      .knewave { font-family: "Knewave", system-ui, cursive; }
+
+      .glass-card{
+        background:transparent; border:2px solid #fff; border-radius:16px;
+        box-shadow:0 0 32px rgba(255,255,255,0.25); transition:transform .3s,box-shadow .3s;
+      }
+      .profile-pic{ transition:transform .3s; box-shadow:0 2px 18px rgba(0,0,0,.13); }
+      .profile-pic:hover{ transform:scale(1.05); }
+      .link-card{ background:var(--glass); transition:transform .3s,box-shadow .3s; }
+      .link-card:hover{ transform:translateY(-4px) scale(1.02); box-shadow:0 10px 25px -5px rgba(0,0,0,.14); }
+
+      .fade-in{ opacity:0; animation:fadeIn 1s cubic-bezier(.42,0,.58,1) forwards; }
+      @keyframes fadeIn{
+        from{opacity:0; transform:translateY(28px)}
+        to{opacity:1; transform:none}
       }
 
-      /* Title style (kept but not used if no element) */
-      .knewave-regular {
-        font-family: "Knewave", system-ui, cursive;
-        font-weight: 400;
-        font-style: normal;
-      }
-
-      /* ========= Glass card & profile ========= */
-      .glass-card {
-        background: transparent;
-        border: 2px solid #fff;
-        border-radius: 16px;
-        box-shadow: 0 0 32px rgba(255, 255, 255, 0.25);
-        transition: box-shadow 0.3s ease, transform 0.3s ease;
-      }
-
-      .profile-pic {
-        transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
-        box-shadow: 0 2px 18px 0 rgba(0, 0, 0, 0.13);
-      }
-
-      .profile-pic:hover {
-        transform: scale(1.05);
-      }
-
-      .link-card {
-        transition: all 0.3s cubic-bezier(.4, 0, .2, 1);
-        background: rgba(255, 255, 255, 0.25);
-      }
-
-      .link-card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.14);
-      }
-
-      /* Fade-in animation */
-      .fade-in {
-        opacity: 0;
-        animation: fadeIn 1.2s cubic-bezier(.42, 0, .58, 1) forwards;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          opacity: 0;
-          transform: translateY(48px);
-        }
-
-        80% {
-          opacity: 1;
-        }
-
-        100% {
-          opacity: 1;
-          transform: none;
-        }
-      }
-
-      .drop-shadow-text {
-        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.32), 0 2px 2px rgba(0, 0, 0, 0.17);
-      }
-
-      /* Background video */
-      .bg-video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        z-index: -1;
-        min-width: 100%;
-        min-height: 100%;
-        opacity: 1.0;
-        pointer-events: none;
+      .bg-video{
+        position:fixed; inset:0; width:100vw; height:100vh; object-fit:cover; z-index:-1; pointer-events:none;
       }
 
       /* Fullscreen button */
-      .fullscreen-icon-wrap {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
-        min-height: 24px;
-        border-radius: 8px;
-        transition: background 0.18s;
+      #reading-list-box{
+        position:fixed; left:12px; bottom:12px; width:48px; height:48px; border-radius:8px; z-index:9999;
+        background:rgba(255,255,255,.9); box-shadow:0 2px 4px rgba(0,0,0,.18); border:1px solid #ccc;
+        display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s;
+      }
+      #reading-list-box:hover{ background:rgba(200,255,200,.85); }
+
+      /* Timer */
+      .timer-hidden{ display:none!important; }
+      #timer-container{ width:100%; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem 1rem; }
+      #timer-display{ font-variant-numeric:tabular-nums; letter-spacing:1px; text-align:center; color:#F0FFF0; font-size:3rem; }
+      .timer-controls{ display:flex; gap:12px; margin-top:16px; }
+      .timer-controls button{ padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.6); background:rgba(255,255,255,.06); color:inherit; cursor:pointer; }
+
+      .timer-transition{ transition:all .45s ease; will-change:opacity,transform,filter; }
+      .timer-show{ opacity:1; transform:scale(1); filter:blur(0); }
+      .timer-hide{ opacity:0; transform:scale(.96); filter:blur(0); } /* no blur per request */
+
+      .hint-arrow{ position:absolute; top:50%; transform:translateY(-50%); font-size:2.2rem; color:rgba(255,255,255,.85); opacity:0; pointer-events:none; transition:opacity .5s; z-index:50; text-shadow:0 0 12px rgba(255,255,255,.5); }
+      .hint-arrow.show{ opacity:1; }
+      #arrow-left{ left:12% }
+      #arrow-right{ right:12% }
+      @media(max-width:640px){ #arrow-left{left:4%} #arrow-right{right:4%} }
+
+      .link-card[href*="#"]{
+        background-image:url('https://s3.tebi.io/ely.bucket.s0.io.biti/anime-girl-and-cat-watching-rain-thumb-728x410.jpg');
+        background-size:cover; background-position:center; color:#fff;
       }
 
-      .fullscreen-icon-wrap:hover {
-        background: rgba(16, 185, 129, 0.13);
-      }
-
-      /* Reading list / fullscreen box */
-      #reading-list-box {
-        position: fixed;
-        left: 12px;
-        bottom: 12px;
-        width: 48px;
-        height: 48px;
-        border-radius: 8px;
-        z-index: 9999;
-        background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
-        border: 1px solid #ccc;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      /* START overlay: covers whole screen. No blur or dimming per request. */
+      #start-overlay{
+        position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9998;
+        background: transparent; /* explicit: no dim/blur */
         cursor: pointer;
-        transition: background 0.2s ease;
-        padding: 0;
       }
-
-      #reading-list-box:hover {
-        background: rgba(200, 255, 200, 0.85);
+      #start-overlay .cta{
+        background: rgba(0,0,0,0.55); /* keep CTA readable over video */
+        color:#fff; padding:18px 28px; border-radius:12px; font-size:1.15rem; font-weight:600;
+        box-shadow:0 6px 20px rgba(0,0,0,.35);
       }
-
-      /* ========= Timer styles ========= */
-      .timer-hidden {
-        display: none !important;
-      }
-
-      #timer-container {
-        width: 100%;
-        box-sizing: border-box;
-      }
-
-      #timer-display {
-        font-variant-numeric: tabular-nums;
-        letter-spacing: 1px;
-        text-align: center;
-      }
-
-      .timer-controls {
-        display: flex;
-        gap: 12px;
-        justify-content: center;
-        align-items: center;
-        margin-top: 16px;
-      }
-
-      .timer-controls button {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        background: rgba(255, 255, 255, 0.06);
-        color: inherit;
-        cursor: pointer;
-        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-      }
-
-      .timer-controls button:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-      }
-
-      .timer-controls .btn-primary {
-        background: rgba(70, 104, 250, 0.95);
-        color: #fff;
-        border-color: rgba(70, 104, 250, 0.95);
-      }
-
-      .timer-controls .btn-muted {
-        background: rgba(255, 255, 255, 0.06);
-        color: #F0FFF0;
-        border: 1px solid rgba(255, 255, 255, 0.4);
-      }
-
-      #timer-display,
-      .timer-controls button {
-        color: #F0FFF0;
-      }
-
-      @media (max-width: 420px) {
-        #timer-display {
-          font-size: 2.25rem;
-        }
-
-        .timer-controls button {
-          padding: 8px 10px;
-          gap: 6px;
-        }
-      }
-
-      .timer-transition {
-        transition: all 0.5s ease;
-        will-change: opacity, transform, filter;
-      }
-
-      .timer-show {
-        opacity: 1;
-        transform: scale(1);
-        filter: blur(0);
-      }
-
-      .timer-hide {
-        opacity: 0;
-        transform: scale(0.96);
-        filter: blur(6px);
-      }
-
-      /* hint arrow */
-      .hint-arrow {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 2.2rem;
-        color: rgba(255, 255, 255, 0.85);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.5s ease;
-        z-index: 50;
-        text-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
-      }
-
-      .hint-arrow.show {
-        opacity: 1;
-      }
-
-      #arrow-left {
-        left: 12%;
-      }
-
-      #arrow-right {
-        right: 12%;
-      }
-
-      @media (max-width: 640px) {
-        #arrow-left {
-          left: 4%;
-        }
-
-        #arrow-right {
-          right: 4%;
-        }
-      }
-
-      /* align timer container */
-      #timer-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem 1rem;
-        box-sizing: border-box;
-      }
-      /* Cho box Unknown (Discord style) luôn có ảnh nền */
-.link-card[href*="#"] {
-  background-image: url('https://s3.tebi.io/ely.bucket.s0.io.biti/anime-girl-and-cat-watching-rain-thumb-728x410.jpg');
-  background-size: cover;
-  background-position: center;
-  color: #fff;
-        }
-          
+      /* hide main content initially */
+      .initial-hidden{ display:none; }
     </style>
   </head>
 
-  <body class="min-h-screen flex flex-col items-center justify-center px-4 py-8 relative overflow-x-hidden">
+  <body class="min-h-screen flex items-center justify-center px-4 py-8 relative">
     <!-- Background Video -->
-    <video class="bg-video" autoplay loop muted playsinline>
+    <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
       <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/TikTok%20-%20Make%20Your%20Day.mp4" type="video/mp4" />
-      <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg" alt="background" />
     </video>
 
-    <div class="max-w-md w-full mx-auto fade-in">
-      <!-- PROFILE CARD -->
+    <!-- START overlay that captures the first click/tap anywhere -->
+    <div id="start-overlay" role="button" aria-label="Click to enter" tabindex="0">
+      <div class="cta">Click here</div>
+    </div>
+
+    <!-- Main content hidden initially; will fade in after overlay click -->
+    <div id="main-content" class="max-w-md w-full mx-auto fade-in initial-hidden" aria-hidden="true">
+      <!-- Profile card -->
       <div class="glass-card p-8 mb-8 text-center">
         <div class="flex justify-center mb-6">
-          <img
-            src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg"
-            alt="Profile"
-            class="profile-pic w-24 h-24 rounded-full object-cover shadow-lg"
-          />
+          <img src="https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg"
+               alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover" />
         </div>
 
-        <h1 class="text-2xl font-bold text-black mb-1 drop-shadow-text knewave-regular">
-          Channee
-        </h1>
-        <p class="text-gray-600 mb-6 drop-shadow-text">I don't even remember who I am...</p>
+        <h1 class="text-2xl font-bold text-black mb-1 knewave">Channee</h1>
+        <p class="text-gray-600 mb-6">I don't even remember who I am...</p>
 
-        <!-- CLOCK -->
+        <!-- Clock -->
         <div class="clock-container mb-8">
-          <div id="time" class="text-5xl font-light text-[#F0FFF0] drop-shadow-text"></div>
-          <div id="date" class="text-sm text-gray-100 drop-shadow-text mt-2"></div>
+          <div id="time" class="text-5xl font-light text-[#F0FFF0]"></div>
+          <div id="date" class="text-sm text-gray-100 mt-2"></div>
         </div>
 
-        <!-- SOCIAL LINKS -->
-        <div class="flex justify-center space-x-4">
-          <a href="https://github.com/570chan" target="_blank" class="text-white hover:text-indigo-500 transition-colors" rel="noopener noreferrer">
-            <i data-feather="github"></i>
-          </a>
-          <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" class="text-white hover:text-pink-500 transition-colors" rel="noopener noreferrer">
-            <i data-feather="facebook"></i>
-          </a>
-          <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-white hover:text-orange-400 transition-colors" rel="noopener noreferrer">
-            <i data-feather="linkedin"></i>
-          </a>
+        <!-- Social -->
+        <div class="flex justify-center space-x-4 text-white">
+          <a href="https://github.com/570chan" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github fa-lg"></i></a>
+          <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
         </div>
 
-        <!-- TIMER CONTAINER -->
-        <div id="timer-container" class="timer-hidden mt-2">
-          <p class="text-sm text-gray-200 mb-2 opacity-80 tracking-wide">⏳ Countdown Timer — 30 phút thư giãn</p>
-          <div id="timer-display" class="text-5xl font-light">30:00</div>
-
+        <!-- Timer container (hidden by default) -->
+        <div id="timer-container" class="timer-hidden mt-6">
+          <p class="text-sm text-gray-200 mb-2 opacity-80">⏳ Countdown Timer — 30 phút thư giãn</p>
+          <div id="timer-display">30:00</div>
           <div class="timer-controls">
-            <button id="start-pause-btn" class="btn-muted" title="Start / Pause">
-              <i data-feather="play"></i>
-              <span class="sr-only">Start / Pause</span>
+            <button id="start-pause-btn" title="Start / Pause" class="">
+              <i class="fa fa-play"></i>
             </button>
-            <button id="reset-btn" class="btn-muted" title="Reset">
-              <i data-feather="refresh-cw"></i>
-              <span class="sr-only">Reset</span>
+            <button id="reset-btn" title="Reset">
+              <i class="fa fa-rotate-right"></i>
             </button>
           </div>
         </div>
 
-        <!-- MŨI TÊN GỢI Ý -->
         <div id="arrow-left" class="hint-arrow">←</div>
         <div id="arrow-right" class="hint-arrow">→</div>
       </div>
 
-      <!-- DISCORD BOX -->
+      <!-- Discord / Link box -->
       <div class="space-y-4">
-        <a
-          href="#"
-          class="block link-card glass-card p-2 rounded-lg hover:shadow-md transition-all"
-        >
+        <a href="#" class="block link-card glass-card p-2 rounded-lg">
           <div class="flex items-center">
             <div class="mr-4 flex items-center"></div>
             <div>
-              <h3 class="font-medium text-gray-800 drop-shadow-text">Unknown</h3>
-              <p class="text-sm text-gray-500 drop-shadow-text">where i take a nap</p>
+              <h3 class="font-medium text-gray-800">Unknown</h3>
+              <p class="text-sm text-gray-500">where i take a nap</p>
             </div>
           </div>
           <ul class="mt-3 space-y-1 text-sm text-gray-700">
@@ -384,441 +168,270 @@
       </div>
     </div>
 
-    <!-- FULLSCREEN BUTTON -->
-    <div id="reading-list-box" tabindex="0" class="glass-card" style="outline: none;">
-      <span class="fullscreen-icon-wrap" id="reading-fullscreen-trigger" title="Toggle fullscreen" aria-label="Toggle fullscreen">
-        <svg id="fullscreen-enter" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4" />
-        </svg>
-
-        <svg id="fullscreen-exit" xmlns="http://www.w3.org/2000/svg" class="fullscreen-svg text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" style="display: none;">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H4v-4M16 16h4v-4M8 8H4V4M16 8h4V4" />
-        </svg>
-      </span>
+    <!-- Fullscreen button -->
+    <div id="reading-list-box" tabindex="0" class="glass-card" title="Toggle fullscreen" aria-label="Toggle fullscreen" style="outline:none">
+      <button id="fs-btn" aria-label="Enter fullscreen" style="background:none;border:0;cursor:pointer;padding:6px">
+        <svg id="fs-enter" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
+        <svg id="fs-exit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 16H4v-4M16 8h4V4M8 8H4V4M16 16h4v-4"/></svg>
+      </button>
     </div>
 
-    <!-- AUDIO: đặt thẻ audio trong HTML theo yêu cầu -->
+    <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
     <audio id="bg-music" preload="auto" crossorigin="anonymous">
-      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSounds.mp3" type="audio/mpeg" />
+      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSoun[...].mp3" type="audio/mpeg" />
     </audio>
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
       (function () {
-        /* ========= Utilities & DOM ========= */
-        const $ = (sel, ctx = document) => ctx.querySelector(sel);
-        const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+        // little helpers
+        const $ = (s, ctx = document) => ctx.querySelector(s);
+        const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
 
-        /* ========= Clock (time + date) ========= */
+        // Clock
         function updateClock() {
           const now = new Date();
-          const optionsTime = {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit'
-          };
-          const timeStr = now.toLocaleTimeString('en-US', optionsTime); // "HH:MM:SS" or "HH:MM"
+          const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+          const timeStr = now.toLocaleTimeString('en-US', optionsTime);
           const [hours, minutes] = timeStr.split(':');
-          const optionsDate = {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          };
+          const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
           const dateStr = now.toLocaleDateString('en-US', optionsDate);
-          const parts = dateStr.split(', ');
-          const dayName = parts[0] || '';
-          const monthDayYear = parts.slice(1).join(', ') || '';
           $('#time').textContent = `${hours}:${minutes}`;
-          $('#date').textContent = `${dayName}, ${monthDayYear}`;
+          $('#date').textContent = dateStr;
         }
-
         updateClock();
         setInterval(updateClock, 1000);
 
-        /* ========= Feather icons initial ========= */
+        // Icons
         feather.replace();
 
-        /* ========= DOMContentLoaded: unify tasks ========= */
-        document.addEventListener('DOMContentLoaded', () => {
-          // ensure icons rendered
-          feather.replace();
-
-          // fade-in: already has class fade-in on container; ensure it will animate
-          $$('.fade-in').forEach(el => {
-            // class is present; animation will run
-          });
-
-          // Discord box click (only if discord link present)
-          const discordBox = document.querySelector('.link-card[href*="discord.gg"]');
-          if (discordBox) {
-            discordBox.addEventListener('click', (e) => {
-              e.preventDefault();
-              discordBox.style.transform = 'scale(0.98)';
-              setTimeout(() => {
-                window.open(discordBox.href, '_blank', 'noopener');
-                discordBox.style.transform = '';
-              }, 1000);
-            });
-          }
-        });
-
-        /* ========= Fullscreen Toggle ========= */
+        // Fullscreen
         (function () {
-          const readingListBox = document.getElementById('reading-list-box');
-          const fullscreenEnter = document.getElementById('fullscreen-enter');
-          const fullscreenExit = document.getElementById('fullscreen-exit');
-          let isFullscreen = false;
+          const box = document.getElementById('reading-list-box');
+          const enterIcon = document.getElementById('fs-enter');
+          const exitIcon = document.getElementById('fs-exit');
 
-          function showEnterIcon() {
-            fullscreenEnter.style.display = '';
-            fullscreenExit.style.display = 'none';
+          function showEnter(){ enterIcon.style.display = ''; exitIcon.style.display = 'none'; }
+          function showExit(){ enterIcon.style.display = 'none'; exitIcon.style.display = ''; }
+
+          async function toggle() {
+            try {
+              if (!document.fullscreenElement) {
+                await document.documentElement.requestFullscreen();
+                showExit();
+              } else {
+                await document.exitFullscreen();
+                showEnter();
+              }
+            } catch (e) { /* ignore */ }
           }
 
-          function showExitIcon() {
-            fullscreenEnter.style.display = 'none';
-            fullscreenExit.style.display = '';
-          }
-
-          function enterFullscreen() {
-            if (isFullscreen) return;
-            isFullscreen = true;
-            if (document.documentElement.requestFullscreen) {
-              document.documentElement.requestFullscreen().catch(()=>{});
-            }
-            showExitIcon();
-          }
-
-          function exitFullscreen() {
-            if (!isFullscreen) return;
-            isFullscreen = false;
-            if (document.fullscreenElement) {
-              document.exitFullscreen().catch(()=>{});
-            }
-            showEnterIcon();
-          }
-
-          readingListBox.addEventListener('click', () => {
-            if (!isFullscreen) enterFullscreen();
-            else exitFullscreen();
-          });
-
-          fullscreenExit.addEventListener('click', (e) => {
-            e.stopPropagation();
-            exitFullscreen();
-          });
-
+          box.addEventListener('click', toggle);
           document.addEventListener('fullscreenchange', () => {
-            if (document.fullscreenElement === document.documentElement) {
-              isFullscreen = true;
-              showExitIcon();
-            } else {
-              isFullscreen = false;
-              showEnterIcon();
-            }
+            if (document.fullscreenElement) showExit(); else showEnter();
           });
         })();
 
-        /* ========= Timer module (isolated) ========= */
-        (function TimerModule() {
-          // Elements
-          const profileCard = document.querySelector('.glass-card.p-8.mb-8.text-center');
-          // fallback: if selector changed, pick the first glass-card with profile-like structure
-          const fallbackProfileCard = document.querySelector('.glass-card.p-8') || document.querySelector('.glass-card');
-          const card = profileCard || fallbackProfileCard;
+        /* Timer module (unchanged behavior, just uses icons from font-awesome now) */
+        (function () {
+          const card = document.querySelector('.glass-card img.profile-pic')?.closest('.glass-card') || document.querySelector('.glass-card');
           if (!card) return;
 
           const timerContainer = document.getElementById('timer-container');
           const timerDisplay = document.getElementById('timer-display');
           const startPauseBtn = document.getElementById('start-pause-btn');
           const resetBtn = document.getElementById('reset-btn');
-          const children = Array.from(card.children).filter(ch => ch.id !== 'timer-container');
+          const children = Array.from(card.children).filter(c => c !== timerContainer);
 
-          const INITIAL_SECONDS = 30 * 60;
-          let remaining = INITIAL_SECONDS;
-          let timerInterval = null;
-          let running = false;
-          let showingTimer = false;
+          const INITIAL = 30 * 60;
+          let remaining = INITIAL, intervalId = null, running = false, showing = false;
 
-          // audio element from HTML
-          const audioEl = document.getElementById('bg-music');
-          if (audioEl) {
-            audioEl.loop = true;
-            audioEl.volume = 0.6;
-          }
+          const audio = document.getElementById('bg-music');
+          if (audio) { audio.loop = true; audio.volume = 0.6; }
 
-          function formatTime(sec) {
-            const m = Math.floor(sec / 60).toString().padStart(2, '0');
-            const s = Math.floor(sec % 60).toString().padStart(2, '0');
+          function fmt(sec){
+            const m = String(Math.floor(sec/60)).padStart(2,'0');
+            const s = String(Math.floor(sec%60)).padStart(2,'0');
             return `${m}:${s}`;
           }
+          function render(){ timerDisplay.textContent = fmt(remaining); }
 
-          function renderTimer() {
-            timerDisplay.textContent = formatTime(remaining);
-          }
-
-          // Notification helper
-          function ensureNotificationPermission() {
+          function ensureNotificationPermission(){
             if (!('Notification' in window)) return Promise.resolve('unsupported');
             if (Notification.permission === 'granted') return Promise.resolve('granted');
             if (Notification.permission === 'denied') return Promise.resolve('denied');
             return Notification.requestPermission();
           }
-
-          function showNotification() {
-            ensureNotificationPermission().then((perm) => {
-              if (perm === 'granted') {
-                try {
-                  new Notification("⏰ Hết giờ rồi!", {
-                    body: "Đếm ngược đã kết thúc. Hãy quay lại trang để xem kết quả!",
-                    icon: "https://cdn-icons-png.flaticon.com/512/992/992700.png"
-                  });
-                } catch (err) {
-                  // fallback
-                  alert('Đếm ngược kết thúc!');
-                }
+          function notifyEnd(){
+            ensureNotificationPermission().then(p => {
+              if (p === 'granted') {
+                try { new Notification('⏰ Hết giờ rồi!', { body: 'Đếm ngược đã kết thúc.', icon: 'https://cdn-icons-png.flaticon.com/512/992/992700.png' }); }
+                catch(e){ alert('Đếm ngược kết thúc!'); }
               } else {
                 alert('Đếm ngược kết thúc!');
               }
             });
           }
 
-          function startTimer() {
+          function start(){
             if (running) return;
             running = true;
-            startPauseBtn.innerHTML = '<i data-feather="pause"></i>';
-            feather.replace();
-
-            // Play music: user gesture required in many browsers — this function is usually called after click
-            try {
-              if (audioEl) {
-                const playPromise = audioEl.play();
-                if (playPromise && typeof playPromise.then === 'function') {
-                  playPromise.catch(err => {
-                    // autoplay blocked; user must interact — ignore
-                    console.warn('Autoplay blocked or failed:', err);
-                  });
-                }
-              }
-            } catch (err) {
-              console.warn('Audio play error:', err);
-            }
-
-            timerInterval = setInterval(() => {
-              if (remaining > 0) {
-                remaining--;
-                renderTimer();
-              } else {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                running = false;
-                startPauseBtn.innerHTML = '<i data-feather="play"></i>';
-                feather.replace();
-                // stop music
-                if (audioEl) {
-                  try {
-                    audioEl.pause();
-                    audioEl.currentTime = 0;
-                  } catch (e) {}
-                }
-                // show notification
-                showNotification();
+            startPauseBtn.innerHTML = '<i class="fa fa-pause"></i>';
+            if (audio) { const p = audio.play(); if (p && p.catch) p.catch(()=>{}); }
+            intervalId = setInterval(() => {
+              if (remaining > 0) { remaining--; render(); }
+              else {
+                clearInterval(intervalId); intervalId = null; running = false;
+                startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+                if (audio) { try { audio.pause(); audio.currentTime = 0; } catch(e){} }
+                notifyEnd();
               }
             }, 1000);
           }
 
-          function pauseTimer() {
+          function pause(){
             if (!running) return;
             running = false;
-            clearInterval(timerInterval);
-            timerInterval = null;
-            startPauseBtn.innerHTML = '<i data-feather="play"></i>';
-            feather.replace();
-            if (audioEl) {
-              try {
-                audioEl.pause();
-              } catch (e) {}
-            }
+            clearInterval(intervalId); intervalId = null;
+            startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+            if (audio) try { audio.pause(); } catch(e){}
           }
 
-          function resetTimer() {
-            pauseTimer();
-            remaining = INITIAL_SECONDS;
-            renderTimer();
+          function reset(){
+            pause();
+            remaining = INITIAL;
+            render();
           }
 
-          // show/hide timer view
-          function showTimerView() {
-            if (showingTimer) return;
-            children.forEach(ch => ch.style.display = 'none');
+          function showTimer(){
+            if (showing) return;
+            children.forEach(c => (c.style.display = 'none'));
             timerContainer.classList.remove('timer-hidden');
-            timerContainer.classList.add('timer-transition', 'timer-hide');
-            setTimeout(() => {
-              timerContainer.classList.replace('timer-hide', 'timer-show');
-            }, 10);
-            showingTimer = true;
-            renderTimer();
-            feather.replace();
+            timerContainer.classList.add('timer-transition','timer-hide');
+            setTimeout(() => timerContainer.classList.replace('timer-hide','timer-show'), 10);
+            showing = true; render();
           }
 
-          function hideTimerView() {
-            if (!showingTimer) return;
-            timerContainer.classList.replace('timer-show', 'timer-hide');
+          function hideTimer(){
+            if (!showing) return;
+            timerContainer.classList.replace('timer-show','timer-hide');
             setTimeout(() => {
               timerContainer.classList.add('timer-hidden');
-              children.forEach(ch => (ch.style.display = ''));
+              children.forEach(c => (c.style.display = ''));
             }, 500);
-            showingTimer = false;
+            showing = false;
           }
 
-          function toggleTimerView() {
-            if (showingTimer) hideTimerView();
-            else showTimerView();
-          }
+          function toggleTimerView(){ showing ? hideTimer() : showTimer(); }
 
-          // Wire buttons
-          startPauseBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (running) pauseTimer();
-            else startTimer();
-          });
+          startPauseBtn.addEventListener('click', e => { e.stopPropagation(); running ? pause() : start(); });
+          resetBtn.addEventListener('click', e => { e.stopPropagation(); reset(); });
 
-          resetBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            resetTimer();
-          });
-
-          // initial render
-          renderTimer();
-          feather.replace();
-
-          // touch / swipe to toggle timer view
-          let touchStartX = null, touchStartY = null;
-          const THRESHOLD = 40;
-
-          function handleSwipe(dx, dy) {
-            if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > THRESHOLD) toggleTimerView();
-          }
+          let tsX = null, tsY = null;
+          const TH = 40;
+          function handleSwipe(dx, dy){ if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > TH) toggleTimerView(); }
 
           [card, timerContainer].forEach(el => {
-            el.addEventListener('touchstart', (e) => {
-              const t = e.touches[0];
-              touchStartX = t.clientX;
-              touchStartY = t.clientY;
-            }, { passive: true });
-
-            el.addEventListener('touchend', (e) => {
-              if (touchStartX === null) return;
+            el.addEventListener('touchstart', e => { const t = e.touches[0]; tsX = t.clientX; tsY = t.clientY; }, { passive:true });
+            el.addEventListener('touchend', e => {
+              if (tsX === null) return;
               const t = e.changedTouches[0];
-              handleSwipe(t.clientX - touchStartX, t.clientY - touchStartY);
-              touchStartX = null;
-              touchStartY = null;
-            }, { passive: true });
+              handleSwipe(t.clientX - tsX, t.clientY - tsY);
+              tsX = tsY = null;
+            }, { passive:true });
           });
 
-          // mouse drag as swipe
-          let mouseDown = false;
-          let mouseStartX = 0;
-
+          let mDown = false, mStartX = 0;
           [card, timerContainer].forEach(el => {
-            el.addEventListener('mousedown', (e) => {
-              mouseDown = true;
-              mouseStartX = e.clientX;
-            });
+            el.addEventListener('mousedown', e => { mDown = true; mStartX = e.clientX; });
+          });
+          window.addEventListener('mouseup', e => {
+            if (!mDown) return; mDown = false;
+            const dx = e.clientX - mStartX;
+            if (Math.abs(dx) > TH) toggleTimerView();
           });
 
-          window.addEventListener('mouseup', (e) => {
-            if (!mouseDown) return;
-            mouseDown = false;
-            const dx = e.clientX - mouseStartX;
-            if (Math.abs(dx) > THRESHOLD) toggleTimerView();
-          });
-
-          // double click toggles
           card.addEventListener('dblclick', toggleTimerView);
           timerContainer.addEventListener('dblclick', toggleTimerView);
 
-          // save cleanup on unload
-          window.addEventListener('beforeunload', () => {
-            timerInterval && clearInterval(timerInterval);
-          });
+          window.addEventListener('beforeunload', () => { intervalId && clearInterval(intervalId); });
 
-          // expose start/hide for compatibility if other code calls them (safe)
-          window.__neChanneeTimer = {
-            start: startTimer,
-            pause: pauseTimer,
-            reset: resetTimer,
-            show: showTimerView,
-            hide: hideTimerView
-          };
+          render();
+          window.__neChanneeTimer = { start, pause, reset, show: showTimer, hide: hideTimer };
         })();
 
-        /* ========= Arrow hints (show a few times, then remove) ========= */
+        /* Hint arrows (show a few times) */
         (function () {
-          const arrowLeft = document.getElementById('arrow-left');
-          const arrowRight = document.getElementById('arrow-right');
-          if (!arrowLeft || !arrowRight) return;
-          let arrowShowCount = 0;
-          let arrowInterval;
-          function showArrowsRepeatedly() {
-            arrowShowCount = 0;
-            clearInterval(arrowInterval);
-            arrowInterval = setInterval(() => {
-              if (arrowShowCount >= 5) {
-                arrowLeft.remove();
-                arrowRight.remove();
-                clearInterval(arrowInterval);
-                return;
+          const left = document.getElementById('arrow-left'), right = document.getElementById('arrow-right');
+          if (!left || !right) return;
+          let count = 0, max = 5;
+          const id = setInterval(() => {
+            if (count >= max) { left.remove(); right.remove(); clearInterval(id); return; }
+            count++;
+            left.classList.add('show'); right.classList.add('show');
+            setTimeout(() => { left.classList.remove('show'); right.classList.remove('show'); }, 2000);
+          }, 5000);
+        })();
+
+        /* Start overlay behavior:
+           - cover entire viewport and capture the first click/tap/keyboard activation
+           - on activation: remove overlay, reveal main content with fade-in, play audio
+           - no overlay blur/dimming other than the CTA box itself
+        */
+        (function () {
+          const overlay = document.getElementById('start-overlay');
+          const main = document.getElementById('main-content');
+          const audio = document.getElementById('bg-music');
+
+          if (!overlay || !main) return;
+
+          // handler to run once
+          function activate(e) {
+            // allow keyboard activation via Enter / Space
+            if (e && e.type === 'keydown' && !['Enter',' ','Spacebar'].includes(e.key)) return;
+
+            // prevent default navigation or other behavior
+            e && e.preventDefault && e.preventDefault();
+
+            // reveal main content
+            main.classList.remove('initial-hidden');
+            main.setAttribute('aria-hidden','false');
+
+            // let fade-in animation happen: ensure element has fade-in class (it already does)
+            // remove overlay from DOM to let clicks go through to page
+            overlay.remove();
+
+            // Try to play audio (user gesture satisfied by this click/key)
+            if (audio) {
+              const p = audio.play();
+              if (p && typeof p.then === 'function') {
+                p.catch(err => {
+                  // autoplay may still fail in some contexts; ignore silently
+                  console.warn('Audio play was blocked or failed:', err);
+                });
               }
-              arrowShowCount++;
-              arrowLeft.classList.add('show');
-              arrowRight.classList.add('show');
-              setTimeout(() => {
-                arrowLeft.classList.remove('show');
-                arrowRight.classList.remove('show');
-              }, 2000);
-            }, 5000);
+            }
+
+            // re-render icons if needed
+            try { feather.replace(); } catch (e) {}
+            // remove listeners
+            window.removeEventListener('click', activate);
+            window.removeEventListener('keydown', activate);
+            // stop propagation to avoid accidental double actions
+            if (e && e.stopPropagation) e.stopPropagation();
           }
-          showArrowsRepeatedly();
+
+          // capture first click anywhere on the window
+          window.addEventListener('click', activate, { once: true, capture: true });
+          // also allow keyboard activation for accessibility
+          window.addEventListener('keydown', activate, { once: true, capture: true });
+          // make overlay focusable and focus it so keyboard events are caught immediately
+          try { overlay.focus(); } catch (e) {}
         })();
 
-        /* ========= Music control helpers (in case needed elsewhere) ========= */
-        window.neChanneeAudio = (function () {
-          const audioEl = document.getElementById('bg-music');
-          return {
-            play() {
-              if (!audioEl) return;
-              try {
-                const p = audioEl.play();
-                if (p && typeof p.then === 'function') p.catch(()=>{});
-              } catch (e) {}
-            },
-            pause() {
-              if (!audioEl) return;
-              try { audioEl.pause(); } catch (e) {}
-            },
-            stop() {
-              if (!audioEl) return;
-              try { audioEl.pause(); audioEl.currentTime = 0; } catch (e) {}
-            }
-          };
-        })();
-
-        /* ========= Request notification permission early (non-blocking) ========= */
-        if ('Notification' in window) {
-          try {
-            // request politely but allow browser to decide; do not spam user
-            if (Notification.permission === 'default') {
-              Notification.requestPermission().then(p => {
-                // no-op; just log
-                console.log('Notification permission:', p);
-              });
-            }
-          } catch (e) {
-            // ignore
-          }
+        /* Request notification permission politely (non-blocking) */
+        if ('Notification' in window && Notification.permission === 'default') {
+          try { Notification.requestPermission().then(p => console.log('Notification permission:', p)); } catch(e){}
         }
       })();
     </script>
