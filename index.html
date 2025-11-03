@@ -24,12 +24,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-      :root { --bg: #f8fafc; --fg: #1e293b; --glass: rgba(255,255,255,0.25); }
+      :root { --bg: #f8fafc; --fg: #1e293b; --glass: rgba(255,255,255,0.25); --accent-1: #8be9fd; --accent-2: #7c4dff; }
       html,body{height:100%}
       body{
         margin:0; font-family: "Inter",system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue";
         background:var(--bg); color:var(--fg); overflow-x:hidden;
       }
+      /* use the Knewave font for branded text */
       .knewave { font-family: "Knewave", system-ui, cursive; }
 
       .glass-card{
@@ -70,7 +71,7 @@
       .timer-show{ opacity:1; transform:scale(1); filter:blur(0); }
       .timer-hide{ opacity:0; transform:scale(.96); filter:blur(0); } /* no blur per request */
 
-      .hint-arrow{ position:absolute; top:50%; transform:translateY(-50%); font-size:2.2rem; color:rgba(255,255,255,.85); opacity:0; pointer-events:none; transition:opacity .5s; z-index:50; text-shadow:0 0 12px rgba(255,255,255,.5); }
+      .hint-arrow{ position:absolute; top:50%; transform:translateY(-50%); font-size:2.2rem; color:rgba(255,255,255,.85); opacity:0; pointer-events:none; transition:opacity .5s; z-index:50; text-shadow:0 6px 20px rgba(0,0,0,.25); }
       .hint-arrow.show{ opacity:1; }
       #arrow-left{ left:12% }
       #arrow-right{ right:12% }
@@ -87,13 +88,50 @@
         background: transparent; /* explicit: no dim/blur */
         cursor: pointer;
       }
+      /* CTA styles: remove black box, use neChannee font (knewave), and add attractive text effects */
       #start-overlay .cta{
-        background: rgba(0,0,0,0.55); /* keep CTA readable over video */
-        color:#fff; padding:18px 28px; border-radius:12px; font-size:1.15rem; font-weight:600;
-        box-shadow:0 6px 20px rgba(0,0,0,.35);
+        background: transparent; /* remove dark box */
+        color: transparent; /* use gradient fill via background-clip */
+        padding: 8px 20px;
+        border-radius: 12px;
+        font-size:1.25rem; font-weight:700;
+        box-shadow: none;
+        -webkit-background-clip: text;
+        background-clip: text;
+        background-image: linear-gradient(90deg, var(--accent-1) 0%, #9be7ff 25%, #caa2ff 60%, var(--accent-2) 100%);
+        text-shadow: 0 6px 28px rgba(124,77,255,0.15), 0 2px 6px rgba(0,0,0,0.25);
+        transform: translateY(0);
+        transition: transform 220ms cubic-bezier(.2,.9,.3,1), text-shadow 220ms ease, filter 220ms ease;
+        font-family: "Knewave", system-ui, cursive; /* ensure brand font is used */
+        letter-spacing: .6px;
+        outline: none; /* remove focus ring appearance (we still keep keyboard activation) */
       }
+      /* subtle hover / press effect for CTA */
+      #start-overlay .cta:hover{ transform: translateY(-4px) scale(1.02); filter:brightness(1.02); text-shadow: 0 10px 40px rgba(124,77,255,0.18), 0 3px 8px rgba(0,0,0,0.28); }
+      #start-overlay .cta:active{ transform: translateY(-2px) scale(0.995); }
+
+      /* ensure focus still visible for accessibility — use an outline that's not a black box */
+      #start-overlay .cta:focus{ box-shadow: 0 0 0 4px rgba(124,77,255,0.12), 0 6px 20px rgba(0,0,0,0.12); border-radius:12px; }
+
       /* hide main content initially */
       .initial-hidden{ display:none; }
+      
+      /* Branded title effect for 'Channee' */
+      .brand-title {
+        background: linear-gradient(90deg, #ffe38a 0%, #ffd1f0 30%, #bde6ff 60%, #c9b3ff 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 2.25rem;
+        text-shadow: 0 10px 30px rgba(124,77,255,0.12), 0 2px 8px rgba(0,0,0,0.12);
+      }
+      /* Optional subtle animation on load for brand */
+      .brand-animate { animation: floatText 2.4s ease-in-out infinite; transform-origin:center; }
+      @keyframes floatText {
+        0%{ transform: translateY(0) }
+        50%{ transform: translateY(-3px) }
+        100%{ transform: translateY(0) }
+      }
     </style>
   </head>
 
@@ -105,7 +143,7 @@
 
     <!-- START overlay that captures the first click/tap anywhere -->
     <div id="start-overlay" role="button" aria-label="Click to enter" tabindex="0">
-      <div class="cta">Click here</div>
+      <div class="cta" id="cta-text">Click here</div>
     </div>
 
     <!-- Main content hidden initially; will fade in after overlay click -->
@@ -117,7 +155,8 @@
                alt="Profile" class="profile-pic w-24 h-24 rounded-full object-cover" />
         </div>
 
-        <h1 class="text-2xl font-bold text-black mb-1 knewave">Channee</h1>
+        <!-- Brand title uses knewave + gradient/shadow effect -->
+        <h1 class="brand-title knewave font-bold mb-1 brand-animate">Channee</h1>
         <p class="text-gray-600 mb-6">I don't even remember who I am...</p>
 
         <!-- Clock -->
@@ -172,13 +211,16 @@
     <div id="reading-list-box" tabindex="0" class="glass-card" title="Toggle fullscreen" aria-label="Toggle fullscreen" style="outline:none">
       <button id="fs-btn" aria-label="Enter fullscreen" style="background:none;border:0;cursor:pointer;padding:6px">
         <svg id="fs-enter" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
-        <svg id="fs-exit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 16H4v-4M16 8h4V4M8 8H4V4M16 16h4v-4"/></svg>
+        <svg id="fs-exit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 16H4v-4M16 8h4v4M8 8H4v4M16 16h4v4"/></svg>
       </button>
     </div>
 
     <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
-    <audio id="bg-music" preload="auto" crossorigin="anonymous">
-      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSoun[...].mp3" type="audio/mpeg" />
+    <audio id="bg-music" preload="auto" crossorigin="anonymous" playsinline>
+      <!-- Make sure the source URL is valid. If your actual file URL contains characters like spaces or brackets, ensure it's URL-encoded. -->
+      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/Hoaprox%2C%20Dang%20Minh%20-%20PHAN%20DUYEN%20%28Destiny%29%20%20Future%20Bass%20%20NCS%20-%20Copyright%20Free%20Music%20-%20NoCopyrightSoun.mp3" type="audio/mpeg" />
+      <!-- Fallback text -->
+      Your browser does not support the audio element.
     </audio>
 
     <script src="https://unpkg.com/feather-icons"></script>
@@ -203,7 +245,7 @@
         setInterval(updateClock, 1000);
 
         // Icons
-        feather.replace();
+        try { feather.replace(); } catch(e){}
 
         // Fullscreen
         (function () {
@@ -376,19 +418,23 @@
         /* Start overlay behavior:
            - cover entire viewport and capture the first click/tap/keyboard activation
            - on activation: remove overlay, reveal main content with fade-in, play audio
-           - no overlay blur/dimming other than the CTA box itself
+           - no overlay blur/dimming other than decorative text itself
         */
         (function () {
           const overlay = document.getElementById('start-overlay');
           const main = document.getElementById('main-content');
           const audio = document.getElementById('bg-music');
+          const cta = document.getElementById('cta-text');
 
           if (!overlay || !main) return;
+
+          // allow spacebar key name normalization
+          const ACCEPT_KEYS = new Set(['Enter', ' ', 'Spacebar', 'Space']);
 
           // handler to run once
           function activate(e) {
             // allow keyboard activation via Enter / Space
-            if (e && e.type === 'keydown' && !['Enter',' ','Spacebar'].includes(e.key)) return;
+            if (e && e.type === 'keydown' && !ACCEPT_KEYS.has(e.key)) return;
 
             // prevent default navigation or other behavior
             e && e.preventDefault && e.preventDefault();
@@ -403,14 +449,28 @@
 
             // Try to play audio (user gesture satisfied by this click/key)
             if (audio) {
-              const p = audio.play();
-              if (p && typeof p.then === 'function') {
-                p.catch(err => {
-                  // autoplay may still fail in some contexts; ignore silently
-                  console.warn('Audio play was blocked or failed:', err);
-                });
+              try {
+                // Ensure not muted and reset to start
+                audio.muted = false;
+                audio.currentTime = 0;
+                const p = audio.play();
+                if (p && typeof p.then === 'function') {
+                  p.catch(err => {
+                    // autoplay may still fail in some contexts; log but don't break UI
+                    console.warn('Audio play was blocked or failed:', err);
+                  });
+                }
+              } catch (err) {
+                console.warn('Audio play exception:', err);
               }
             }
+
+            // small accessible feedback: animate the cta text out
+            try {
+              cta.style.transition = 'transform .45s ease, opacity .45s ease';
+              cta.style.transform = 'translateY(-10px) scale(.98)';
+              cta.style.opacity = '0';
+            } catch(e){}
 
             // re-render icons if needed
             try { feather.replace(); } catch (e) {}
