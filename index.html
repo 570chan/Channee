@@ -71,7 +71,7 @@
       .timer-show{ opacity:1; transform:scale(1); filter:blur(0); }
       .timer-hide{ opacity:0; transform:scale(.96); filter:blur(0); } /* no blur per request */
 
-      .hint-arrow{ position:absolute; top:50%; transform:translateY(-50%); font-size:2.2rem; color:rgba(255,255,255,.85); opacity:0; pointer-events:none; transition:opacity .5s; z-index:50; text-shadow:0 6px 20px rgba(0,0,0,.25); }
+      .hint-arrow{ position:absolute; top:50%; transform:translateY(-50%); font-size:2.2rem; color:rgba(255,255,255,.85); opacity:0; pointer-events:none; transition:opacity .5s; z-index:50; }
       .hint-arrow.show{ opacity:1; }
       #arrow-left{ left:12% }
       #arrow-right{ right:12% }
@@ -210,14 +210,20 @@
     <!-- Fullscreen button -->
     <div id="reading-list-box" tabindex="0" class="glass-card" title="Toggle fullscreen" aria-label="Toggle fullscreen" style="outline:none">
       <button id="fs-btn" aria-label="Enter fullscreen" style="background:none;border:0;cursor:pointer;padding:6px">
-        <svg id="fs-enter" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6"/></svg>
-        <svg id="fs-exit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M8 16H4v-4M16 8h4v4M8 8H4v4M16 16h4v4"/></svg>
+        <!-- Enter fullscreen icon -->
+        <svg id="fs-enter" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9V3h6M21 9V3h-6M3 15v6h6M21 15v6h-6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- Exit fullscreen icon -->
+        <svg id="fs-exit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M8 16H4v-4M16 8h4v4M8 8H4v4M16 16h4v-4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
     </div>
 
     <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
     <audio id="bg-music" preload="auto" crossorigin="anonymous" playsinline>
-      <!-- Make sure the source URL is valid. If your actual file URL contains characters like spaces or brackets, ensure it's URL-encoded. -->
+      <!-- Fixed: proper URL-encoding already present in original; ensure correct MIME type attribute -->
       <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/%C4%90%C6%B0%E1%BB%9Dng%20T%C3%B4i%20Ch%E1%BB%9F%20Em%20V%E1%BB%81%20_%20buitruonglinh%20%20Lyrics%20Video%20%20-%20buitruonglinh.mp3" type="audio/mpeg" />
       <!-- Fallback text -->
       Your browser does not support the audio element.
@@ -453,10 +459,12 @@
                 // Ensure not muted and reset to start
                 audio.muted = false;
                 audio.currentTime = 0;
+                // Use play() and handle possible promise rejection gracefully
                 const p = audio.play();
                 if (p && typeof p.then === 'function') {
-                  p.catch(err => {
-                    // autoplay may still fail in some contexts; log but don't break UI
+                  p.then(() => {
+                    // optional: indicate playing state (e.g., swap icons) if needed
+                  }).catch(err => {
                     console.warn('Audio play was blocked or failed:', err);
                   });
                 }
