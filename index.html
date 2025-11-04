@@ -140,6 +140,13 @@
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
       <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/TikTok%20-%20Make%20Your%20Day.mp4" type="video/mp4" />
     </video>
+  <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
+    <audio id="bg-music" preload="auto" crossorigin="anonymous" playsinline>
+      <!-- Fixed: proper URL-encoding already present in original; ensure correct MIME type attribute -->
+      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/%C4%90%C6%B0%E1%BB%9Dng%20T%C3%B4i%20Ch%E1%BB%9F%20Em%20V%E1%BB%81%20_%20buitruonglinh%20%20Lyrics%20Video%20%20-%20buitruonglinh.mp3" type="audio/mpeg" />
+      <!-- Fallback text -->
+      Your browser does not support the audio element.
+    </audio>
 
     <!-- START overlay that captures the first click/tap anywhere -->
     <div id="start-overlay" role="button" aria-label="Click to enter" tabindex="0">
@@ -220,14 +227,6 @@
         </svg>
       </button>
     </div>
-
-    <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
-    <audio id="bg-music" preload="auto" crossorigin="anonymous" playsinline>
-      <!-- Fixed: proper URL-encoding already present in original; ensure correct MIME type attribute -->
-      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/%C4%90%C6%B0%E1%BB%9Dng%20T%C3%B4i%20Ch%E1%BB%9F%20Em%20V%E1%BB%81%20_%20buitruonglinh%20%20Lyrics%20Video%20%20-%20buitruonglinh.mp3" type="audio/mpeg" />
-      <!-- Fallback text -->
-      Your browser does not support the audio element.
-    </audio>
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
