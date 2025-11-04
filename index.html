@@ -49,7 +49,38 @@
       }
 
       .bg-video{
-        position:fixed; inset:0; width:100vw; height:100vh; object-fit:cover; z-index:-1; pointer-events:none;
+        position:fixed; inset:0; width:100vw; height:100vh; object-fit:cover; z-index:-2; pointer-events:none;
+        transform:scale(1.02);
+      }
+
+      /* watercolor overlay (subtle) */
+      .watercolor-overlay{
+        position:fixed; inset:0; z-index:-1; pointer-events:none;
+        mix-blend-mode: overlay; opacity:0.45;
+        background-image:
+          radial-gradient(ellipse at 10% 20%, rgba(199,122,255,0.28) 0%, transparent 20%),
+          radial-gradient(ellipse at 80% 80%, rgba(139,233,253,0.22) 0%, transparent 18%),
+          linear-gradient(90deg, rgba(255,227,138,0.06), rgba(255,210,241,0.03));
+        filter: blur(18px) saturate(1.05);
+        animation: watercolorShift 18s ease-in-out infinite;
+      }
+      @keyframes watercolorShift{
+        0%{ transform: translate3d(0,0,0) scale(1) }
+        50%{ transform: translate3d(-6%,4%,0) scale(1.02) }
+        100%{ transform: translate3d(0,0,0) scale(1) }
+      }
+
+      /* subtle grain / paper texture using pseudo-element on overlay */
+      .watercolor-overlay::after{
+        content:""; position:absolute; inset:0; background-image: url('data:image/svg+xml;utf8,\
+          <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">\
+            <filter id="n">\
+              <feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>\
+              <feColorMatrix type="saturate" values="0"/>\
+            </filter>\
+            <rect width="100%" height="100%" filter="url(%23n)" opacity="0.06" fill="black"/>\
+          </svg>'); mix-blend-mode: multiply; opacity:0.6; pointer-events:none;
+        transform: scale(1.2);
       }
 
       /* Fullscreen button */
@@ -105,6 +136,8 @@
         font-family: "Knewave", system-ui, cursive; /* ensure brand font is used */
         letter-spacing: .6px;
         outline: none; /* remove focus ring appearance (we still keep keyboard activation) */
+        display:inline-block;
+        white-space:nowrap;
       }
       /* subtle hover / press effect for CTA */
       #start-overlay .cta:hover{ transform: translateY(-4px) scale(1.02); filter:brightness(1.02); text-shadow: 0 10px 40px rgba(124,77,255,0.18), 0 3px 8px rgba(0,0,0,0.28); }
@@ -132,6 +165,18 @@
         50%{ transform: translateY(-3px) }
         100%{ transform: translateY(0) }
       }
+
+      /* Typewriter caret animation for accessibility fallback */
+      .typewriter-caret{
+        display:inline-block;
+        width:2px;
+        height:1.1em;
+        background: linear-gradient(180deg, #fff, #ddd);
+        margin-left:6px;
+        vertical-align:middle;
+        animation: blink 1s steps(2,start) infinite;
+      }
+      @keyframes blink{ 50%{ opacity:0 } }
     </style>
   </head>
 
@@ -140,9 +185,13 @@
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline>
       <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/TikTok%20-%20Make%20Your%20Day.mp4" type="video/mp4" />
     </video>
-  <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
-    <audio id="bg-music" preload="auto" crossorigin="anonymous" playsinline>
-      <!-- Fixed: proper URL-encoding already present in original; ensure correct MIME type attribute -->
+
+    <!-- Watercolor overlay -->
+    <div class="watercolor-overlay" aria-hidden="true"></div>
+
+    <!-- Audio (no forced autoplay; play initiated on user gesture when overlay clicked) -->
+    <audio id="bg-music" preload="auto" playsinline loop>
+      <!-- FIXED: proper audio MIME type and valid source element -->
       <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/%C4%90%C6%B0%E1%BB%9Dng%20T%C3%B4i%20Ch%E1%BB%9F%20Em%20V%E1%BB%81%20_%20buitruonglinh%20%20Lyrics%20Video%20%20-%20buitruonglinh.mp3" type="audio/mpeg" />
       <!-- Fallback text -->
       Your browser does not support the audio element.
@@ -150,7 +199,7 @@
 
     <!-- START overlay that captures the first click/tap anywhere -->
     <div id="start-overlay" role="button" aria-label="Click to enter" tabindex="0">
-      <div class="cta" id="cta-text">Click here</div>
+      <div class="cta" id="cta-text" aria-hidden="false"></div><span class="typewriter-caret" id="cta-caret" aria-hidden="true"></span>
     </div>
 
     <!-- Main content hidden initially; will fade in after overlay click -->
@@ -361,146 +410,4 @@
 
           function hideTimer(){
             if (!showing) return;
-            timerContainer.classList.replace('timer-show','timer-hide');
-            setTimeout(() => {
-              timerContainer.classList.add('timer-hidden');
-              children.forEach(c => (c.style.display = ''));
-            }, 500);
-            showing = false;
-          }
-
-          function toggleTimerView(){ showing ? hideTimer() : showTimer(); }
-
-          startPauseBtn.addEventListener('click', e => { e.stopPropagation(); running ? pause() : start(); });
-          resetBtn.addEventListener('click', e => { e.stopPropagation(); reset(); });
-
-          let tsX = null, tsY = null;
-          const TH = 40;
-          function handleSwipe(dx, dy){ if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > TH) toggleTimerView(); }
-
-          [card, timerContainer].forEach(el => {
-            el.addEventListener('touchstart', e => { const t = e.touches[0]; tsX = t.clientX; tsY = t.clientY; }, { passive:true });
-            el.addEventListener('touchend', e => {
-              if (tsX === null) return;
-              const t = e.changedTouches[0];
-              handleSwipe(t.clientX - tsX, t.clientY - tsY);
-              tsX = tsY = null;
-            }, { passive:true });
-          });
-
-          let mDown = false, mStartX = 0;
-          [card, timerContainer].forEach(el => {
-            el.addEventListener('mousedown', e => { mDown = true; mStartX = e.clientX; });
-          });
-          window.addEventListener('mouseup', e => {
-            if (!mDown) return; mDown = false;
-            const dx = e.clientX - mStartX;
-            if (Math.abs(dx) > TH) toggleTimerView();
-          });
-
-          card.addEventListener('dblclick', toggleTimerView);
-          timerContainer.addEventListener('dblclick', toggleTimerView);
-
-          window.addEventListener('beforeunload', () => { intervalId && clearInterval(intervalId); });
-
-          render();
-          window.__neChanneeTimer = { start, pause, reset, show: showTimer, hide: hideTimer };
-        })();
-
-        /* Hint arrows (show a few times) */
-        (function () {
-          const left = document.getElementById('arrow-left'), right = document.getElementById('arrow-right');
-          if (!left || !right) return;
-          let count = 0, max = 5;
-          const id = setInterval(() => {
-            if (count >= max) { left.remove(); right.remove(); clearInterval(id); return; }
-            count++;
-            left.classList.add('show'); right.classList.add('show');
-            setTimeout(() => { left.classList.remove('show'); right.classList.remove('show'); }, 2000);
-          }, 5000);
-        })();
-
-        /* Start overlay behavior:
-           - cover entire viewport and capture the first click/tap/keyboard activation
-           - on activation: remove overlay, reveal main content with fade-in, play audio
-           - no overlay blur/dimming other than decorative text itself
-        */
-        (function () {
-          const overlay = document.getElementById('start-overlay');
-          const main = document.getElementById('main-content');
-          const audio = document.getElementById('bg-music');
-          const cta = document.getElementById('cta-text');
-
-          if (!overlay || !main) return;
-
-          // allow spacebar key name normalization
-          const ACCEPT_KEYS = new Set(['Enter', ' ', 'Spacebar', 'Space']);
-
-          // handler to run once
-          function activate(e) {
-            // allow keyboard activation via Enter / Space
-            if (e && e.type === 'keydown' && !ACCEPT_KEYS.has(e.key)) return;
-
-            // prevent default navigation or other behavior
-            e && e.preventDefault && e.preventDefault();
-
-            // reveal main content
-            main.classList.remove('initial-hidden');
-            main.setAttribute('aria-hidden','false');
-
-            // let fade-in animation happen: ensure element has fade-in class (it already does)
-            // remove overlay from DOM to let clicks go through to page
-            overlay.remove();
-
-            // Try to play audio (user gesture satisfied by this click/key)
-            if (audio) {
-              try {
-                // Ensure not muted and reset to start
-                audio.muted = false;
-                audio.currentTime = 0;
-                // Use play() and handle possible promise rejection gracefully
-                const p = audio.play();
-                if (p && typeof p.then === 'function') {
-                  p.then(() => {
-                    // optional: indicate playing state (e.g., swap icons) if needed
-                  }).catch(err => {
-                    console.warn('Audio play was blocked or failed:', err);
-                  });
-                }
-              } catch (err) {
-                console.warn('Audio play exception:', err);
-              }
-            }
-
-            // small accessible feedback: animate the cta text out
-            try {
-              cta.style.transition = 'transform .45s ease, opacity .45s ease';
-              cta.style.transform = 'translateY(-10px) scale(.98)';
-              cta.style.opacity = '0';
-            } catch(e){}
-
-            // re-render icons if needed
-            try { feather.replace(); } catch (e) {}
-            // remove listeners
-            window.removeEventListener('click', activate);
-            window.removeEventListener('keydown', activate);
-            // stop propagation to avoid accidental double actions
-            if (e && e.stopPropagation) e.stopPropagation();
-          }
-
-          // capture first click anywhere on the window
-          window.addEventListener('click', activate, { once: true, capture: true });
-          // also allow keyboard activation for accessibility
-          window.addEventListener('keydown', activate, { once: true, capture: true });
-          // make overlay focusable and focus it so keyboard events are caught immediately
-          try { overlay.focus(); } catch (e) {}
-        })();
-
-        /* Request notification permission politely (non-blocking) */
-        if ('Notification' in window && Notification.permission === 'default') {
-          try { Notification.requestPermission().then(p => console.log('Notification permission:', p)); } catch(e){}
-        }
-      })();
-    </script>
-  </body>
-</html>
+            timerContainer.
