@@ -257,362 +257,384 @@
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
-      (function () {
-        // little helpers
-        const $ = (s, ctx = document) => ctx.querySelector(s);
-        const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
+  (function () {
+    // little helpers
+    const $ = (s, ctx = document) => ctx.querySelector(s);
+    const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
 
-        // Clock
-        function updateClock() {
-          const now = new Date();
-          const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
-          const timeStr = now.toLocaleTimeString('en-US', optionsTime);
-          const [hours, minutes] = timeStr.split(':');
-          const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-          const dateStr = now.toLocaleDateString('en-US', optionsDate);
-          $('#time').textContent = `${hours}:${minutes}`;
-          $('#date').textContent = dateStr;
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const optionsTime = { timeZone: 'Asia/Ho_Chi_Minh', hour12: false, hour: '2-digit', minute: '2-digit' };
+      const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+      const [hours, minutes] = timeStr.split(':');
+      const optionsDate = { timeZone: 'Asia/Ho_Chi_Minh', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const dateStr = now.toLocaleDateString('en-US', optionsDate);
+      $('#time').textContent = `${hours}:${minutes}`;
+      $('#date').textContent = dateStr;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
 
-        // Icons
-        try { feather.replace(); } catch(e){}
+    // Icons
+    try { feather.replace(); } catch(e){}
 
-        /* Timer module (unchanged behavior, just uses icons from font-awesome now) */
-        (function () {
-          const card = document.querySelector('.glass-card img.profile-pic')?.closest('.glass-card') || document.querySelector('.glass-card');
-          if (!card) return;
+    // Helper: safe parse initial minutes from container attribute (fallback to 30)
+    function getInitialSeconds(timerContainer) {
+      if (!timerContainer) return 30 * 60;
+      const attr = timerContainer.getAttribute('data-initial-minutes');
+      const n = Number(attr);
+      if (!attr || Number.isNaN(n) || !isFinite(n)) return 30 * 60;
+      return Math.max(1, Math.floor(n)) * 60;
+    }
 
-          const timerContainer = document.getElementById('timer-container');
-          const timerDisplay = document.getElementById('timer-display');
-          const startPauseBtn = document.getElementById('start-pause-btn');
-          const resetBtn = document.getElementById('reset-btn');
-          const children = Array.from(card.children).filter(c => c !== timerContainer);
+    /* Timer module + audio + Media Session */
+    (function () {
+      const card = document.querySelector('.glass-card img.profile-pic')?.closest('.glass-card') || document.querySelector('.glass-card');
+      if (!card) return;
 
-          const INITIAL = 30 * 60;
-          let remaining = INITIAL, intervalId = null, running = false, showing = false;
+      const timerContainer = document.getElementById('timer-container');
+      const timerDisplay = document.getElementById('timer-display');
+      const startPauseBtn = document.getElementById('start-pause-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const children = Array.from(card.children).filter(c => c !== timerContainer);
 
-          const audio = document.getElementById('bg-music');
-          if (audio) { audio.loop = true; audio.volume = 0.6; }
+      // INITIAL duration read from DOM attribute for easy changes
+      const INITIAL = getInitialSeconds(timerContainer);
+      let remaining = INITIAL, intervalId = null, running = false, showing = false;
 
-          function fmt(sec){
-            const m = String(Math.floor(sec/60)).padStart(2,'0');
-            const s = String(Math.floor(sec%60)).padStart(2,'0');
-            return `${m}:${s}`;
-          }
-          function render(){ timerDisplay.textContent = fmt(remaining); }
+      const audio = document.getElementById('bg-music');
+      if (audio) { audio.loop = true; audio.volume = 0.6; }
 
-          function ensureNotificationPermission(){
-            if (!('Notification' in window)) return Promise.resolve('unsupported');
-            if (Notification.permission === 'granted') return Promise.resolve('granted');
-            if (Notification.permission === 'denied') return Promise.resolve('denied');
-            return Notification.requestPermission();
-          }
+      function fmt(sec){
+        const m = String(Math.floor(sec/60)).padStart(2,'0');
+        const s = String(Math.floor(sec%60)).padStart(2,'0');
+        return `${m}:${s}`;
+      }
+      function render(){ timerDisplay.textContent = fmt(remaining); }
 
-          // Show a detailed "Now playing" notification with metadata when playback starts.
-          // This includes icon, title, author, website, and uses badge + tag to keep it tidy.
-          function showNowPlayingNotification(metadata = {}) {
-            // metadata: { title, artist, album, site, icon, badge }
-            ensureNotificationPermission().then(p => {
-              if (p !== 'granted') return;
-              try {
-                const title = metadata.title ? `Now playing — ${metadata.title}` : 'Now playing';
-                const bodyParts = [];
-                if (metadata.artist) bodyParts.push(`Artist: ${metadata.artist}`);
-                if (metadata.album) bodyParts.push(`Album: ${metadata.album}`);
-                if (metadata.site) bodyParts.push(`Source: ${metadata.site}`);
-                const body = bodyParts.join('\n') || 'Playing audio from this site.';
-                const opt = {
-                  body,
-                  icon: metadata.icon || 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                  badge: metadata.badge || 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
-                  tag: 'nechannee-now-playing',
-                  renotify: false,
-                  data: {
-                    url: metadata.site || window.location.origin,
-                    title: metadata.title || '',
-                    artist: metadata.artist || ''
-                  }
-                };
-                // Show the notification
-                new Notification(title, opt);
-              } catch (err) {
-                console.warn('Notification failed:', err);
+      function ensureNotificationPermission(){
+        if (!('Notification' in window)) return Promise.resolve('unsupported');
+        if (Notification.permission === 'granted') return Promise.resolve('granted');
+        if (Notification.permission === 'denied') return Promise.resolve('denied');
+        return Notification.requestPermission();
+      }
+
+      // Show a detailed "Now playing" notification with metadata when playback starts.
+      function showNowPlayingNotification(metadata = {}) {
+        ensureNotificationPermission().then(p => {
+          if (p !== 'granted') return;
+          try {
+            const title = metadata.title ? `Now playing — ${metadata.title}` : 'Now playing';
+            const bodyParts = [];
+            if (metadata.artist) bodyParts.push(`Artist: ${metadata.artist}`);
+            if (metadata.album) bodyParts.push(`Album: ${metadata.album}`);
+            if (metadata.site) bodyParts.push(`Source: ${metadata.site}`);
+            const body = bodyParts.join('\n') || 'Playing audio from this site.';
+            const opt = {
+              body,
+              icon: metadata.icon || 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
+              badge: metadata.badge || 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
+              tag: 'nechannee-now-playing',
+              renotify: false,
+              data: {
+                url: metadata.site || window.location.origin,
+                title: metadata.title || '',
+                artist: metadata.artist || ''
               }
-            });
+            };
+            new Notification(title, opt);
+          } catch (err) {
+            console.warn('Notification failed:', err);
           }
+        });
+      }
 
-          function notifyEnd(){
-            ensureNotificationPermission().then(p => {
-              if (p === 'granted') {
-                try {
-                  new Notification('⏰ Hết giờ rồi!', {
-                    body: 'Đếm ngược đã kết thúc.',
-                    icon: 'https://cdn-icons-png.flaticon.com/512/992/992700.png',
-                    tag: 'nechannee-timer-end'
-                  });
-                }
-                catch(e){ alert('Đếm ngược kết thúc!'); }
-              } else {
-                alert('Đếm ngược kết thúc!');
-              }
-            });
-          }
-
-          function start(){
-            if (running) return;
-            running = true;
-            startPauseBtn.innerHTML = '<i class="fa fa-pause"></i>';
-            if (audio) {
-              const p = audio.play();
-              if (p && typeof p.then === 'function') {
-                p.then(() => {
-                  // Playback started — show now-playing notification with full metadata
-                  showNowPlayingNotification({
-                    title: 'Đường Tôi Chờ Em Về',
-                    artist: 'buitruonglinh',
-                    album: 'Single',
-                    site: 'channee.vercel.app',
-                    icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                    badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg'
-                  });
-                }).catch(err => {
-                  // if play is blocked for any reason, try a second time slowly
-                  console.warn('Audio play was blocked or failed:', err);
-                });
-              } else {
-                // Non-promise play (old browsers). Still attempt notification.
-                showNowPlayingNotification({
-                  title: 'Đường Tôi Chờ Em Về',
-                  artist: 'buitruonglinh',
-                  album: 'Single',
-                  site: 'channee.vercel.app',
-                  icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                  badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg'
-                });
-              }
-            }
-            intervalId = setInterval(() => {
-              if (remaining > 0) { remaining--; render(); }
-              else {
-                clearInterval(intervalId); intervalId = null; running = false;
-                startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
-                if (audio) { try { audio.pause(); audio.currentTime = 0; } catch(e){} }
-                notifyEnd();
-              }
-            }, 1000);
-          }
-
-          function pause(){
-            if (!running) return;
-            running = false;
-            clearInterval(intervalId); intervalId = null;
-            startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
-            if (audio) try { audio.pause(); } catch(e){}
-          }
-
-          function reset(){
-            pause();
-            remaining = INITIAL;
-            render();
-          }
-
-          function showTimer(){
-            if (showing) return;
-            children.forEach(c => (c.style.display = 'none'));
-            timerContainer.classList.remove('timer-hidden');
-            timerContainer.classList.add('timer-transition','timer-hide');
-            setTimeout(() => timerContainer.classList.replace('timer-hide','timer-show'), 10);
-            showing = true; render();
-          }
-
-          function hideTimer(){
-            if (!showing) return;
-            timerContainer.classList.replace('timer-show','timer-hide');
-            setTimeout(() => {
-              timerContainer.classList.add('timer-hidden');
-              children.forEach(c => (c.style.display = ''));
-            }, 500);
-            showing = false;
-          }
-
-          function toggleTimerView(){ showing ? hideTimer() : showTimer(); }
-
-          startPauseBtn.addEventListener('click', e => { e.stopPropagation(); running ? pause() : start(); });
-          resetBtn.addEventListener('click', e => { e.stopPropagation(); reset(); });
-
-          let tsX = null, tsY = null;
-          const TH = 40;
-          function handleSwipe(dx, dy){ if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > TH) toggleTimerView(); }
-
-          [card, timerContainer].forEach(el => {
-            el.addEventListener('touchstart', e => { const t = e.touches[0]; tsX = t.clientX; tsY = t.clientY; }, { passive:true });
-            el.addEventListener('touchend', e => {
-              if (tsX === null) return;
-              const t = e.changedTouches[0];
-              handleSwipe(t.clientX - tsX, t.clientY - tsY);
-              tsX = tsY = null;
-            }, { passive:true });
-          });
-
-          let mDown = false, mStartX = 0;
-          [card, timerContainer].forEach(el => {
-            el.addEventListener('mousedown', e => { mDown = true; mStartX = e.clientX; });
-          });
-          window.addEventListener('mouseup', e => {
-            if (!mDown) return; mDown = false;
-            const dx = e.clientX - mStartX;
-            if (Math.abs(dx) > TH) toggleTimerView();
-          });
-
-          card.addEventListener('dblclick', toggleTimerView);
-          timerContainer.addEventListener('dblclick', toggleTimerView);
-
-          window.addEventListener('beforeunload', () => { intervalId && clearInterval(intervalId); });
-
-          render();
-          window.__neChanneeTimer = { start, pause, reset, show: showTimer, hide: hideTimer };
-        })();
-
-        /* Hint arrows (show a few times) */
-        (function () {
-          const left = document.getElementById('arrow-left'), right = document.getElementById('arrow-right');
-          if (!left || !right) return;
-          let count = 0, max = 5;
-          const id = setInterval(() => {
-            if (count >= max) { left.remove(); right.remove(); clearInterval(id); return; }
-            count++;
-            left.classList.add('show'); right.classList.add('show');
-            setTimeout(() => { left.classList.remove('show'); right.classList.remove('show'); }, 2000);
-          }, 5000);
-        })();
-
-        /* Typewriter text + Start overlay behavior:
-           - fix audio play issue by ensuring proper MIME type (done in HTML) and invoking play on user gesture
-           - implement letter-by-letter reveal for CTA before activation
-        */
-        (function () {
-          const overlay = document.getElementById('start-overlay');
-          const main = document.getElementById('main-content');
-          const audio = document.getElementById('bg-music');
-          const cta = document.getElementById('cta-text');
-          const caret = document.getElementById('cta-caret');
-
-          if (!overlay || !main || !cta) return;
-
-          const CTA_TEXT = 'Click here';
-          let typingInterval = null;
-          let typed = '';
-
-          function startTypewriter(){
-            // ensure we don't restart if already typed
-            if (typed === CTA_TEXT) return;
-            typed = '';
-            cta.textContent = '';
-            caret.style.display = 'inline-block';
-            let i = 0;
-            typingInterval = setInterval(() => {
-              typed += CTA_TEXT[i];
-              cta.textContent = typed;
-              i++;
-              if (i >= CTA_TEXT.length) {
-                clearInterval(typingInterval);
-                typingInterval = null;
-                // keep caret flashing a while then hide it gently
-                setTimeout(() => { caret.style.opacity = '0'; setTimeout(()=> caret.style.display='none', 350); }, 900);
-              }
-            }, 120); // typing speed (ms per char)
-          }
-
-          // Start typing on load so visitor sees the animation
-          startTypewriter();
-
-          // allow spacebar key name normalization
-          const ACCEPT_KEYS = new Set(['Enter', ' ', 'Spacebar', 'Space']);
-
-          // handler to run once
-          function activate(e) {
-            // allow keyboard activation via Enter / Space
-            if (e && e.type === 'keydown' && !ACCEPT_KEYS.has(e.key)) return;
-
-            // prevent default navigation or other behavior
-            e && e.preventDefault && e.preventDefault();
-
-            // reveal main content
-            main.classList.remove('initial-hidden');
-            main.setAttribute('aria-hidden','false');
-
-            // remove overlay from DOM to let clicks go through to page
-            overlay.remove();
-
-            // Try to play audio (user gesture satisfied by this click/key)
-            if (audio) {
-              try {
-                // Ensure not muted and reset to start
-                audio.muted = false;
-                audio.currentTime = 0;
-                // Use play() and handle possible promise rejection gracefully
-                const p = audio.play();
-                if (p && typeof p.then === 'function') {
-                  p.then(() => {
-                    // show now playing notification once playback begins
-                    // NOTE: the notification is also triggered in the timer start path when user starts playback with the timer.
-                    // We call showNowPlayingNotification here if Notification permission is granted.
-                    try {
-                      if ('Notification' in window && Notification.permission === 'granted') {
-                        new Notification('Now playing — Đường Tôi Chờ Em Về', {
-                          body: 'Artist: buitruonglinh\nSource: channee.vercel.app',
-                          icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                          badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
-                          tag: 'nechannee-now-playing'
-                        });
-                      }
-                    } catch (err) { /* ignore */ }
-                  }).catch(err => {
-                    console.warn('Audio play was blocked or failed:', err);
-                  });
-                }
-              } catch (err) {
-                console.warn('Audio play exception:', err);
-              }
-            }
-
-            // small accessible feedback: animate the cta text out
+      function notifyEnd(){
+        ensureNotificationPermission().then(p => {
+          if (p === 'granted') {
             try {
-              cta.style.transition = 'transform .45s ease, opacity .45s ease';
-              cta.style.transform = 'translateY(-10px) scale(.98)';
-              cta.style.opacity = '0';
-              if (caret) { caret.style.transition = 'opacity .45s ease, transform .45s ease'; caret.style.opacity = '0'; }
-            } catch(e){}
-
-            // re-render icons if needed
-            try { feather.replace(); } catch (e) {}
-            // remove listeners
-            window.removeEventListener('click', activate);
-            window.removeEventListener('keydown', activate);
-            if (typingInterval) { clearInterval(typingInterval); typingInterval = null; }
-            // stop propagation to avoid accidental double actions
-            if (e && e.stopPropagation) e.stopPropagation();
+              new Notification('⏰ Hết giờ rồi!', {
+                body: 'Đếm ngược đã kết thúc.',
+                icon: 'https://cdn-icons-png.flaticon.com/512/992/992700.png',
+                tag: 'nechannee-timer-end'
+              });
+            }
+            catch(e){ alert('Đếm ngược kết thúc!'); }
+          } else {
+            alert('Đếm ngược kết thúc!');
           }
+        });
+      }
 
-          // capture first click anywhere on the window
-          window.addEventListener('click', activate, { once: true, capture: true });
-          // also allow keyboard activation for accessibility
-          window.addEventListener('keydown', activate, { once: true, capture: true });
-          // make overlay focusable and focus it so keyboard events are caught immediately
-          try { overlay.focus(); } catch (e) {}
+      // Media Session setup (so Android/Chrome notification shows title/artist/artwork and playback controls)
+      function setupMediaSession() {
+        if (!('mediaSession' in navigator) || !audio) return;
+        try {
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title: 'Đường Tôi Chờ Em Về',
+            artist: 'buitruonglinh',
+            album: 'Single',
+            artwork: [
+              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',   sizes: '96x96',   type: 'image/png' },
+              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '300x300', type: 'image/jpeg' },
+              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '512x512', type: 'image/jpeg' }
+            ]
+          });
 
-          // Also, restart typing if user moves away then focuses overlay again (nice UX)
-          overlay.addEventListener('focus', startTypewriter);
-          overlay.addEventListener('mouseover', startTypewriter);
-        })();
+          // Keep playbackState in sync
+          navigator.mediaSession.playbackState = audio && !audio.paused ? 'playing' : 'paused';
 
-        /* Request notification permission politely (non-blocking) */
-        if ('Notification' in window && Notification.permission === 'default') {
-          try { Notification.requestPermission().then(p => console.log('Notification permission:', p)); } catch(e){}
+          navigator.mediaSession.setActionHandler('play', async () => {
+            try { await audio.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e){}
+          });
+          navigator.mediaSession.setActionHandler('pause', () => {
+            try { audio.pause(); navigator.mediaSession.playbackState = 'paused'; } catch(e){}
+          });
+          // Optional handlers (no-op unless you implement playlist)
+          try { navigator.mediaSession.setActionHandler('previoustrack', () => { /* noop */ }); } catch(e){}
+          try { navigator.mediaSession.setActionHandler('nexttrack', () => { /* noop */ }); } catch(e){}
+
+          // Update state on audio events
+          audio.addEventListener('play', () => { try { navigator.mediaSession.playbackState = 'playing'; } catch(e){} });
+          audio.addEventListener('pause', () => { try { navigator.mediaSession.playbackState = 'paused'; } catch(e){} });
+          audio.addEventListener('ended', () => { try { navigator.mediaSession.playbackState = 'none'; } catch(e){} });
+        } catch (err) {
+          console.warn('Media Session setup failed', err);
         }
-      })();
+      }
+
+      function start(){
+        if (running) return;
+        running = true;
+        startPauseBtn.innerHTML = '<i class="fa fa-pause"></i>';
+        if (audio) {
+          const p = audio.play();
+          if (p && typeof p.then === 'function') {
+            p.then(() => {
+              setupMediaSession();
+              // show now playing notification with rich metadata (also handled by media session UI)
+              showNowPlayingNotification({
+                title: 'Đường Tôi Chờ Em Về',
+                artist: 'buitruonglinh',
+                album: 'Single',
+                site: 'channee.vercel.app',
+                icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
+                badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg'
+              });
+            }).catch(err => {
+              console.warn('Audio play was blocked or failed:', err);
+            });
+          } else {
+            // fallback for browsers without Promise-returning play()
+            setupMediaSession();
+            showNowPlayingNotification({
+              title: 'Đường Tôi Chờ Em Về',
+              artist: 'buitruonglinh',
+              album: 'Single',
+              site: 'channee.vercel.app',
+              icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
+              badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg'
+            });
+          }
+        }
+        intervalId = setInterval(() => {
+          if (remaining > 0) { remaining--; render(); }
+          else {
+            clearInterval(intervalId); intervalId = null; running = false;
+            startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+            if (audio) { try { audio.pause(); audio.currentTime = 0; } catch(e){} }
+            notifyEnd();
+          }
+        }, 1000);
+      }
+
+      function pause(){
+        if (!running) return;
+        running = false;
+        clearInterval(intervalId); intervalId = null;
+        startPauseBtn.innerHTML = '<i class="fa fa-play"></i>';
+        if (audio) try { audio.pause(); } catch(e){}
+      }
+
+      function reset(){
+        pause();
+        remaining = INITIAL;
+        render();
+      }
+
+      function showTimer(){
+        if (showing) return;
+        children.forEach(c => (c.style.display = 'none'));
+        timerContainer.classList.remove('timer-hidden');
+        timerContainer.classList.add('timer-transition','timer-hide');
+        setTimeout(() => timerContainer.classList.replace('timer-hide','timer-show'), 10);
+        showing = true; render();
+      }
+
+      function hideTimer(){
+        if (!showing) return;
+        timerContainer.classList.replace('timer-show','timer-hide');
+        setTimeout(() => {
+          timerContainer.classList.add('timer-hidden');
+          children.forEach(c => (c.style.display = ''));
+        }, 500);
+        showing = false;
+      }
+
+      function toggleTimerView(){ showing ? hideTimer() : showTimer(); }
+
+      startPauseBtn.addEventListener('click', e => { e.stopPropagation(); running ? pause() : start(); });
+      resetBtn.addEventListener('click', e => { e.stopPropagation(); reset(); });
+
+      let tsX = null, tsY = null;
+      const TH = 40;
+      function handleSwipe(dx, dy){ if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > TH) toggleTimerView(); }
+
+      [card, timerContainer].forEach(el => {
+        el.addEventListener('touchstart', e => { const t = e.touches[0]; tsX = t.clientX; tsY = t.clientY; }, { passive:true });
+        el.addEventListener('touchend', e => {
+          if (tsX === null) return;
+          const t = e.changedTouches[0];
+          handleSwipe(t.clientX - tsX, t.clientY - tsY);
+          tsX = tsY = null;
+        }, { passive:true });
+      });
+
+      let mDown = false, mStartX = 0;
+      [card, timerContainer].forEach(el => {
+        el.addEventListener('mousedown', e => { mDown = true; mStartX = e.clientX; });
+      });
+      window.addEventListener('mouseup', e => {
+        if (!mDown) return; mDown = false;
+        const dx = e.clientX - mStartX;
+        if (Math.abs(dx) > TH) toggleTimerView();
+      });
+
+      card.addEventListener('dblclick', toggleTimerView);
+      timerContainer.addEventListener('dblclick', toggleTimerView);
+
+      window.addEventListener('beforeunload', () => { intervalId && clearInterval(intervalId); });
+
+      // initial render
+      render();
+
+      // expose control API for debugging
+      window.__neChanneeTimer = { start, pause, reset, show: showTimer, hide: hideTimer, getRemaining: () => remaining, getInitial: () => INITIAL };
+    })();
+
+    /* Hint arrows (show a few times) */
+    (function () {
+      const left = document.getElementById('arrow-left'), right = document.getElementById('arrow-right');
+      if (!left || !right) return;
+      let count = 0, max = 5;
+      const id = setInterval(() => {
+        if (count >= max) { left.remove(); right.remove(); clearInterval(id); return; }
+        count++;
+        left.classList.add('show'); right.classList.add('show');
+        setTimeout(() => { left.classList.remove('show'); right.classList.remove('show'); }, 2000);
+      }, 5000);
+    })();
+
+    /* Typewriter text + Start overlay behavior */
+    (function () {
+      const overlay = document.getElementById('start-overlay');
+      const main = document.getElementById('main-content');
+      const audio = document.getElementById('bg-music');
+      const cta = document.getElementById('cta-text');
+      const caret = document.getElementById('cta-caret');
+
+      if (!overlay || !main || !cta) return;
+
+      const CTA_TEXT = 'Click here';
+      let typingInterval = null;
+      let typed = '';
+
+      function startTypewriter(){
+        if (typed === CTA_TEXT) return;
+        typed = '';
+        cta.textContent = '';
+        caret.style.display = 'inline-block';
+        let i = 0;
+        typingInterval = setInterval(() => {
+          typed += CTA_TEXT[i];
+          cta.textContent = typed;
+          i++;
+          if (i >= CTA_TEXT.length) {
+            clearInterval(typingInterval);
+            typingInterval = null;
+            setTimeout(() => { caret.style.opacity = '0'; setTimeout(()=> caret.style.display='none', 350); }, 900);
+          }
+        }, 120);
+      }
+
+      startTypewriter();
+
+      const ACCEPT_KEYS = new Set(['Enter', ' ', 'Spacebar', 'Space']);
+
+      function activate(e) {
+        if (e && e.type === 'keydown' && !ACCEPT_KEYS.has(e.key)) return;
+        e && e.preventDefault && e.preventDefault();
+
+        main.classList.remove('initial-hidden');
+        main.setAttribute('aria-hidden','false');
+
+        overlay.remove();
+
+        if (audio) {
+          try {
+            audio.muted = false;
+            audio.currentTime = 0;
+            const p = audio.play();
+            if (p && typeof p.then === 'function') {
+              p.then(() => {
+                // fire a notification if permissions already granted
+                try {
+                  if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('Now playing — Đường Tôi Chờ Em Về', {
+                      body: 'Artist: buitruonglinh\nSource: channee.vercel.app',
+                      icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
+                      badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
+                      tag: 'nechannee-now-playing'
+                    });
+                  }
+                } catch (err) { /* ignore */ }
+              }).catch(err => {
+                console.warn('Audio play was blocked or failed:', err);
+              });
+            }
+          } catch (err) {
+            console.warn('Audio play exception:', err);
+          }
+        }
+
+        try {
+          cta.style.transition = 'transform .45s ease, opacity .45s ease';
+          cta.style.transform = 'translateY(-10px) scale(.98)';
+          cta.style.opacity = '0';
+          if (caret) { caret.style.transition = 'opacity .45s ease, transform .45s ease'; caret.style.opacity = '0'; }
+        } catch(e){}
+
+        try { feather.replace(); } catch (e) {}
+        window.removeEventListener('click', activate);
+        window.removeEventListener('keydown', activate);
+        if (typingInterval) { clearInterval(typingInterval); typingInterval = null; }
+        if (e && e.stopPropagation) e.stopPropagation();
+      }
+
+      window.addEventListener('click', activate, { once: true, capture: true });
+      window.addEventListener('keydown', activate, { once: true, capture: true });
+      try { overlay.focus(); } catch (e) {}
+
+      overlay.addEventListener('focus', startTypewriter);
+      overlay.addEventListener('mouseover', startTypewriter);
+    })();
+
+    /* Request notification permission politely (non-blocking) */
+    if ('Notification' in window && Notification.permission === 'default') {
+      try { Notification.requestPermission().then(p => console.log('Notification permission:', p)); } catch(e){}
+    }
+  })();
     </script>
   </body>
 </html>
