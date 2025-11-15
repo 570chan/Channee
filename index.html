@@ -161,6 +161,10 @@
         #timer-display{ font-size:2rem; }
         .brand-title{ font-size:1.75rem; }
       }
+      /* small helper to hide scrollbar elegantly */
+    .no-scrollbar::-webkit-scrollbar { height: 8px; }
+    .no-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 8px; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: thin; }
     </style>
   </head>
 
@@ -249,6 +253,52 @@
     <div id="audio-fallback" style="position:fixed; right:16px; bottom:16px; z-index:9999; display:none;">
       <button id="audio-play-btn" style="padding:10px 14px;border-radius:10px;background:#111;color:#fff;border:none;box-shadow:0 6px 18px rgba(0,0,0,.12);">Play music</button>
     </div>
+    <!-- Footer component: paste vào trước </body> -->
+<footer id="site-footer" class="w-full border-t border-gray-200 bg-white/60 backdrop-blur-sm py-4">
+  <div class="max-w-5xl mx-auto px-4 flex items-center gap-4 justify-between flex-wrap">
+    <!-- Left: language / small links -->
+    <div class="flex items-center gap-4 text-sm text-gray-600">
+      <div class="flex items-center gap-2">
+        <a href="#" class="hover:underline" data-footer-key="langJP">JP</a>
+        <span aria-hidden="true" class="text-gray-300">|</span>
+        <a href="#" class="hover:underline" data-footer-key="langEN">EN</a>
+      </div>
+
+      <div class="hidden sm:flex items-center gap-2"> 
+        <span aria-hidden="true" class="text-gray-300">|</span>
+        <a href="#" class="hover:underline" data-footer-key="linkContact">CONTACT</a>
+        <span aria-hidden="true" class="text-gray-300">|</span>
+        <a href="#" class="hover:underline" data-footer-key="linkPrivacy">PRIVACY POLICY</a>
+      </div>
+    </div>
+
+    <!-- Center: copyright / small note (mobile xuống giữa) -->
+    <div class="text-xs text-gray-500 text-center flex-1 sm:flex-none">
+      <div id="footer-copy" data-footer-key="copyright">ANIPLEX.EXE 作成物に対するガイドライン<br>© Aniplex Inc. All rights reserved.</div>
+    </div>
+
+    <!-- Right: sponsor / banner logos (scrollable on small screens) -->
+    <div class="flex-1 sm:flex-none mt-3 sm:mt-0">
+      <div class="flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
+        <!-- Each .footer-logo item editable (change href or img src) -->
+        <a class="footer-logo inline-block flex-shrink-0" href="#" target="_blank" rel="noopener noreferrer" aria-label="Sponsor 1">
+          <img src="https://placehold.co/120x40?text=Banner1" alt="banner 1" class="h-10 object-contain" />
+        </a>
+        <a class="footer-logo inline-block flex-shrink-0" href="#" target="_blank" rel="noopener noreferrer" aria-label="Sponsor 2">
+          <img src="https://placehold.co/120x40?text=Banner2" alt="banner 2" class="h-10 object-contain" />
+        </a>
+        <a class="footer-logo inline-block flex-shrink-0" href="#" target="_blank" rel="noopener noreferrer" aria-label="Sponsor 3">
+          <img src="https://placehold.co/120x40?text=Banner3" alt="banner 3" class="h-10 object-contain" />
+        </a>
+        <a class="footer-logo inline-block flex-shrink-0" href="#" target="_blank" rel="noopener noreferrer" aria-label="Sponsor 4">
+          <img src="https://placehold.co/120x40?text=Banner4" alt="banner 4" class="h-10 object-contain" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Edit button (developer convenience). Remove or hide in production. -->
+    <button id="footer-edit-btn" title="Edit footer (dev only)" class="ml-3 text-xs text-gray-400 hover:text-gray-700 hidden sm:inline">Edit</button>
+  </div>
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
