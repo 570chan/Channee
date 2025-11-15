@@ -394,41 +394,88 @@
 
       // Media Session setup (so Android/Chrome notification shows title/artist/artwork and playback controls)
       function setupMediaSession() {
-        if (!('mediaSession' in navigator) || !audio) return;
-        try {
-          navigator.mediaSession.metadata = new MediaMetadata({
-            title: 'Đường Tôi Chờ Em Về',
-            artist: 'buitruonglinh',
-            album: 'Single',
-            artwork: [
-              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',   sizes: '96x96',   type: 'image/png' },
-              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '300x300', type: 'image/jpeg' },
-              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '512x512', type: 'image/jpeg' }
-            ]
-          });
+  if (!('mediaSession' in navigator) || !audio) return;
+  try {
+    // Metadata (thêm artwork array)
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: 'Tuyệt Sắc',
+      artist: 'ogrin',
+      album: 'Single',
+      artwork: [
+        { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',   sizes: '96x96',   type: 'image/png' },
+        { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '300x300', type: 'image/jpeg' },
+        { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '512x512', type: 'image/jpeg' }
+      ]
+    });
 
-          // Keep playbackState in sync
-          navigator.mediaSession.playbackState = audio && !audio.paused ? 'playing' : 'paused';
+    // playbackState (sync)
+    try { navigator.mediaSession.playbackState = audio && !audio.paused ? 'playing' : 'paused'; } catch(e){}
 
-          navigator.mediaSession.setActionHandler('play', async () => {
-            try { await audio.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e){}
-          });
-          navigator.mediaSession.setActionHandler('pause', () => {
-            try { audio.pause(); navigator.mediaSession.playbackState = 'paused'; } catch(e){}
-          });
-          // Optional handlers (no-op unless you implement playlist)
-          try { navigator.mediaSession.setActionHandler('previoustrack', () => { /* noop */ }); } catch(e){}
-          try { navigator.mediaSession.setActionHandler('nexttrack', () => { /* noop */ }); } catch(e){}
+    // Basic handlers
+    navigator.mediaSession.setActionHandler('play', async () => {
+      try { await audio.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e){}
+    });
+    navigator.mediaSession.setActionHandler('pause', () => {
+      try { audio.pause(); navigator.mediaSession.playbackState = 'paused'; } catch(e){}
+    });
+    navigator.mediaSession.setActionHandler('stop', () => {
+      try { audio.pause(); audio.currentTime = 0; navigator.mediaSession.playbackState = 'none'; } catch(e){}
+    });
+    navigator.mediaSession.setActionHandler('previoustrack', () => { /* optional */ });
+    navigator.mediaSession.setActionHandler('nexttrack', () => { /* optional */ });
 
-          // Update state on audio events
-          audio.addEventListener('play', () => { try { navigator.mediaSession.playbackState = 'playing'; } catch(e){} });
-          audio.addEventListener('pause', () => { try { navigator.mediaSession.playbackState = 'paused'; } catch(e){} });
-          audio.addEventListener('ended', () => { try { navigator.mediaSession.playbackState = 'none'; } catch(e){} });
-        } catch (err) {
-          console.warn('Media Session setup failed', err);
+    // Seek handlers (important để Chrome hiện controls tua)
+    navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+      try {
+        const skip = (details && details.seekOffset) || 10; // mặc định 10s
+        audio.currentTime = Math.max(0, audio.currentTime - skip);
+        updatePositionState(); // cập nhật ngay
+      } catch(e){}
+    });
+    navigator.mediaSession.setActionHandler('seekforward', (details) => {
+      try {
+        const skip = (details && details.seekOffset) || 10;
+        audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + skip);
+        updatePositionState();
+      } catch(e){}
+    });
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+      try {
+        // details.seekTime is provided by the UI when user drags the seekbar
+        if (details && typeof details.seekTime === 'number') {
+          audio.currentTime = details.seekTime;
+          updatePositionState();
         }
-      }
+      } catch(e){}
+    });
 
+    // Position state helper (required để UI hiển thị progress / tua)
+    function updatePositionState(){
+      if (!('setPositionState' in navigator.mediaSession)) return;
+      try {
+        const duration = isFinite(audio.duration) ? audio.duration : 0;
+        navigator.mediaSession.setPositionState({
+          duration: duration,
+          playbackRate: audio.playbackRate || 1,
+          position: audio.currentTime || 0
+        });
+      } catch(e){}
+    }
+
+    // Khi metadata audio sẵn sàng, cập nhật duration
+    audio.addEventListener('loadedmetadata', updatePositionState);
+    // cập nhật thường xuyên khi chạy
+    audio.addEventListener('timeupdate', function(){
+      // throttle để không gọi quá nhiều (bạn có thể throttle nếu cần)
+      updatePositionState();
+    });
+    audio.addEventListener('play', function(){ try { navigator.mediaSession.playbackState = 'playing'; updatePositionState(); } catch(e){} });
+    audio.addEventListener('pause', function(){ try { navigator.mediaSession.playbackState = 'paused'; updatePositionState(); } catch(e){} });
+
+  } catch (err) {
+    console.warn('Media Session setup failed', err);
+  }
+      }
       function start(){
         if (running) return;
         running = true;
