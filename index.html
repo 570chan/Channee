@@ -112,36 +112,6 @@
         background-size:cover; background-position:center; color:#fff;
       }
 
-      /* START overlay */
-      #start-overlay{
-        position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9998;
-        background: rgba(255,255,255,0.55);
-        backdrop-filter: blur(6px) saturate(1.05);
-        -webkit-backdrop-filter: blur(6px);
-        cursor: pointer;
-        transition: opacity .35s ease, transform .35s ease;
-      }
-      #start-overlay.hidden{ opacity:0; pointer-events:none; transform:translateY(-6px) scale(.995); }
-
-      #start-overlay .cta{
-        background: transparent;
-        color: var(--fg);
-        padding: 10px 22px;
-        border-radius: 14px;
-        font-size:1.25rem; font-weight:700;
-        box-shadow: 0 12px 36px rgba(255,255,255,0.28), 0 6px 18px rgba(0,0,0,0.08);
-        transform: translateY(0);
-        transition: transform 220ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, filter 220ms ease, opacity .35s ease;
-        font-family: inherit;
-        letter-spacing: .4px;
-        outline: none;
-        display:inline-block;
-        white-space:nowrap;
-      }
-      #start-overlay .cta:hover{ transform: translateY(-4px) scale(1.02); box-shadow: 0 18px 56px rgba(255,255,255,0.32), 0 10px 28px rgba(0,0,0,0.10); }
-
-      .initial-hidden{ display:none; }
-
       .brand-title {
         background: linear-gradient(90deg, #ffe38a 0%, #ffd1f0 30%, #bde6ff 60%, #c9b3ff 100%);
         -webkit-background-clip: text;
@@ -152,9 +122,6 @@
       }
       .brand-animate { animation: floatText 2.4s ease-in-out infinite; transform-origin:center; }
       @keyframes floatText { 0%{ transform: translateY(0) } 50%{ transform: translateY(-3px) } 100%{ transform: translateY(0) } }
-
-      .typewriter-caret{ display:inline-block; width:2px; height:1.1em; background: linear-gradient(180deg, #fff, #ddd); margin-left:6px; vertical-align:middle; animation: blink 1s steps(2,start) infinite; }
-      @keyframes blink{ 50%{ opacity:0 } }
 
       /* small responsive tweaks */
       @media (max-width:420px){
@@ -177,20 +144,8 @@
     <!-- Watercolor overlay -->
     <div class="watercolor-overlay" aria-hidden="true"></div>
 
-    <!-- Background audio -->
-    <audio id="bg-music" preload="auto" playsinline loop crossorigin="anonymous">
-      <source src="https://s3.tebi.io/ely.bucket.s0.io.biti/your-audio-file.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-
-    <!-- START overlay that captures the first click/tap anywhere -->
-    <div id="start-overlay" role="button" aria-label="click" tabindex="0">
-      <div class="cta" id="cta-text" aria-hidden="false"></div>
-      <span class="typewriter-caret" id="cta-caret" aria-hidden="true"></span>
-    </div>
-
-    <!-- Main content hidden initially; will fade in after overlay click -->
-    <div id="main-content" class="max-w-md w-full mx-auto fade-in initial-hidden" aria-hidden="true">
+    <!-- Main content visible immediately (overlay removed) -->
+    <div id="main-content" class="max-w-md w-full mx-auto fade-in" aria-hidden="false">
       <!-- Profile card -->
       <div class="glass-card p-8 mb-8 text-center fade-in-card" role="region" aria-label="Hồ sơ">
         <div class="flex justify-center mb-6">
@@ -249,11 +204,6 @@
       </div>
     </div>
 
-    <!-- Minimal play fallback if autoplay blocked -->
-    <div id="audio-fallback" style="position:fixed; right:16px; bottom:16px; z-index:9999; display:none;">
-      <button id="audio-play-btn" style="padding:10px 14px;border-radius:10px;background:#111;color:#fff;border:none;box-shadow:0 6px 18px rgba(0,0,0,.12);">Play music</button>
-    </div>
-   
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
   (function () {
@@ -285,7 +235,7 @@
       return Math.max(1, Math.floor(n)) * 60;
     }
 
-    /* Timer + audio + Media Session */
+    /* Timer (removed audio & notifications) */
     (function () {
       const card = document.querySelector('.glass-card img.profile-pic')?.closest('.glass-card') || document.querySelector('.glass-card');
       if (!card) return;
@@ -299,9 +249,6 @@
       const INITIAL = getInitialSeconds(timerContainer);
       let remaining = INITIAL, intervalId = null, running = false, showing = false;
 
-      const audio = document.getElementById('bg-music');
-      if (audio) { audio.loop = true; audio.volume = 0.6; audio.muted = true; /* start muted until user action */ }
-
       function fmt(sec){
         const m = String(Math.floor(sec/60)).padStart(2,'0');
         const s = String(Math.floor(sec%60)).padStart(2,'0');
@@ -309,118 +256,11 @@
       }
       function render(){ timerDisplay.textContent = fmt(remaining); }
 
-      function ensureNotificationPermission(){
-        if (!('Notification' in window)) return Promise.resolve('unsupported');
-        if (Notification.permission === 'granted') return Promise.resolve('granted');
-        if (Notification.permission === 'denied') return Promise.resolve('denied');
-        return Notification.requestPermission();
-      }
-
-      function showNowPlayingNotification(metadata = {}) {
-        ensureNotificationPermission().then(p => {
-          if (p !== 'granted') return;
-          try {
-            const title = metadata.title ? `Now playing — ${metadata.title}` : 'Now playing';
-            const bodyParts = [];
-            if (metadata.artist) bodyParts.push(`Artist: ${metadata.artist}`);
-            if (metadata.album) bodyParts.push(`Album: ${metadata.album}`);
-            if (metadata.site) bodyParts.push(`Source: ${metadata.site}`);
-            const body = bodyParts.join('\n') || 'Playing audio from this site.';
-            const opt = {
-              body,
-              icon: metadata.icon || 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-              badge: metadata.badge || 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
-              tag: 'nechannee-now-playing',
-              renotify: false,
-              data: {
-                url: metadata.site || window.location.origin,
-                title: metadata.title || '',
-                artist: metadata.artist || ''
-              }
-            };
-            new Notification(title, opt);
-          } catch (err) {
-            console.warn('Notification failed:', err);
-          }
-        });
-      }
-
       function notifyEnd(){
-        ensureNotificationPermission().then(p => {
-          if (p === 'granted') {
-            try {
-              new Notification('⏰ Hết giờ rồi!', {
-                body: 'Đếm ngược đã kết thúc.',
-                icon: 'https://cdn-icons-png.flaticon.com/512/992/992700.png',
-                tag: 'nechannee-timer-end'
-              });
-            }
-            catch(e){ alert('Đếm ngược kết thúc!'); }
-          } else {
-            alert('Đếm ngược kết thúc!');
-          }
-        });
-      }
-
-      function setupMediaSession() {
-        if (!('mediaSession' in navigator) || !audio) return;
+        // simplified: use alert when timer ends
         try {
-          navigator.mediaSession.metadata = new MediaMetadata({
-            title: 'Đường Tôi Chờ Em Về',
-            artist: 'buitruonglinh',
-            album: 'Single',
-            artwork: [
-              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg', sizes: '300x300', type: 'image/jpeg' },
-              { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg', sizes: '96x96', type: 'image/png' }
-            ]
-          });
-          try { navigator.mediaSession.playbackState = audio && !audio.paused ? 'playing' : 'paused'; } catch(e){}
-          navigator.mediaSession.setActionHandler('play', async () => { try { await audio.play(); navigator.mediaSession.playbackState = 'playing'; } catch(e){} });
-          navigator.mediaSession.setActionHandler('pause', () => { try { audio.pause(); navigator.mediaSession.playbackState = 'paused'; } catch(e){} });
-          navigator.mediaSession.setActionHandler('stop', () => { try { audio.pause(); audio.currentTime = 0; navigator.mediaSession.playbackState = 'none'; } catch(e){} });
-
-          navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-            try {
-              const skip = (details && details.seekOffset) || 10;
-              audio.currentTime = Math.max(0, audio.currentTime - skip);
-              updatePositionState();
-            } catch(e){}
-          });
-          navigator.mediaSession.setActionHandler('seekforward', (details) => {
-            try {
-              const skip = (details && details.seekOffset) || 10;
-              audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + skip);
-              updatePositionState();
-            } catch(e){}
-          });
-          navigator.mediaSession.setActionHandler('seekto', (details) => {
-            try {
-              if (details && typeof details.seekTime === 'number') {
-                audio.currentTime = details.seekTime;
-                updatePositionState();
-              }
-            } catch(e){}
-          });
-
-          function updatePositionState(){
-            if (!('setPositionState' in navigator)) return;
-            try {
-              const duration = isFinite(audio.duration) ? audio.duration : 0;
-              navigator.mediaSession.setPositionState({
-                duration: duration,
-                playbackRate: audio.playbackRate || 1,
-                position: audio.currentTime || 0
-              });
-            } catch(e){}
-          }
-
-          audio.addEventListener('loadedmetadata', updatePositionState);
-          audio.addEventListener('timeupdate', updatePositionState);
-          audio.addEventListener('play', () => { try { navigator.mediaSession.playbackState = 'playing'; updatePositionState(); } catch(e){} });
-          audio.addEventListener('pause', () => { try { navigator.mediaSession.playbackState = 'paused'; updatePositionState(); } catch(e){} });
-        } catch (err) {
-          console.warn('Media Session setup failed', err);
-        }
+          alert('⏰ Hết giờ rồi! Đếm ngược đã kết thúc.');
+        } catch(e){}
       }
 
       function start(){
@@ -428,37 +268,13 @@
         running = true;
         startPauseBtn.innerHTML = '<i class="fa fa-pause" aria-hidden="true"></i>';
         startPauseBtn.setAttribute('aria-pressed','true');
-        if (audio) {
-          audio.muted = false;
-          const p = audio.play();
-          if (p && typeof p.then === 'function') {
-            p.then(() => {
-              setupMediaSession();
-              showNowPlayingNotification({
-                title: 'Đường Tôi Chờ Em Về',
-                artist: 'buitruonglinh',
-                album: 'Single',
-                site: 'channee.vercel.app',
-                icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg'
-              });
-              // hide audio fallback if visible
-              const fallback = document.getElementById('audio-fallback'); if (fallback) fallback.style.display='none';
-            }).catch(err => {
-              console.warn('Audio play was blocked or failed:', err);
-              const fallback = document.getElementById('audio-fallback'); if (fallback) fallback.style.display='';
-            });
-          } else {
-            setupMediaSession();
-          }
-        }
+
         intervalId = setInterval(() => {
           if (remaining > 0) { remaining--; render(); }
           else {
             clearInterval(intervalId); intervalId = null; running = false;
             startPauseBtn.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';
             startPauseBtn.setAttribute('aria-pressed','false');
-            if (audio) { try { audio.pause(); audio.currentTime = 0; } catch(e){} }
             notifyEnd();
           }
         }, 1000);
@@ -470,7 +286,6 @@
         clearInterval(intervalId); intervalId = null;
         startPauseBtn.innerHTML = '<i class="fa fa-play" aria-hidden="true"></i>';
         startPauseBtn.setAttribute('aria-pressed','false');
-        if (audio) try { audio.pause(); } catch(e){}
       }
 
       function reset(){
@@ -553,135 +368,7 @@
       }, 4500);
     })();
 
-    /* Start overlay + typewriter */
-    (function () {
-      const overlay = document.getElementById('start-overlay');
-      const main = document.getElementById('main-content');
-      const audio = document.getElementById('bg-music');
-      const cta = document.getElementById('cta-text');
-      const caret = document.getElementById('cta-caret');
-
-      if (!overlay || !main || !cta) return;
-
-      const CTA_TEXT = 'Bắt đầu';
-      let typingInterval = null;
-      let typed = '';
-
-      function startTypewriter(){
-        if (typed === CTA_TEXT) return;
-        typed = '';
-        cta.textContent = '';
-        if (caret) caret.style.display = 'inline-block';
-        let i = 0;
-        typingInterval = setInterval(() => {
-          typed += CTA_TEXT[i];
-          cta.textContent = typed;
-          i++;
-          if (i >= CTA_TEXT.length) {
-            clearInterval(typingInterval);
-            typingInterval = null;
-            setTimeout(() => { if (caret) { caret.style.opacity = '0'; setTimeout(()=> caret.style.display='none', 350); } }, 900);
-          }
-        }, 120);
-      }
-
-      startTypewriter();
-
-      const ACCEPT_KEYS = new Set(['Enter', ' ', 'Spacebar', 'Space']);
-
-      function finalizeOverlayRemoval(element) {
-        try {
-          element.remove();
-        } catch (e) {
-          // fallback
-          element.classList.add('hidden');
-          setTimeout(() => element.parentNode && element.parentNode.removeChild(element), 600);
-        }
-      }
-
-      function showMain(){
-        main.classList.remove('initial-hidden');
-        main.setAttribute('aria-hidden','false');
-      }
-
-      function activate(e) {
-        if (e && e.type === 'keydown' && !ACCEPT_KEYS.has(e.key)) return;
-        e && e.preventDefault && e.preventDefault();
-
-        // reveal main content
-        showMain();
-
-        // animate and remove overlay
-        overlay.classList.add('hidden');
-        setTimeout(() => finalizeOverlayRemoval(overlay), 420);
-
-        // try to play audio, if blocked show fallback play button
-        if (audio) {
-          try {
-            audio.muted = false;
-            audio.currentTime = 0;
-            const p = audio.play();
-            if (p && typeof p.then === 'function') {
-              p.then(() => {
-                try {
-                  if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification('Now playing — Đường Tôi Chờ Em Về', {
-                      body: 'Artist: buitruonglinh\nSource: channee.vercel.app',
-                      icon: 'https://s3.tebi.io/ely.bucket.s0.io.biti/282097915f9d08ecbe8b367d00ac7a22.jpg',
-                      badge: 'https://s3.tebi.io/ely.bucket.s0.io.biti/downloaded-file.png.jpg',
-                      tag: 'nechannee-now-playing'
-                    });
-                  }
-                } catch (err) { /* ignore */ }
-              }).catch(err => {
-                console.warn('Audio play was blocked or failed:', err);
-                const fallback = document.getElementById('audio-fallback'); if (fallback) fallback.style.display='';
-              });
-            }
-          } catch (err) {
-            console.warn('Audio play exception:', err);
-            const fallback = document.getElementById('audio-fallback'); if (fallback) fallback.style.display='';
-          }
-        }
-
-        try {
-          cta.style.transform = 'translateY(-10px) scale(.98)';
-          cta.style.opacity = '0';
-          if (caret) { caret.style.opacity = '0'; }
-        } catch(e){}
-
-        try { feather.replace(); } catch (e) {}
-        window.removeEventListener('click', activate);
-        window.removeEventListener('keydown', activate);
-        if (typingInterval) { clearInterval(typingInterval); typingInterval = null; }
-        if (e && e.stopPropagation) e.stopPropagation();
-      }
-
-      window.addEventListener('click', activate, { once: true, capture: true });
-      window.addEventListener('keydown', activate, { once: true, capture: true });
-      try { overlay.focus(); } catch (e) {}
-
-      overlay.addEventListener('focus', startTypewriter);
-      overlay.addEventListener('mouseover', startTypewriter);
-
-      // fallback audio play button control
-      const fallbackBtn = document.getElementById('audio-play-btn');
-      if (fallbackBtn && audio) {
-        fallbackBtn.addEventListener('click', () => {
-          audio.muted = false;
-          audio.play().then(() => {
-            document.getElementById('audio-fallback').style.display='none';
-          }).catch(err => {
-            console.warn('Fallback play failed:', err);
-          });
-        });
-      }
-    })();
-
-    /* Request notification permission politely (non-blocking) */
-    if ('Notification' in window && Notification.permission === 'default') {
-      try { Notification.requestPermission().then(p => console.log('Notification permission:', p)); } catch(e){}
-    }
+    try { feather.replace(); } catch (e) {}
   })();
     </script>
   </body>
