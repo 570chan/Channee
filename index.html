@@ -43,6 +43,7 @@
 
       /* Cards baseline */
       .glass-card{
+        position: relative;
         background:transparent;
         border:2px solid rgba(255,255,255,0.65);
         border-radius:16px;
@@ -53,8 +54,22 @@
       }
       .profile-pic{ transition:transform .3s; box-shadow:0 2px 18px rgba(0,0,0,.13); }
       .profile-pic:hover{ transform:scale(1.05); }
-      .link-card{ background:var(--glass); transition:transform .3s,box-shadow .3s; display:block; text-align:left; border:none; }
-      .link-card:hover{ transform:translateY(-4px) scale(1.02); box-shadow:0 10px 25px -5px rgba(0,0,0,.14); }
+      .link-card{
+        display:block;
+        background:var(--glass);
+        color:var(--fg);
+        padding:1rem;
+        border-radius:12px;
+        border:1px solid rgba(255,255,255,0.35);
+        transition:transform .25s, box-shadow .25s, background .25s;
+        text-decoration:none;
+        overflow:hidden;
+        position:relative;
+      }
+      .link-card:hover{
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      }
 
       /* fade-in */
       .fade-in{ opacity:0; animation:fadeIn 3s cubic-bezier(.42,0,.58,1) forwards; }
@@ -111,7 +126,15 @@
 
       .link-card[href*="#"]{
         background-image:url('https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg');
-        background-size:cover; background-position:center; color:#fff;
+        background-size:cover; background-position:center; color:#fff; border:0;
+      }
+      .link-card[href*="#"]::after{
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.38));
+        pointer-events: none;
+        border-radius: 12px;
       }
 
       .brand-title {
@@ -201,20 +224,20 @@
         <div id="arrow-right" class="hint-arrow" aria-hidden="true">→</div>
       </div>
 
-      <!-- Links / Music toggle (use button to ensure user gesture) -->
+      <!-- Links / Music toggle (restored as anchor with background image) -->
       <div class="space-y-4">
-        <button type="button" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Công tắc phát nhạc" aria-pressed="false">
+        <a href="#" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Công tắc phát nhạc" role="button" aria-pressed="false">
           <div class="flex items-center">
             <div class="mr-4 flex items-center" aria-hidden="true"></div>
             <div>
-              <h3 class="font-medium text-black">Kirara Magic - By the Seaside (feat. Kitsui Akira)</h3>
-              <p class="text-sm text-white">on/off music</p>
+              <h3 class="font-medium">Kirara Magic - By the Seaside (feat. Kitsui Akira)</h3>
+              <p class="text-sm">on/off music</p>
             </div>
           </div>
-          <ul class="mt-3 space-y-1 text-sm text-white">
+          <ul class="mt-3 space-y-1 text-sm">
             <li>• <b>air</b> _.570chan</li>
           </ul>
-        </button>
+        </a>
       </div>
     </div>
 
@@ -382,7 +405,7 @@
       }, 4500);
     })();
 
-    // Music toggle: bật / tắt nhạc khi click vào nút (button)
+    // Music toggle: bật / tắt nhạc khi click vào "Công tắc phát nhạc" (anchor restored)
     (function () {
       const link = document.querySelector('.link-card');
       const audio = document.getElementById('music-player');
@@ -484,7 +507,6 @@
           updateNowPlayingUI(true);
         } catch (err) {
           console.warn('Audio play failed:', err);
-          // user gesture required — show a hint (alert for debug). Replace with nicer UI in production.
           try { alert('Trình duyệt có thể chặn phát tự động. Hãy bấm lại để cho phép phát nhạc.'); } catch(e){}
         }
       }
@@ -515,16 +537,15 @@
       }
 
       link.addEventListener('click', function (e) {
-        // button: no need preventDefault but keep stopPropagation to avoid toggling timer by parent listeners
+        // prevent anchor navigation, stop propagation to avoid other toggles
+        e.preventDefault();
         e.stopPropagation();
 
         // If a fade is in progress, reverse appropriately
         if (fade.active) {
           if (fade.to === 0) {
-            // was fading out -> switch to play
             playWithFade();
           } else {
-            // was fading in -> switch to pause
             pauseWithFade();
           }
           return;
