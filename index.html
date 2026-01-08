@@ -381,40 +381,122 @@
       const audio = document.getElementById('music-player');
       if (!link || !audio) return;
 
+      // Configurable fade settings
+      const TARGET_VOLUME = 0.85; // volume level when fully on (0.0 - 1.0)
+      const FADE_DURATION = 800; // ms for fade in/out
+
       // Ensure accessible initial state
       link.setAttribute('role', 'button');
       link.setAttribute('aria-pressed', 'false');
 
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-        // toggle play/pause
-        if (audio.paused) {
-          // try to play (returns a promise)
-          const p = audio.play();
-          if (p && typeof p.then === 'function') {
-            p.then(() => {
-              link.setAttribute('aria-pressed', 'true');
-              const h3 = link.querySelector('h3');
-              if (h3) h3.textContent = 'Tắt phát nhạc';
-            }).catch(() => {
-              // play failed (autoplay policy or other), leave UI unchanged
-            });
+      // initialize audio volume (in case it isn't set)
+      if (typeof audio.volume === 'number') audio.volume = 0;
+
+      // Fade controller
+      let fade = { raf: null, startTime: 0, from: 0, to: 0, duration: 0, active: false };
+
+      function cancelFade() {
+        if (fade.raf) {
+          cancelAnimationFrame(fade.raf);
+          fade.raf = null;
+          fade.active = false;
+        }
+      }
+
+      function fadeTo(target, duration = FADE_DURATION, onComplete) {
+        cancelFade();
+        fade.from = audio.volume;
+        fade.to = Math.max(0, Math.min(1, target));
+        fade.duration = Math.max(0, duration);
+        fade.startTime = performance.now();
+        fade.active = true;
+
+        function step(now) {
+          const elapsed = now - fade.startTime;
+          const t = fade.duration === 0 ? 1 : Math.min(1, elapsed / fade.duration);
+          const v = fade.from + (fade.to - fade.from) * t;
+          audio.volume = Math.max(0, Math.min(1, v));
+          if (t < 1) {
+            fade.raf = requestAnimationFrame(step);
           } else {
-            // older browsers
+            fade.active = false;
+            fade.raf = null;
+            if (typeof onComplete === 'function') onComplete();
+          }
+        }
+        fade.raf = requestAnimationFrame(step);
+      }
+
+      // Helper toggles
+      function playWithFade() {
+        cancelFade();
+        // if already playing or play in progress, just ensure volume fades up
+        if (!audio.paused) {
+          fadeTo(TARGET_VOLUME);
+          link.setAttribute('aria-pressed', 'true');
+          return;
+        }
+        // set starting vol to 0 to fade in
+        try {
+          audio.volume = 0;
+        } catch (e) {}
+        const p = audio.play();
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            // play succeeded -> fade in
+            fadeTo(TARGET_VOLUME);
             link.setAttribute('aria-pressed', 'true');
             const h3 = link.querySelector('h3');
-            if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
-          }
+            if (h3) h3.textContent = 'Tắt phát nhạc';
+          }).catch(() => {
+            // play failed (autoplay policy) -> leave UI unchanged
+          });
         } else {
-          audio.pause();
+          // older browsers
+          fadeTo(TARGET_VOLUME);
+          link.setAttribute('aria-pressed', 'true');
+          const h3 = link.querySelector('h3');
+          if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        }
+      }
+
+      function pauseWithFade() {
+        // fade out, then pause
+        cancelFade();
+        fadeTo(0, FADE_DURATION, () => {
+          try { audio.pause(); } catch (e) {}
           link.setAttribute('aria-pressed', 'false');
           const h3 = link.querySelector('h3');
           if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        });
+      }
+
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        // If a fade is in progress, clicking should reverse appropriately:
+        if (fade.active) {
+          // if currently fading out (to 0) and user clicks, fade back to target and play if needed
+          if (fade.to === 0) {
+            playWithFade();
+          } else {
+            // currently fading in -> start fade out
+            pauseWithFade();
+          }
+          return;
+        }
+
+        // Normal toggle
+        if (audio.paused) {
+          playWithFade();
+        } else {
+          pauseWithFade();
         }
       });
 
       // Keep link label in sync if playback ends externally
       audio.addEventListener('pause', () => {
+        // ensure volume is 0 when paused
+        try { audio.volume = 0; } catch (e) {}
         link.setAttribute('aria-pressed', 'false');
         const h3 = link.querySelector('h3');
         if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
@@ -422,8 +504,11 @@
       audio.addEventListener('play', () => {
         link.setAttribute('aria-pressed', 'true');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        if (h3) h3.textContent = 'Tắt phát nhạc';
       });
+
+      // If user navigates away or unloads, cancel any fades
+      window.addEventListener('beforeunload', cancelFade);
     })();
 
     try { feather.replace(); } catch (e) {}
