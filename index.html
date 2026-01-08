@@ -190,12 +190,12 @@
 
       <!-- Links / Discord -->
       <div class="space-y-4">
-        <a href="#" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Open unknown link">
+        <a href="#" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Công tắc phát nhạc" role="button" aria-pressed="false">
           <div class="flex items-center">
             <div class="mr-4 flex items-center" aria-hidden="true"></div>
             <div>
-              <h3 class="font-medium text-black">Unknown</h3>
-              <p class="text-sm text-white">where i take a nap</p>
+              <h3 class="font-medium text-black">Công tắc phát nhạc</h3>
+              <p class="text-sm text-white">nhấn để bật / tắt nhạc</p>
             </div>
           </div>
           <ul class="mt-3 space-y-1 text-sm text-white">
@@ -204,6 +204,12 @@
         </a>
       </div>
     </div>
+
+    <!-- Hidden audio player used by the toggle above -->
+    <audio id="music-player" loop preload="none" aria-hidden="true">
+      <source src="https://s3.tebi.io/570chan.com.v2/chisa-sakura-wuthering-waves-moewalls-com.mp4" type="audio/mp4">
+      <!-- Fallback: browser will ignore if not supported -->
+    </audio>
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
@@ -367,6 +373,57 @@
         left.classList.add('show'); right.classList.add('show');
         setTimeout(() => { left.classList.remove('show'); right.classList.remove('show'); }, 2000);
       }, 4500);
+    })();
+
+    // Music toggle: bật / tắt nhạc khi click vào "Công tắc phát nhạc"
+    (function () {
+      const link = document.querySelector('.link-card');
+      const audio = document.getElementById('music-player');
+      if (!link || !audio) return;
+
+      // Ensure accessible initial state
+      link.setAttribute('role', 'button');
+      link.setAttribute('aria-pressed', 'false');
+
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        // toggle play/pause
+        if (audio.paused) {
+          // try to play (returns a promise)
+          const p = audio.play();
+          if (p && typeof p.then === 'function') {
+            p.then(() => {
+              link.setAttribute('aria-pressed', 'true');
+              const h3 = link.querySelector('h3');
+              if (h3) h3.textContent = 'Tắt phát nhạc';
+            }).catch(() => {
+              // play failed (autoplay policy or other), leave UI unchanged
+            });
+          } else {
+            // older browsers
+            link.setAttribute('aria-pressed', 'true');
+            const h3 = link.querySelector('h3');
+            if (h3) h3.textContent = 'tắt nhạc';
+          }
+        } else {
+          audio.pause();
+          link.setAttribute('aria-pressed', 'false');
+          const h3 = link.querySelector('h3');
+          if (h3) h3.textContent = 'Phát nhạc';
+        }
+      });
+
+      // Keep link label in sync if playback ends externally
+      audio.addEventListener('pause', () => {
+        link.setAttribute('aria-pressed', 'false');
+        const h3 = link.querySelector('h3');
+        if (h3) h3.textContent = 'Công tắc phát nhạc';
+      });
+      audio.addEventListener('play', () => {
+        link.setAttribute('aria-pressed', 'true');
+        const h3 = link.querySelector('h3');
+        if (h3) h3.textContent = 'Tắt phát nhạc';
+      });
     })();
 
     try { feather.replace(); } catch (e) {}
