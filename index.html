@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <!-- đây là tính năng, không được sửa viewport -->
     <meta name="viewport" content="width=1024, initial-scale=1">
-    <title>Channee — neChannee!</title>
+    <title>Channee — X</title>
 
     <!-- Open Graph / Twitter -->
     <meta property="og:title" content="Channee — X." />
@@ -41,7 +41,7 @@
 
       .knewave { font-family: "Knewave", system-ui, cursive; }
 
-      /* Cards baseline (consolidated, removed duplicate rules) */
+      /* Cards baseline */
       .glass-card{
         background:transparent;
         border:2px solid rgba(255,255,255,0.65);
@@ -53,7 +53,7 @@
       }
       .profile-pic{ transition:transform .3s; box-shadow:0 2px 18px rgba(0,0,0,.13); }
       .profile-pic:hover{ transform:scale(1.05); }
-      .link-card{ background:var(--glass); transition:transform .3s,box-shadow .3s; }
+      .link-card{ background:var(--glass); transition:transform .3s,box-shadow .3s; display:block; text-align:left; border:none; }
       .link-card:hover{ transform:translateY(-4px) scale(1.02); box-shadow:0 10px 25px -5px rgba(0,0,0,.14); }
 
       /* fade-in */
@@ -130,7 +130,6 @@
         #timer-display{ font-size:2rem; }
         .brand-title{ font-size:1.75rem; }
       }
-      /* small helper to hide scrollbar elegantly */
       .no-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
       .no-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 8px; }
       .no-scrollbar { -ms-overflow-style: none; scrollbar-width: thin; }
@@ -202,9 +201,9 @@
         <div id="arrow-right" class="hint-arrow" aria-hidden="true">→</div>
       </div>
 
-      <!-- Links / Discord -->
+      <!-- Links / Music toggle (use button to ensure user gesture) -->
       <div class="space-y-4">
-        <a href="#" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Công tắc phát nhạc" role="button" aria-pressed="false">
+        <button type="button" class="block link-card glass-card p-4 rounded-lg fade-in-card" aria-label="Công tắc phát nhạc" aria-pressed="false">
           <div class="flex items-center">
             <div class="mr-4 flex items-center" aria-hidden="true"></div>
             <div>
@@ -215,21 +214,19 @@
           <ul class="mt-3 space-y-1 text-sm text-white">
             <li>• <b>air</b> _.570chan</li>
           </ul>
-        </a>
+        </button>
       </div>
     </div>
 
-    <!-- Hidden audio player used by the toggle above -->
-    <audio id="music-player" loop preload="auto" aria-hidden="true" crossorigin="anonymous">
+    <!-- Audio player. Link provided by you -->
+    <audio id="music-player" loop preload="auto" aria-hidden="true">
       <source src="https://s3.tebi.io/570chan.com.v2/Kirara%20Magic%20-%20By%20the%20Seaside%20%28feat.%20Kitsui%20Akira%29%20-%20Kirara%20Magic.mp3" type="audio/mpeg">
-      <!-- Fallback: browser will ignore if not supported -->
     </audio>
 
     <script src="https://unpkg.com/feather-icons"></script>
     <script>
   (function () {
     const $ = (s, ctx = document) => ctx.querySelector(s);
-    const $$ = (s, ctx = document) => Array.from((ctx || document).querySelectorAll(s));
 
     // Clock
     function updateClock() {
@@ -245,7 +242,6 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Feather icons
     try { feather.replace(); } catch(e){}
 
     function getInitialSeconds(timerContainer) {
@@ -256,7 +252,7 @@
       return Math.max(1, Math.floor(n)) * 60;
     }
 
-    /* Timer (removed audio & notifications) */
+    /* Timer (unchanged) */
     (function () {
       const card = document.querySelector('.glass-card img.profile-pic')?.closest('.glass-card') || document.querySelector('.glass-card');
       if (!card) return;
@@ -278,10 +274,7 @@
       function render(){ timerDisplay.textContent = fmt(remaining); }
 
       function notifyEnd(){
-        // simplified: use alert when timer ends
-        try {
-          alert('⏰ Hết giờ rồi! Đếm ngược đã kết thúc.');
-        } catch(e){}
+        try { alert('⏰ Hết giờ rồi! Đếm ngược đã kết thúc.'); } catch(e){}
       }
 
       function start(){
@@ -389,15 +382,15 @@
       }, 4500);
     })();
 
-    // Music toggle: bật / tắt nhạc khi click vào "Công tắc phát nhạc"
+    // Music toggle: bật / tắt nhạc khi click vào nút (button)
     (function () {
       const link = document.querySelector('.link-card');
       const audio = document.getElementById('music-player');
       if (!link || !audio) return;
 
       // Configurable fade settings
-      const TARGET_VOLUME = 0.85; // volume level when fully on (0.0 - 1.0)
-      const FADE_DURATION = 800; // ms for fade in/out
+      const TARGET_VOLUME = 0.85; // 0.0 - 1.0
+      const FADE_DURATION = 800; // ms
 
       // Ensure accessible initial state
       link.setAttribute('role', 'button');
@@ -441,31 +434,20 @@
         fade.raf = requestAnimationFrame(step);
       }
 
-      // Media Session: set metadata so notification/lockscreen shows title/artist/artwork
+      // Media Session metadata (best-effort)
       function updateMediaSessionMetadata(opts = {}) {
         if (!('mediaSession' in navigator)) return;
         try {
           const title = opts.title || 'Kirara Magic - By the Seaside';
           const artist = opts.artist || 'Kitsui Akira';
           const album = opts.album || 'Kirara Magic';
-          // artwork URL(s). Adjust URLs / sizes as needed. For best compatibility provide multiple sizes.
           const artwork = opts.artwork || [
-            { src: 'https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg', sizes: '512x512', type: 'image/jpeg' },
-            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
+            { src: 'https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg', sizes: '512x512', type: 'image/jpeg' }
           ];
-
-          navigator.mediaSession.metadata = new MediaMetadata({
-            title,
-            artist,
-            album,
-            artwork
-          });
-        } catch (e) {
-          // ignore if MediaMetadata constructor not supported
-        }
+          navigator.mediaSession.metadata = new MediaMetadata({ title, artist, album, artwork });
+        } catch (e) {}
       }
 
-      // Register action handlers so notification buttons work
       function registerMediaSessionActions() {
         if (!('mediaSession' in navigator)) return;
         try {
@@ -479,50 +461,35 @@
             const skip = details && details.seekOffset ? details.seekOffset : 10;
             audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + skip);
           });
-          navigator.mediaSession.setActionHandler('previoustrack', null);
-          navigator.mediaSession.setActionHandler('nexttrack', null);
-        } catch (e) {
-          // some browsers may throw if actions unsupported
-        }
+        } catch (e) {}
       }
 
-      // initial register
       registerMediaSessionActions();
 
-      // Helper toggles
-      function playWithFade() {
+      // Async play with fade; handles Promise rejection (autoplay policy)
+      async function playWithFade() {
         cancelFade();
-        // if already playing or play in progress, just ensure volume fades up
         if (!audio.paused) {
+          // already playing: just ensure volume fades up
           fadeTo(TARGET_VOLUME);
           link.setAttribute('aria-pressed', 'true');
           updateNowPlayingUI(true);
           return;
         }
-        // set starting vol to 0 to fade in
+        try { audio.volume = 0; } catch (e) {}
         try {
-          audio.volume = 0;
-        } catch (e) {}
-        const p = audio.play();
-        if (p && typeof p.then === 'function') {
-          p.then(() => {
-            // play succeeded -> fade in
-            fadeTo(TARGET_VOLUME);
-            link.setAttribute('aria-pressed', 'true');
-            updateNowPlayingUI(true);
-          }).catch(() => {
-            // play failed (autoplay policy) -> leave UI unchanged
-          });
-        } else {
-          // older browsers
+          await audio.play(); // may reject if browser blocks autoplay
           fadeTo(TARGET_VOLUME);
           link.setAttribute('aria-pressed', 'true');
           updateNowPlayingUI(true);
+        } catch (err) {
+          console.warn('Audio play failed:', err);
+          // user gesture required — show a hint (alert for debug). Replace with nicer UI in production.
+          try { alert('Trình duyệt có thể chặn phát tự động. Hãy bấm lại để cho phép phát nhạc.'); } catch(e){}
         }
       }
 
       function pauseWithFade() {
-        // fade out, then pause
         cancelFade();
         fadeTo(0, FADE_DURATION, () => {
           try { audio.pause(); } catch (e) {}
@@ -534,51 +501,45 @@
       function updateNowPlayingUI(isPlaying) {
         const h3 = link.querySelector('h3');
         if (h3) {
-          if (isPlaying) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
-          else h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          if (isPlaying) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira)';
+          else h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira)';
         }
-        // update media session metadata when state changes
         updateMediaSessionMetadata({
           title: 'Kirara Magic - By the Seaside',
           artist: 'Kitsui Akira. Cover KiiChan',
           album: 'feat. Kitsui Akira',
           artwork: [
-            { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
-            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
+            { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' }
           ]
         });
       }
 
       link.addEventListener('click', function (e) {
-        e.preventDefault();
-        // If a fade is in progress, clicking should reverse appropriately:
+        // button: no need preventDefault but keep stopPropagation to avoid toggling timer by parent listeners
+        e.stopPropagation();
+
+        // If a fade is in progress, reverse appropriately
         if (fade.active) {
-          // if currently fading out (to 0) and user clicks, fade back to target and play if needed
           if (fade.to === 0) {
+            // was fading out -> switch to play
             playWithFade();
           } else {
-            // currently fading in -> start fade out
+            // was fading in -> switch to pause
             pauseWithFade();
           }
           return;
         }
 
-        // Normal toggle
-        if (audio.paused) {
-          playWithFade();
-        } else {
-          pauseWithFade();
-        }
+        if (audio.paused) playWithFade();
+        else pauseWithFade();
       });
 
-      // Keep link label in sync if playback ends externally
+      // Keep UI in sync if playback changed externally
       audio.addEventListener('pause', () => {
-        // ensure volume is 0 when paused
         try { audio.volume = 0; } catch (e) {}
         link.setAttribute('aria-pressed', 'false');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
-        // update media session playback state
+        if (h3) h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira)';
         if ('mediaSession' in navigator) {
           try { navigator.mediaSession.playbackState = 'paused'; } catch (e) {}
         }
@@ -586,27 +547,23 @@
       audio.addEventListener('play', () => {
         link.setAttribute('aria-pressed', 'true');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
-        // set metadata & playback state for notification
+        if (h3) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira)';
         updateNowPlayingUI(true);
         if ('mediaSession' in navigator) {
           try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
         }
       });
 
-      // If user navigates away or unloads, cancel any fades
       window.addEventListener('beforeunload', cancelFade);
-
-      // Optionally set initial metadata (so if user starts via external controls you'll have metadata)
+      // set initial metadata
       updateMediaSessionMetadata({
         title: 'Kirara Magic - By the Seaside',
         artist: 'Kitsui Akira. Cover KiiChan',
         album: 'feat. Kitsui Akira',
-        artwork: [
-          { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
-        ]
+        artwork: [{ src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' }]
       });
     })();
+
   })();
     </script>
   </body>
