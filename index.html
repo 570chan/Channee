@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="preload" as="video" href="https://s3.tebi.io/570chan.com.v2/chisa-sakura-wuthering-waves-moewalls-com.mp4" type="video/mp4">
+    <link rel="preload" as="video" href="https://s3.tebi.io/570chan.com.v2/kagura-nana-crying-virtual-youtuber-moewalls-com.mp4" type="video/mp4">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -206,7 +206,7 @@
     </div>
 
     <!-- Hidden audio player used by the toggle above -->
-    <audio id="music-player" loop preload="none" aria-hidden="true" crossOrigin="anonymous">
+    <audio id="music-player" loop preload="auto" aria-hidden="true" crossOrigin="anonymous">
       <source src="https://s3.tebi.io/570chan.com.v2/Kirara%20Magic%20-%20By%20the%20Seaside%20%28feat.%20Kitsui%20Akira%29%20-%20Kirara%20Magic.mp3" type="audio/mp3">
       <!-- Fallback: browser will ignore if not supported -->
     </audio>
@@ -521,18 +521,18 @@
       function updateNowPlayingUI(isPlaying) {
         const h3 = link.querySelector('h3');
         if (h3) {
-          if (isPlaying) h3.textContent = 'Tắt phát nhạc';
-          else h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          if (isPlaying) h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          else h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
         }
         // update media session metadata when state changes
         updateMediaSessionMetadata({
           title: 'Kirara Magic - By the Seaside',
-          artist: 'Kitsui Akira',
-          album: 'Kirara Magic',
+          artist: 'Kitsui Akira. Cover KiiChan',
+          album: 'feat. Kitsui Akira',
           artwork: [
             // prefer images that support CORS for best results on Android/Chrome
-            { src: 'https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg', sizes: '512x512', type: 'image/jpeg' },
-            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
+            { src: ' https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpg' },
+            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpg' }
           ]
         });
       }
