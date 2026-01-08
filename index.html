@@ -206,7 +206,7 @@
     </div>
 
     <!-- Hidden audio player used by the toggle above -->
-    <audio id="music-player" loop preload="none" aria-hidden="true">
+    <audio id="music-player" loop preload="none" aria-hidden="true" crossOrigin="anonymous">
       <source src=" https://s3.tebi.io/570chan.com.v2/Kirara%20Magic%20-%20By%20the%20Seaside%20%28feat.%20Kitsui%20Akira%29%20-%20Kirara%20Magic.mp3" type="audio/mp3">
       <!-- Fallback: browser will ignore if not supported -->
     </audio>
@@ -427,6 +427,55 @@
         fade.raf = requestAnimationFrame(step);
       }
 
+      // Media Session: set metadata so notification/lockscreen shows title/artist/artwork
+      function updateMediaSessionMetadata(opts = {}) {
+        if (!('mediaSession' in navigator)) return;
+        try {
+          const title = opts.title || 'Kirara Magic - By the Seaside';
+          const artist = opts.artist || 'Kitsui Akira';
+          const album = opts.album || 'Kirara Magic';
+          // artwork URL(s). Adjust URLs / sizes as needed. For best compatibility provide multiple sizes.
+          const artwork = opts.artwork || [
+            { src: 'https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg', sizes: '512x512', type: 'image/jpeg' },
+            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
+          ];
+
+          navigator.mediaSession.metadata = new MediaMetadata({
+            title,
+            artist,
+            album,
+            artwork
+          });
+        } catch (e) {
+          // ignore if MediaMetadata constructor not supported
+          // console.warn('Media Session metadata error', e);
+        }
+      }
+
+      // Register action handlers so notification buttons work
+      function registerMediaSessionActions() {
+        if (!('mediaSession' in navigator)) return;
+        try {
+          navigator.mediaSession.setActionHandler('play', () => { audio.play().catch(()=>{}); });
+          navigator.mediaSession.setActionHandler('pause', () => { audio.pause(); });
+          navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+            const skip = details && details.seekOffset ? details.seekOffset : 10;
+            audio.currentTime = Math.max(0, audio.currentTime - skip);
+          });
+          navigator.mediaSession.setActionHandler('seekforward', (details) => {
+            const skip = details && details.seekOffset ? details.seekOffset : 10;
+            audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + skip);
+          });
+          navigator.mediaSession.setActionHandler('previoustrack', null);
+          navigator.mediaSession.setActionHandler('nexttrack', null);
+        } catch (e) {
+          // some browsers may throw if actions unsupported
+        }
+      }
+
+      // initial register
+      registerMediaSessionActions();
+
       // Helper toggles
       function playWithFade() {
         cancelFade();
@@ -434,6 +483,7 @@
         if (!audio.paused) {
           fadeTo(TARGET_VOLUME);
           link.setAttribute('aria-pressed', 'true');
+          updateNowPlayingUI(true);
           return;
         }
         // set starting vol to 0 to fade in
@@ -446,8 +496,7 @@
             // play succeeded -> fade in
             fadeTo(TARGET_VOLUME);
             link.setAttribute('aria-pressed', 'true');
-            const h3 = link.querySelector('h3');
-            if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+            updateNowPlayingUI(true);
           }).catch(() => {
             // play failed (autoplay policy) -> leave UI unchanged
           });
@@ -455,8 +504,7 @@
           // older browsers
           fadeTo(TARGET_VOLUME);
           link.setAttribute('aria-pressed', 'true');
-          const h3 = link.querySelector('h3');
-          if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          updateNowPlayingUI(true);
         }
       }
 
@@ -466,8 +514,26 @@
         fadeTo(0, FADE_DURATION, () => {
           try { audio.pause(); } catch (e) {}
           link.setAttribute('aria-pressed', 'false');
-          const h3 = link.querySelector('h3');
-          if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          updateNowPlayingUI(false);
+        });
+      }
+
+      function updateNowPlayingUI(isPlaying) {
+        const h3 = link.querySelector('h3');
+        if (h3) {
+          if (isPlaying) h3.textContent = 'Tắt phát nhạc';
+          else h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        }
+        // update media session metadata when state changes
+        updateMediaSessionMetadata({
+          title: 'Kirara Magic - By the Seaside',
+          artist: 'Kitsui Akira',
+          album: 'Kirara Magic',
+          artwork: [
+            // prefer images that support CORS for best results on Android/Chrome
+            { src: 'https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg', sizes: '512x512', type: 'image/jpeg' },
+            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
+          ]
         });
       }
 
@@ -500,15 +566,34 @@
         link.setAttribute('aria-pressed', 'false');
         const h3 = link.querySelector('h3');
         if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        // update media session playback state
+        if ('mediaSession' in navigator) {
+          try { navigator.mediaSession.playbackState = 'paused'; } catch (e) {}
+        }
       });
       audio.addEventListener('play', () => {
         link.setAttribute('aria-pressed', 'true');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Tắt phát nhạc';
+        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        // set metadata & playback state for notification
+        updateNowPlayingUI(true);
+        if ('mediaSession' in navigator) {
+          try { navigator.mediaSession.playbackState = 'playing'; } catch (e) {}
+        }
       });
 
       // If user navigates away or unloads, cancel any fades
       window.addEventListener('beforeunload', cancelFade);
+
+      // Optionally set initial metadata (so if user starts via external controls you'll have metadata)
+      updateMediaSessionMetadata({
+        title: 'Kirara Magic - By the Seaside',
+        artist: 'Kitsui Akira. Cover KiiChan',
+        album: 'feat. Kitsui Akira',
+        artwork: [
+          { src: ' https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
+          ]
+      });
     })();
 
     try { feather.replace(); } catch (e) {}
