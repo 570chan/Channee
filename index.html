@@ -403,13 +403,13 @@
             // older browsers
             link.setAttribute('aria-pressed', 'true');
             const h3 = link.querySelector('h3');
-            if (h3) h3.textContent = 'tắt nhạc';
+            if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
           }
         } else {
           audio.pause();
           link.setAttribute('aria-pressed', 'false');
           const h3 = link.querySelector('h3');
-          if (h3) h3.textContent = 'Phát nhạc';
+          if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
         }
       });
 
@@ -417,12 +417,12 @@
       audio.addEventListener('pause', () => {
         link.setAttribute('aria-pressed', 'false');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Công tắc phát nhạc';
+        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
       });
       audio.addEventListener('play', () => {
         link.setAttribute('aria-pressed', 'true');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Tắt phát nhạc';
+        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
       });
     })();
 
