@@ -2,6 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
+    <!-- đây là tính năng, không được sửa viewport -->
     <meta name="viewport" content="width=1024, initial-scale=1">
     <title>Channee — neChannee!</title>
 
@@ -10,7 +11,7 @@
     <meta property="og:description" content="where i sleep at night 🌙" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nechan.vercel.app" />
-    <meta property="og:image" content=" https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg" />
+    <meta property="og:image" content="https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Channee — X." />
     <meta name="twitter:description" content="moew~" />
@@ -18,7 +19,7 @@
 
     <link rel="icon" href="/favicon-32x32.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css2?family=Knewave&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preload" as="video" href="https://s3.tebi.io/570chan.com.v2/kagura-nana-crying-virtual-youtuber-moewalls-com.mp4" type="video/mp4">
@@ -109,7 +110,7 @@
       @media(max-width:640px){ #arrow-left{left:4%} #arrow-right{right:4%} }
 
       .link-card[href*="#"]{
-        background-image:url(' https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg');
+        background-image:url('https://s3.tebi.io/570chan.com.v2/0c90190a804cbf1f91c659131e58f325.jpg');
         background-size:cover; background-position:center; color:#fff;
       }
 
@@ -130,16 +131,29 @@
         .brand-title{ font-size:1.75rem; }
       }
       /* small helper to hide scrollbar elegantly */
-    .no-scrollbar::-webkit-scrollbar { height: 8px; }
-    .no-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 8px; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: thin; }
+      .no-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+      .no-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 8px; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: thin; }
+
+      /* screen-reader only helper */
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
     </style>
   </head>
 
   <body class="min-h-screen flex items-center justify-center px-4 py-8 relative">
     <!-- Background Video -->
     <video id="bg-video" class="bg-video" autoplay loop muted playsinline preload="auto" fetchpriority="high" aria-hidden="true">
-  <source src="https://s3.tebi.io/570chan.com.v2/kagura-nana-crying-virtual-youtuber-moewalls-com.mp4" type="video/mp4">
+      <source src="https://s3.tebi.io/570chan.com.v2/kagura-nana-crying-virtual-youtuber-moewalls-com.mp4" type="video/mp4">
     </video>
 
     <!-- Watercolor overlay -->
@@ -164,7 +178,7 @@
         </div>
 
         <!-- Social -->
-        <div class="flex justify-center space-x-4 text-white" aria-hidden="false">
+        <div class="flex justify-center space-x-4 text-white">
           <a href="https://github.com/570chan" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github fa-lg"></i></a>
           <a href="https://www.facebook.com/profile.php?id=61581606718917" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook fa-lg"></i></a>
           <a href="https://linkedin.com/in/your-profile" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin fa-lg"></i></a>
@@ -206,8 +220,8 @@
     </div>
 
     <!-- Hidden audio player used by the toggle above -->
-    <audio id="music-player" loop preload="auto" aria-hidden="true" crossOrigin="anonymous">
-      <source src="https://s3.tebi.io/570chan.com.v2/Kirara%20Magic%20-%20By%20the%20Seaside%20%28feat.%20Kitsui%20Akira%29%20-%20Kirara%20Magic.mp3" type="audio/mp3">
+    <audio id="music-player" loop preload="auto" aria-hidden="true" crossorigin="anonymous">
+      <source src="https://s3.tebi.io/570chan.com.v2/Kirara%20Magic%20-%20By%20the%20Seaside%20%28feat.%20Kitsui%20Akira%29%20-%20Kirara%20Magic.mp3" type="audio/mpeg">
       <!-- Fallback: browser will ignore if not supported -->
     </audio>
 
@@ -231,7 +245,7 @@
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Feather icons (try/catch)
+    // Feather icons
     try { feather.replace(); } catch(e){}
 
     function getInitialSeconds(timerContainer) {
@@ -448,7 +462,6 @@
           });
         } catch (e) {
           // ignore if MediaMetadata constructor not supported
-          // console.warn('Media Session metadata error', e);
         }
       }
 
@@ -521,8 +534,8 @@
       function updateNowPlayingUI(isPlaying) {
         const h3 = link.querySelector('h3');
         if (h3) {
-          if (isPlaying) h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
-          else h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          if (isPlaying) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+          else h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
         }
         // update media session metadata when state changes
         updateMediaSessionMetadata({
@@ -530,9 +543,8 @@
           artist: 'Kitsui Akira. Cover KiiChan',
           album: 'feat. Kitsui Akira',
           artwork: [
-            // prefer images that support CORS for best results on Android/Chrome
-            { src: ' https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpg' },
-            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpg' }
+            { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
+            { src: 'https://s3.tebi.io/570chan.com.v2/IMG_20260106_214333.jpg', sizes: '192x192', type: 'image/jpeg' }
           ]
         });
       }
@@ -565,7 +577,7 @@
         try { audio.volume = 0; } catch (e) {}
         link.setAttribute('aria-pressed', 'false');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        if (h3) h3.textContent = '[off] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
         // update media session playback state
         if ('mediaSession' in navigator) {
           try { navigator.mediaSession.playbackState = 'paused'; } catch (e) {}
@@ -574,7 +586,7 @@
       audio.addEventListener('play', () => {
         link.setAttribute('aria-pressed', 'true');
         const h3 = link.querySelector('h3');
-        if (h3) h3.textContent = 'Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
+        if (h3) h3.textContent = '[on] Kirara Magic - By the Seaside (feat. Kitsui Akira) - Kirara Magic';
         // set metadata & playback state for notification
         updateNowPlayingUI(true);
         if ('mediaSession' in navigator) {
@@ -591,12 +603,10 @@
         artist: 'Kitsui Akira. Cover KiiChan',
         album: 'feat. Kitsui Akira',
         artwork: [
-          { src: ' https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
-          ]
+          { src: 'https://s3.tebi.io/ely.bucket.s0.io.biti/IMG_20251213_143357.jpg', sizes: '512x512', type: 'image/jpeg' },
+        ]
       });
     })();
-
-    try { feather.replace(); } catch (e) {}
   })();
     </script>
   </body>
