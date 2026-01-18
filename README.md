@@ -1,1 +1,12 @@
-> Honestly, I only *build websites* when I’m bored. It went through many rounds of fixing—deleting, re-adding, reusing old code, and sometimes even pasting the very first version again. Then, when **tebi.com** stopped providing its service, I ran into a lot of difficulties, especially with background videos.
+## Project Story
+
+Honestly, this project started as something I worked on when I was bored.
+It went through many rounds of fixing — deleting code, adding it back,
+reusing old versions, and sometimes even returning to the very first draft.
+
+Later, when tebi.com stopped providing its service,
+I faced many difficulties, especially with background videos.
+
+## License
+
+© 2026 Channe. All rights reserved.
