@@ -1,4 +1,4 @@
-![Preview]( https://i.ibb.co/dwfgZbZ5/1.jpg)
+![Preview]( https://i.ibb.co/xSTPfwLZ/nechan-vercel-app-2026-01-18-1768730828137.png)
 # Personal Profile Website
 
 A small personal profile website built for fun.
