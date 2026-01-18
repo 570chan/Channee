@@ -1,3 +1,4 @@
+![Preview]( https://i.ibb.co/dwfgZbZ5/1.jpg)
 # Personal Profile Website
 
 A small personal profile website built for fun.
