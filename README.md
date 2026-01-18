@@ -1,1 +1,1 @@
-> so
+> Honestly, I only *build websites* when I’m bored. It went through many rounds of fixing—deleting, re-adding, reusing old code, and sometimes even pasting the very first version again. Then, when **tebi.com** stopped providing its service, I ran into a lot of difficulties, especially with background videos.
