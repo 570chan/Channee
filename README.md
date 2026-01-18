@@ -3,7 +3,7 @@
 A small personal profile website built for fun.
 
 ## About
-I’m a small developer from Vietnam.
+I’m a small developer website from Vietnam.
 This is not my profession — I build websites out of interest and boredom.
 
 ## Story
