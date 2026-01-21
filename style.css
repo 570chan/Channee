@@ -5,8 +5,7 @@
 }
 
 html, body {
-  height: 100%;
-  font-family: 'Inter', sans-serif;
+  overscroll-behavior: none;
 }
 
 body {
@@ -18,10 +17,9 @@ body {
 /* Background */
 .background {
   position: fixed;
-  inset: 0;
+  inset: -20px;
   background: url("assets/bg.jpg") center / cover no-repeat;
   filter: blur(2px);
-  transform: scale(1.05);
   z-index: -2;
 }
 
@@ -109,11 +107,11 @@ h1 {
 
 /* Footer */
 footer {
-  padding: 28px 0;
+  padding: 12px 0;           /* GIẢM CHIỀU CAO */
   background: rgba(255, 230, 240, 0.8);
   backdrop-filter: blur(6px);
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;           /* chữ nhỏ hơn chút */
 }
 
 .footer-icons {
