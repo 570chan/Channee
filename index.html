@@ -5,51 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Cherry Blossom</title>
-
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" href="favicon-32x32.png" sizes="32x32">
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- BACKGROUND -->
-  <div class="background"></div>
+  <div class="bg"></div>
 
-  <!-- GLASS BOX -->
-  <div class="glass-box">
+  <!-- BLUR FULLSCREEN -->
+  <div class="glass-wrapper">
+    <div class="page">
 
-    <header class="site-header fade-item">
-      <img src="assets/avatar.jpg" alt="Mini Avatar">
-    </header>
+      <header class="site-header fade-item">
+        <img src="assets/avatar.jpg" alt="avatar">
+      </header>
 
-    <main class="content fade-item">
-      <div class="card">
-        <img src="assets/avatar.jpg" class="avatar">
+      <main class="content fade-item">
+        <div class="center">
+          <img src="assets/avatar.jpg" class="avatar" alt="avatar">
 
-        <h1>Nechanne (X)</h1>
-        <p class="subtitle">Tôi không còn nhớ ai mình là.</p>
+          <h1>Nechanne (X)</h1>
+          <p class="subtitle">Tôi không còn nhớ ai mình là.</p>
 
-        <div class="socials">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-x-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-github"></i></a>
+          <div class="socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-x-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
 
-    <footer class="fade-item">
-      <div class="footer-icons">
-        <i class="fab fa-facebook-f"></i>
-        <i class="fab fa-x-twitter"></i>
-        <i class="fab fa-instagram"></i>
-      </div>
-      <p>© 2025 Cherry Blossom</p>
-    </footer>
+      <footer class="fade-item">
+        <div class="footer-icons">
+          <i class="fab fa-facebook-f"></i>
+          <i class="fab fa-x-twitter"></i>
+          <i class="fab fa-instagram"></i>
+        </div>
+        <p>© 2025 Cherry Blossom</p>
+      </footer>
 
+    </div>
   </div>
 
   <script src="script.js"></script>
