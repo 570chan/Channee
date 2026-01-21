@@ -1,4 +1,3 @@
-/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
@@ -6,88 +5,75 @@
 }
 
 html, body {
-  width: 100%;
   height: 100%;
-  overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
-.bg {
+body {
+  background: #000;
+  overscroll-behavior: contain;
+
+  /* ❌ KHÔNG center bằng flex nữa */
+  display: block;
+}
+
+/* ===== BACKGROUND (SAFE, KHÔNG ZOOM) ===== */
+.background {
   position: fixed;
-  inset: 0;
+  inset: -30px;
   background: url("assets/bg.jpg") center / cover no-repeat;
-
-  pointer-events: none;
-  user-select: none;
-  touch-action: none;
+  filter: blur(2px);
+  z-index: -2;
 }
 
-/* ===== ROOT CONFIG ===== */
-:root {
-  --glass-opacity: 0.2;
-  --glass-blur: 18px;
+/* ===== GLASS BOX – CENTER ĐÚNG ===== */
+.glass-box {
+  width: min(92%, 420px);
 
-  --ring-size: 4px;
-  --ring-color: rgba(255, 255, 255, 0.9);
-}
+  /* 🎯 CÁCH CENTER ĐÚNG TRÊN MOBILE */
+  margin: auto;
+  margin-top: env(safe-area-inset-top);
+  margin-bottom: env(safe-area-inset-bottom);
 
-/* ===== GLASS FULL SCREEN ===== */
-.glass-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-
-  background: rgba(255, 255, 255, var(--glass-opacity));
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-
+  min-height: 100svh;          /* QUAN TRỌNG */
   display: flex;
   flex-direction: column;
-  align-items: center;
+
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* ===== HEADER (AVATAR NHỎ) ===== */
+/* ===== HEADER ===== */
 .site-header {
-  margin-top: 16px;
-}
-
-.site-header img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: var(--ring-size) solid var(--ring-color);
-}
-
-/* ===== MAIN CONTENT ===== */
-.content {
-  flex: 1;
-
+  padding: 16px 0;
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  width: 100%;
 }
 
-/* ===== CENTER BLOCK ===== */
-.center {
+/* ===== MAIN ===== */
+.content {
+  flex: 1;                     /* ĐẨY MAIN RA GIỮA */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 16px;
+}
+
+.card {
   text-align: center;
-  max-width: 320px;
-  padding-bottom: 24px;
 }
 
-/* ===== AVATAR LỚN ===== */
 .avatar {
-  width: 96px;
-  height: 96px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   margin-bottom: 16px;
-
-  border: var(--ring-size) solid var(--ring-color);
 }
 
-/* ===== TEXT ===== */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
@@ -97,7 +83,7 @@ h1 {
 .subtitle {
   font-size: 14px;
   opacity: 0.7;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 /* ===== SOCIAL ===== */
@@ -111,42 +97,30 @@ h1 {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-
+  background: rgba(255,255,255,0.85);
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #555;
   text-decoration: none;
-  transition: 0.25s ease;
 }
 
-.socials a:hover {
-  background: #f6a5c0;
-  color: #fff;
+/* ===== FOOTER ===== */
+footer {
+  padding: 10px 0;
+  font-size: 11px;
+  text-align: center;
+  background: rgba(255, 230, 240, 0.6);
 }
 
-/* ===== FADE ===== */
+/* ===== FADE UP ===== */
 .fade-item {
   opacity: 0;
-  transform: translateY(14px);
-  transition: 0.6s ease;
+  transform: translateY(24px);
+  transition: 0.8s ease;
 }
 
 .fade-item.show {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* ===== MOBILE FIX ===== */
-@media (max-height: 700px) {
-  .avatar {
-    width: 80px;
-    height: 80px;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
 }
