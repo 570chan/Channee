@@ -11,21 +11,26 @@ html, body {
 }
 
 body {
-  overflow-x: hidden;
   color: #333;
+  overflow-x: hidden;
 }
 
-/* ================= BACKGROUND FULL VIEWPORT ================= */
+/* ================= BACKGROUND (ĐỨNG IM TUYỆT ĐỐI) ================= */
 .background {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
-  height: 100vh;              /* luôn full màn hình */
+  height: 100vh;                 /* luôn full màn hình */
   z-index: 0;
-  background: url("assets/bg.jpg") center / cover no-repeat;
+
+  background-image: url("assets/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* blur + overlay trực tiếp trên bg */
+/* Blur + overlay trực tiếp trên bg */
 .background::before {
   content: "";
   position: absolute;
@@ -38,7 +43,7 @@ body {
 /* ================= WRAPPER ================= */
 .page {
   position: relative;
-  z-index: 1;                 /* nội dung & footer nằm trên bg */
+  z-index: 1;                    /* nội dung + footer nằm trên bg */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -51,17 +56,23 @@ body {
   justify-content: center;
 }
 
+/* Avatar nhỏ (header) */
 .site-header img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
   object-fit: cover;
+
+  border: 2px solid #fff;        /* khung tròn trắng */
+  padding: 2px;
+  background: #fff;
+
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
 /* ================= MAIN ================= */
 .content {
-  flex: 1;                    /* đẩy footer xuống cuối */
+  flex: 1;                       /* đẩy footer xuống cuối */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -71,16 +82,22 @@ body {
   text-align: center;
 }
 
-/* Avatar */
+/* Avatar lớn (card) */
 .avatar {
   width: 90px;
   height: 90px;
   border-radius: 50%;
   object-fit: cover;
+
+  border: 3px solid #fff;        /* khung trắng – không quá dày */
+  padding: 3px;
+  background: #fff;
+
   margin-bottom: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
+/* ================= TEXT ================= */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
@@ -119,9 +136,9 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* ================= FOOTER (THẤP GỌN) ================= */
+/* ================= FOOTER ================= */
 footer {
-  padding: 14px 0;
+  padding: 14px 0;               /* thấp gọn */
   background: rgba(255, 230, 240, 0.75);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
