@@ -7,20 +7,29 @@
 html, body {
   min-height: 100%;
   font-family: 'Inter', sans-serif;
-  overscroll-behavior: none; /* 🔴 chặn rubber-band */
+
+  overscroll-behavior: none; /* 🔥 chặn rubber-band */
 }
 
-/* ===== BACKGROUND (KHÔNG ZOOM) ===== */
+/* ===== BACKGROUND – KHÔNG TƯƠNG TÁC ===== */
 .bg {
   position: fixed;
   inset: -40px;
+
   background: url("assets/bg.jpg") center / cover no-repeat;
   filter: blur(2px);
-  z-index: -2;
-  will-change: transform;
+
+  z-index: -1;
+
+  pointer-events: none;  /* 🔴 KHÓA TƯƠNG TÁC */
+  touch-action: none;    /* 🔴 KHÓA GESTURE */
+  user-select: none;
+
+  transform: translateZ(0); /* 🔥 khóa scale layer */
+  will-change: auto;
 }
 
-/* ===== GLASS CONFIG ===== */
+/* ===== BLUR CONFIG ===== */
 :root {
   --glass-opacity: 0.8;
   --glass-blur: 18px;
@@ -29,8 +38,6 @@ html, body {
 /* ===== BLUR BOX ===== */
 .glass-wrapper {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 
   background: rgba(255, 255, 255, var(--glass-opacity));
   backdrop-filter: blur(var(--glass-blur));
@@ -52,11 +59,9 @@ html, body {
 
 /* ===== MAIN ===== */
 .content {
-  flex: 1;
+  padding: 40px 16px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 32px 16px;
 }
 
 .center {
@@ -73,7 +78,6 @@ html, body {
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
-  margin-bottom: 6px;
 }
 
 .subtitle {
@@ -98,16 +102,11 @@ h1 {
   align-items: center;
   justify-content: center;
   color: #555;
-  text-decoration: none;
-  transition: 0.25s ease;
 }
 
-/* ===== FOOTER (DÍNH ĐÁY BLUR THEO TRỤC Y) ===== */
+/* ===== FOOTER – CUỐI TRANG ===== */
 .site-footer {
-  position: sticky;
-  bottom: 0;
-
-  padding: 14px 0;
+  padding: 18px 0;
   text-align: center;
   font-size: 11px;
 
@@ -126,7 +125,7 @@ h1 {
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: 0.8s ease;
 }
 
 .fade-item.show {
