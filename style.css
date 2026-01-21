@@ -15,13 +15,19 @@ body {
   color: #333;
 }
 
-/* Page wrapper */
+/* =========================
+   PAGE LAYOUT (FIX FOOTER)
+   ========================= */
 .page {
   position: relative;
   min-height: 100vh;
+  display: flex;              /* QUAN TRỌNG */
+  flex-direction: column;     /* QUAN TRỌNG */
 }
 
-/* === BACKGROUND (ANTI-ZOOM FIX) === */
+/* =========================
+   BACKGROUND (ANTI-ZOOM)
+   ========================= */
 .background {
   position: absolute;
   inset: -30px;
@@ -37,7 +43,9 @@ body {
   z-index: -1;
 }
 
-/* Header */
+/* =========================
+   HEADER
+   ========================= */
 .site-header {
   padding: 16px 0;
   display: flex;
@@ -52,9 +60,11 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Main content */
+/* =========================
+   MAIN CONTENT
+   ========================= */
 .content {
-  min-height: calc(100vh - 70px);
+  flex: 1;                    /* QUAN TRỌNG */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,7 +95,9 @@ h1 {
   margin-bottom: 18px;
 }
 
-/* Social icons */
+/* =========================
+   SOCIAL ICONS
+   ========================= */
 .socials {
   display: flex;
   justify-content: center;
@@ -111,8 +123,11 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* Footer (MỎNG) */
+/* =========================
+   FOOTER (FIX DỨT ĐIỂM)
+   ========================= */
 footer {
+  margin-top: auto;           /* QUAN TRỌNG – ĐẨY XUỐNG ĐÁY */
   padding: 10px 0;
   text-align: center;
   font-size: 11px;
@@ -132,7 +147,9 @@ footer {
   color: #666;
 }
 
-/* === FADE UP ANIMATION === */
+/* =========================
+   FADE UP ANIMATION
+   ========================= */
 .fade-item {
   opacity: 0;
   transform: translateY(30px);
