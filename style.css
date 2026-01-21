@@ -9,7 +9,7 @@ html, body {
   font-family: 'Inter', sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
+/* ================= BG ================= */
 .bg {
   position: fixed;
   inset: -40px;
@@ -18,27 +18,34 @@ html, body {
   z-index: -2;
 }
 
-/* ===== BLUR FULL 2D ===== */
+/* ================= BLUR CONFIG ================= */
+/* 👉 CHỈNH Ở ĐÂY */
+:root {
+  --glass-opacity: 0.8;  /* 80% trong – chỉnh 0.7 / 0.85 tuỳ thích */
+  --glass-blur: 18px;
+}
+
+/* ================= GLASS FULL 2D ================= */
 .glass-wrapper {
   position: fixed;
   inset: 0;
   z-index: 1;
 
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
 
   overflow-y: auto;
 }
 
-/* ===== PAGE LAYOUT ===== */
+/* ================= PAGE ================= */
 .page {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 .site-header {
   padding: 16px 0;
   display: flex;
@@ -51,13 +58,15 @@ html, body {
   border-radius: 50%;
 }
 
-/* ===== MAIN ===== */
+/* ================= MAIN ================= */
 .content {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+
+  padding: 24px 16px 120px; 
+  /* 🔴 120px này chính là thứ bắt buộc phải vuốt xuống mới thấy footer */
 }
 
 .center {
@@ -83,7 +92,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ===== SOCIAL ===== */
+/* ================= SOCIAL ================= */
 .socials {
   display: flex;
   justify-content: center;
@@ -94,7 +103,7 @@ h1 {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,12 +117,12 @@ h1 {
   color: #fff;
 }
 
-/* ===== FOOTER ===== */
+/* ================= FOOTER ================= */
 footer {
   padding: 12px 0;
   text-align: center;
   font-size: 11px;
-  background: rgba(255, 230, 240, 0.65);
+  background: rgba(255, 230, 240, 0.6);
 }
 
 .footer-icons {
@@ -123,7 +132,7 @@ footer {
   margin-bottom: 4px;
 }
 
-/* ===== FADE UP ===== */
+/* ================= FADE ================= */
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
