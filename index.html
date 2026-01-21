@@ -2,54 +2,59 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>Cherry Blossom</title>
 
-  <link rel="icon" href="favicon-32x32.png" sizes="32x32">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- BACKGROUND (NON-INTERACTIVE) -->
-  <div class="bg"></div>
+  <!-- Background -->
+  <div class="background"></div>
+  <div class="overlay"></div>
 
-  <!-- BLUR CONTENT -->
-  <div class="glass-wrapper">
-    <header class="site-header fade-item">
-      <img src="assets/avatar.jpg" alt="avatar">
-    </header>
+  <!-- Header -->
+  <header class="site-header">
+    <img src="assets/avatar.jpg" alt="Mini Avatar">
+  </header>
 
-    <main class="content fade-item">
-      <div class="center">
-        <img src="assets/avatar.jpg" class="avatar">
+  <!-- Main content -->
+  <main class="content">
+    <div class="card">
+      <img src="assets/avatar.jpg" class="avatar" alt="Avatar">
 
-        <h1>Nechanne (X)</h1>
-        <p class="subtitle">Tôi không còn nhớ ai mình là.</p>
+      <h1>Cherry Blossom</h1>
+      <p class="subtitle">Tôi không còn nhớ mình là.</p>
 
-        <div class="socials">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-x-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-github"></i></a>
-        </div>
-
-        <!-- FAKE CONTENT ĐỂ TRANG DÀI -->
-        <div style="height: 120vh;"></div>
+      <div class="socials">
+        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
       </div>
-    </main>
-  </div>
-
-  <!-- FOOTER Ở CUỐI TRANG -->
-  <footer class="site-footer fade-item">
-    <div class="footer-icons">
-      <i class="fab fa-facebook-f"></i>
-      <i class="fab fa-x-twitter"></i>
-      <i class="fab fa-instagram"></i>
     </div>
-    <p>© 2025 Cherry Blossom</p>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-icons">
+      <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://twitter.com" target="_blank"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <p>© 2023 Cherry Blossom. All rights reserved.</p>
+    <span>Powered by Readdy</span>
   </footer>
 
   <script src="script.js"></script>
