@@ -9,7 +9,7 @@ html, body {
   font-family: 'Inter', sans-serif;
 }
 
-/* ================= BG ================= */
+/* ===== BACKGROUND ===== */
 .bg {
   position: fixed;
   inset: -40px;
@@ -18,14 +18,13 @@ html, body {
   z-index: -2;
 }
 
-/* ================= BLUR CONFIG ================= */
-/* 👉 CHỈNH Ở ĐÂY */
+/* ===== GLASS CONFIG ===== */
 :root {
-  --glass-opacity: 0.2;  /* 80% trong – chỉnh 0.7 / 0.85 tuỳ thích */
+  --glass-opacity: 0.2;
   --glass-blur: 18px;
 }
 
-/* ================= GLASS FULL 2D ================= */
+/* ===== BLUR FULL 2D ===== */
 .glass-wrapper {
   position: fixed;
   inset: 0;
@@ -38,14 +37,14 @@ html, body {
   overflow-y: auto;
 }
 
-/* ================= PAGE ================= */
-.page {
+/* ===== MAIN CONTENT ===== */
+.main-content {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
 }
 
-/* ================= HEADER ================= */
+/* ===== HEADER ===== */
 .site-header {
   padding: 16px 0;
   display: flex;
@@ -58,15 +57,13 @@ html, body {
   border-radius: 50%;
 }
 
-/* ================= MAIN ================= */
+/* ===== MAIN ===== */
 .content {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 24px 16px 120px; 
-  /* 🔴 120px này chính là thứ bắt buộc phải vuốt xuống mới thấy footer */
+  padding: 24px 16px;
 }
 
 .center {
@@ -92,7 +89,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ================= SOCIAL ================= */
+/* ===== SOCIAL ===== */
 .socials {
   display: flex;
   justify-content: center;
@@ -117,12 +114,15 @@ h1 {
   color: #fff;
 }
 
-/* ================= FOOTER ================= */
+/* ===== FOOTER (NGOÀI BLUR) ===== */
 footer {
-  padding: 12px 0;
+  margin-top: 100svh; /* 🔴 ép phải scroll mới thấy */
+  padding: 14px 0;
   text-align: center;
   font-size: 11px;
-  background: rgba(255, 230, 240, 0.6);
+
+  background: rgba(255, 230, 240, 0.85);
+  backdrop-filter: blur(8px);
 }
 
 .footer-icons {
@@ -132,7 +132,7 @@ footer {
   margin-bottom: 4px;
 }
 
-/* ================= FADE ================= */
+/* ===== FADE ===== */
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
