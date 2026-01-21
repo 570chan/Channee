@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".fade-item").forEach((el, i) => {
-    setTimeout(() => {
-      el.classList.add("show");
-    }, i * 120);
+  document.body.style.opacity = "0";
+  document.body.style.transition = "opacity 1.2s ease";
+
+  requestAnimationFrame(() => {
+    document.body.style.opacity = "1";
   });
 });
