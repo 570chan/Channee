@@ -1,3 +1,4 @@
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +7,7 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* 🔴 BỎ SCROLL HOÀN TOÀN */
+  overflow: hidden; /* ❌ không scroll */
   font-family: 'Inter', sans-serif;
 }
 
@@ -24,26 +25,30 @@ html, body {
 
 /* ===== GLASS CONFIG ===== */
 :root {
-  --glass-opacity: 0.2;
+  --glass-opacity: 0.8;   /* độ trong 80% */
   --glass-blur: 18px;
 }
 
-/* ===== BLUR FULLSCREEN ===== */
+/* ===== GLASS FULL SCREEN ===== */
 .glass-wrapper {
+  position: relative;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
 
   background: rgba(255, 255, 255, var(--glass-opacity));
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
+
+  display: flex;
+  flex-direction: column;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER (AVATAR NHỎ – GIỮ NGUYÊN) ===== */
 .site-header {
   padding: 16px 0;
   display: flex;
   justify-content: center;
+  z-index: 2;
 }
 
 .site-header img {
@@ -52,19 +57,27 @@ html, body {
   border-radius: 50%;
 }
 
-/* ===== MAIN ===== */
+/* ===== MAIN CONTENT – CĂN GIỮA TRỤC Y ===== */
 .content {
-  flex: 1;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+
+  transform: translateY(-50%);
+
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 16px;
+  padding: 0 16px;
+  z-index: 1;
 }
 
 .center {
   text-align: center;
+  max-width: 320px;
 }
 
+/* ===== AVATAR LỚN ===== */
 .avatar {
   width: 96px;
   height: 96px;
@@ -72,6 +85,7 @@ html, body {
   margin-bottom: 16px;
 }
 
+/* ===== TEXT ===== */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
@@ -84,7 +98,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ===== SOCIAL ===== */
+/* ===== SOCIAL ICON ===== */
 .socials {
   display: flex;
   justify-content: center;
@@ -96,21 +110,34 @@ h1 {
   height: 38px;
   border-radius: 50%;
   background: rgba(255,255,255,0.9);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   color: #555;
   text-decoration: none;
+  transition: 0.25s ease;
 }
 
-/* ===== FOOTER ===== */
+.socials a:hover {
+  background: #f6a5c0;
+  color: #fff;
+}
+
+/* ===== FOOTER – DƯỚI ĐÁY ===== */
 .site-footer {
+  margin-top: auto;
   padding: 12px 0;
+
   text-align: center;
   font-size: 11px;
 
   background: rgba(255, 230, 240, 0.85);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  z-index: 2;
 }
 
 .footer-icons {
@@ -120,14 +147,26 @@ h1 {
   margin-bottom: 4px;
 }
 
-/* ===== FADE ===== */
+/* ===== FADE IN ===== */
 .fade-item {
   opacity: 0;
   transform: translateY(16px);
-  transition: 0.6s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .fade-item.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ===== MOBILE TWEAK ===== */
+@media (max-height: 700px) {
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
 }
