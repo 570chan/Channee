@@ -7,11 +7,11 @@
 
 html, body {
   height: 100%;
-  overflow: hidden; /* ❌ không scroll */
+  overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
 
-/* ===== BACKGROUND (KHÓA TƯƠNG TÁC) ===== */
+/* ===== BACKGROUND ===== */
 .bg {
   position: fixed;
   inset: 0;
@@ -25,11 +25,14 @@ html, body {
 
 /* ===== GLASS CONFIG ===== */
 :root {
-  --glass-opacity: 0.8;   /* độ trong 80% */
+  --glass-opacity: 0.8;
   --glass-blur: 18px;
+
+  --avatar-ring: 4px; /* độ dày vòng tròn */
+  --avatar-ring-color: rgba(255, 255, 255, 0.85);
 }
 
-/* ===== GLASS FULL SCREEN ===== */
+/* ===== GLASS FULL ===== */
 .glass-wrapper {
   position: relative;
   height: 100vh;
@@ -38,38 +41,36 @@ html, body {
   background: rgba(255, 255, 255, var(--glass-opacity));
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-
-  display: flex;
-  flex-direction: column;
 }
 
-/* ===== HEADER (AVATAR NHỎ – GIỮ NGUYÊN) ===== */
+/* ===== HEADER (AVATAR NHỎ) ===== */
 .site-header {
-  padding: 16px 0;
-  display: flex;
-  justify-content: center;
-  z-index: 2;
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
 .site-header img {
   width: 36px;
   height: 36px;
   border-radius: 50%;
+
+  border: var(--avatar-ring) solid var(--avatar-ring-color);
 }
 
-/* ===== MAIN CONTENT – CĂN GIỮA TRỤC Y ===== */
+/* ===== MAIN CONTENT – GIỮA THỰC SỰ ===== */
 .content {
   position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-
-  transform: translateY(-50%);
+  inset: 0;
 
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 0 16px;
-  z-index: 1;
+
+  /* bù lại header để mắt nhìn thấy đúng giữa */
+  transform: translateY(10px);
 }
 
 .center {
@@ -83,6 +84,8 @@ html, body {
   height: 96px;
   border-radius: 50%;
   margin-bottom: 16px;
+
+  border: var(--avatar-ring) solid var(--avatar-ring-color);
 }
 
 /* ===== TEXT ===== */
@@ -98,7 +101,7 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* ===== SOCIAL ICON ===== */
+/* ===== SOCIAL ===== */
 .socials {
   display: flex;
   justify-content: center;
@@ -125,19 +128,20 @@ h1 {
   color: #fff;
 }
 
-/* ===== FOOTER – DƯỚI ĐÁY ===== */
+/* ===== FOOTER ===== */
 .site-footer {
-  margin-top: auto;
-  padding: 12px 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
 
+  padding: 12px 0;
   text-align: center;
   font-size: 11px;
 
   background: rgba(255, 230, 240, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
-  z-index: 2;
 }
 
 .footer-icons {
@@ -147,7 +151,7 @@ h1 {
   margin-bottom: 4px;
 }
 
-/* ===== FADE IN ===== */
+/* ===== FADE ===== */
 .fade-item {
   opacity: 0;
   transform: translateY(16px);
