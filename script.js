@@ -1,9 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const items = document.querySelectorAll(".fade-item");
-
-  items.forEach((el, index) => {
-    setTimeout(() => {
-      el.classList.add("show");
-    }, index * 150);
+  document.querySelectorAll(".fade-item").forEach((el, i) => {
+    setTimeout(() => el.classList.add("show"), i * 120);
   });
 });
