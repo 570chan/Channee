@@ -1,3 +1,4 @@
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -13,26 +14,28 @@ body {
   display: flex;
   flex-direction: column;
   color: #333;
+  overflow-x: hidden;
 }
 
-/* Background */
+/* ================= BACKGROUND (FIX SCROLL BUG) ================= */
 .background {
   position: fixed;
   inset: 0;
-  background: url("assets/bg.jpg") center / cover no-repeat;
-  filter: blur(2px);
-  transform: scale(1.05);
   z-index: -2;
+  background: url("assets/bg.jpg") center / cover no-repeat fixed;
 }
 
-.overlay {
-  position: fixed;
+/* Blur + overlay trực tiếp */
+.background::before {
+  content: "";
+  position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.55);
-  z-index: -1;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-/* Header */
+/* ================= HEADER ================= */
 .site-header {
   padding: 16px 0;
   display: flex;
@@ -47,7 +50,7 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Main */
+/* ================= MAIN ================= */
 .content {
   min-height: 100vh;
   display: flex;
@@ -81,7 +84,7 @@ h1 {
   margin-bottom: 18px;
 }
 
-/* Socials */
+/* ================= SOCIALS ================= */
 .socials {
   display: flex;
   justify-content: center;
@@ -92,13 +95,13 @@ h1 {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.9);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #555;
   text-decoration: none;
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
 
 .socials a:hover {
@@ -107,20 +110,21 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* Footer */
+/* ================= FOOTER (GIẢM CHIỀU CAO) ================= */
 footer {
-  padding: 28px 0;
-  background: rgba(255, 230, 240, 0.8);
-  backdrop-filter: blur(6px);
+  padding: 14px 0;
+  background: rgba(255, 230, 240, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .footer-icons {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
 footer span {
