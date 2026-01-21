@@ -25,7 +25,7 @@ html, body {
 
 /* ===== ROOT CONFIG ===== */
 :root {
-  --glass-opacity: 0.8;
+  --glass-opacity: 0.2;
   --glass-blur: 18px;
 
   --ring-size: 4px;
