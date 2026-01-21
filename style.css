@@ -11,21 +11,21 @@ html, body {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  color: #333;
   overflow-x: hidden;
+  color: #333;
 }
 
-/* ================= BACKGROUND (FIX SCROLL BUG) ================= */
+/* ================= BACKGROUND FULL VIEWPORT ================= */
 .background {
   position: fixed;
   inset: 0;
-  z-index: -2;
-  background: url("assets/bg.jpg") center / cover no-repeat fixed;
+  width: 100vw;
+  height: 100vh;              /* luôn full màn hình */
+  z-index: 0;
+  background: url("assets/bg.jpg") center / cover no-repeat;
 }
 
-/* Blur + overlay trực tiếp */
+/* blur + overlay trực tiếp trên bg */
 .background::before {
   content: "";
   position: absolute;
@@ -33,6 +33,15 @@ body {
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+
+/* ================= WRAPPER ================= */
+.page {
+  position: relative;
+  z-index: 1;                 /* nội dung & footer nằm trên bg */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ================= HEADER ================= */
@@ -52,7 +61,7 @@ body {
 
 /* ================= MAIN ================= */
 .content {
-  min-height: 100vh;
+  flex: 1;                    /* đẩy footer xuống cuối */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -110,7 +119,7 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* ================= FOOTER (GIẢM CHIỀU CAO) ================= */
+/* ================= FOOTER (THẤP GỌN) ================= */
 footer {
   padding: 14px 0;
   background: rgba(255, 230, 240, 0.75);
