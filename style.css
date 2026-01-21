@@ -5,26 +5,33 @@
 }
 
 html, body {
-  overscroll-behavior: none;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
   color: #333;
 }
 
-/* Background */
+/* Page wrapper */
+.page {
+  position: relative;
+  min-height: 100vh;
+}
+
+/* === BACKGROUND (ANTI-ZOOM FIX) === */
 .background {
-  position: fixed;
-  inset: -20px;
+  position: absolute;
+  inset: -30px;
   background: url("assets/bg.jpg") center / cover no-repeat;
   filter: blur(2px);
   z-index: -2;
 }
 
 .overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.55);
   z-index: -1;
@@ -45,19 +52,18 @@ body {
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* Main */
+/* Main content */
 .content {
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .card {
   text-align: center;
 }
 
-/* Avatar */
 .avatar {
   width: 90px;
   height: 90px;
@@ -79,7 +85,7 @@ h1 {
   margin-bottom: 18px;
 }
 
-/* Socials */
+/* Social icons */
 .socials {
   display: flex;
   justify-content: center;
@@ -96,7 +102,7 @@ h1 {
   justify-content: center;
   color: #555;
   text-decoration: none;
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
 
 .socials a:hover {
@@ -105,22 +111,35 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* Footer */
+/* Footer (MỎNG) */
 footer {
-  padding: 12px 0;           /* GIẢM CHIỀU CAO */
+  padding: 10px 0;
+  text-align: center;
+  font-size: 11px;
   background: rgba(255, 230, 240, 0.8);
   backdrop-filter: blur(6px);
-  text-align: center;
-  font-size: 11px;           /* chữ nhỏ hơn chút */
 }
 
 .footer-icons {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: 10px;
+  margin-bottom: 4px;
 }
 
-footer span {
-  opacity: 0.6;
+.footer-icons a {
+  font-size: 12px;
+  color: #666;
+}
+
+/* === FADE UP ANIMATION === */
+.fade-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-item.show {
+  opacity: 1;
+  transform: translateY(0);
 }
