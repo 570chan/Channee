@@ -21,7 +21,7 @@ html, body {
 /* ================= BLUR CONFIG ================= */
 /* 👉 CHỈNH Ở ĐÂY */
 :root {
-  --glass-opacity: 0.8;  /* 80% trong – chỉnh 0.7 / 0.85 tuỳ thích */
+  --glass-opacity: 0.2;  /* 80% trong – chỉnh 0.7 / 0.85 tuỳ thích */
   --glass-blur: 18px;
 }
 
