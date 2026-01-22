@@ -22,7 +22,7 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 0;
-  background: url("assets/bg.jpg") center / cover no-repeat;
+  background: url("assets/background.jpg") center / cover no-repeat;
 }
 
 .background::before {
