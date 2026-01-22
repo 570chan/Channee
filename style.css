@@ -1,4 +1,4 @@
-/* RESET */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
   overflow-x: hidden;
 }
 
-/* BACKGROUND */
+/* ================= BACKGROUND (ĐỨNG IM) ================= */
 .background {
   position: fixed;
   inset: 0;
@@ -31,9 +31,10 @@ body {
   inset: 0;
   background: rgba(255,255,255,0.55);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-/* WRAPPER */
+/* ================= WRAPPER ================= */
 .page {
   position: relative;
   z-index: 1;
@@ -42,7 +43,7 @@ body {
   flex-direction: column;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .site-header {
   padding: 16px 0;
   display: flex;
@@ -57,9 +58,10 @@ body {
   border: 2px solid #fff;
   padding: 2px;
   background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 .content {
   flex: 1;
   display: flex;
@@ -80,12 +82,14 @@ body {
   padding: 3px;
   background: #fff;
   margin-bottom: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-/* TEXT */
+/* ================= TEXT ================= */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
+  margin-bottom: 6px;
 }
 
 .subtitle {
@@ -94,15 +98,14 @@ h1 {
   margin-bottom: 18px;
 }
 
-/* SOCIALS */
+/* ================= SOCIALS ================= */
 .socials {
   display: flex;
   justify-content: center;
   gap: 14px;
 }
 
-.socials a,
-.footer-icons a {
+.socials a {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -115,29 +118,51 @@ h1 {
   transition: 0.25s ease;
 }
 
-/* FOOTER */
+.socials a:hover {
+  background: #f6a5c0;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ================= FOOTER ================= */
 footer {
   padding: 14px 0;
   background: rgba(255,230,240,0.75);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   text-align: center;
   font-size: 11px;
 }
 
+/* ICON FOOTER – KHÔNG BOX, KHÔNG BO */
 .footer-icons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 4px;
+  gap: 18px;
+  margin-bottom: 6px;
+}
+
+.footer-icons a {
+  color: #666;
+  font-size: 15px;
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-icons a:hover {
+  color: #f6a5c0;
+  transform: translateY(-2px);
+}
+
+footer span {
+  opacity: 0.6;
 }
 
 /* ================= FADE IN UP ================= */
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .fade-item.show {
