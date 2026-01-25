@@ -14,22 +14,31 @@ body {
   overflow-x: hidden;
 }
 
-/* BACKGROUND */
+/* ================= BACKGROUND ================= */
 .background {
   position: fixed;
   inset: 0;
-  background: url("assets/bg.jpg") center / cover no-repeat;
+  background-image: url("assets/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* BLUR TRỰC TIẾP */
+  filter: blur(6px) brightness(1.05);
+  transform: scale(1.08); /* tránh viền đen */
+
+  z-index: -2;
 }
 
-.background::before {
+/* LỚP LÀM NHẸ (KHÔNG CHE BG) */
+.background::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(2px);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* WRAPPER */
+/* ================= PAGE ================= */
 .page {
   position: relative;
   z-index: 1;
@@ -38,11 +47,12 @@ body {
   flex-direction: column;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 .site-header {
+  position: relative;
   padding: 16px 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
@@ -53,24 +63,20 @@ body {
   object-fit: cover;
   border: 2px solid #fff;
   background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-/* CLOCK */
-.clock {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
+/* CLOCK TEXT */
+.clock-text {
+  position: absolute;
+  right: 20px;
+  font-size: 13px;
   font-weight: 500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  color: #444;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
 .content {
   flex: 1;
   display: flex;
@@ -91,7 +97,7 @@ body {
   border: 3px solid #fff;
   background: #fff;
   margin-bottom: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
 /* TEXT */
@@ -99,26 +105,26 @@ h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
   margin-bottom: 6px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .subtitle {
   font-size: 14px;
-  opacity: 0.75;
+  opacity: 0.8;
   margin-bottom: 6px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 /* LOCATION */
 .location {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   gap: 6px;
   font-size: 13px;
-  opacity: 0.85;
   margin-bottom: 18px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  color: #555;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .location i {
@@ -143,7 +149,7 @@ h1 {
   color: #555;
   text-decoration: none;
   transition: 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
 .socials a:hover {
@@ -152,10 +158,10 @@ h1 {
   transform: translateY(-2px);
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
 footer {
   padding: 14px 0;
-  background: rgba(255,230,240,0.75);
+  background: rgba(255,230,240,0.7);
   backdrop-filter: blur(4px);
   text-align: center;
   font-size: 11px;
@@ -173,7 +179,7 @@ footer {
   font-size: 15px;
   text-decoration: none;
   transition: 0.25s ease;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 .footer-icons a:hover {
@@ -181,7 +187,7 @@ footer {
   transform: translateY(-2px);
 }
 
-/* FADE */
+/* ================= FADE ================= */
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
