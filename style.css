@@ -1,3 +1,4 @@
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -18,19 +19,18 @@ body {
 .background {
   position: fixed;
   inset: 0;
-  background-image: url("assets/background.jpg");
+  background-image: url("background.jpg"); /* <-- BG MỚI */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
-  /* BLUR TRỰC TIẾP */
   filter: blur(6px) brightness(1.05);
   transform: scale(1.08); /* tránh viền đen */
 
   z-index: -2;
 }
 
-/* LỚP LÀM NHẸ (KHÔNG CHE BG) */
+/* lớp phủ nhẹ cho dễ đọc chữ */
 .background::after {
   content: "";
   position: absolute;
@@ -52,10 +52,11 @@ body {
   position: relative;
   padding: 16px 20px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* avatar luôn giữa */
   align-items: center;
 }
 
+/* avatar mini */
 .site-header img {
   width: 36px;
   height: 36px;
@@ -66,13 +67,18 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-/* CLOCK TEXT */
+/* ================= CLOCK ================= */
+/* ghim góc màn hình, KHÔNG ăn layout header */
 .clock-text {
-  position: absolute;
-  right: 20px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+
   font-size: 13px;
   font-weight: 500;
   color: #444;
+
   text-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
@@ -88,7 +94,7 @@ body {
   text-align: center;
 }
 
-/* AVATAR */
+/* avatar lớn */
 .avatar {
   width: 90px;
   height: 90px;
@@ -100,7 +106,7 @@ body {
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
-/* TEXT */
+/* ================= TEXT ================= */
 h1 {
   font-family: 'Playfair Display', serif;
   font-size: 26px;
@@ -115,7 +121,7 @@ h1 {
   text-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* LOCATION */
+/* ================= LOCATION ================= */
 .location {
   display: flex;
   justify-content: center;
@@ -131,7 +137,7 @@ h1 {
   color: #f36b8a;
 }
 
-/* SOCIALS */
+/* ================= SOCIALS ================= */
 .socials {
   display: flex;
   justify-content: center;
@@ -187,7 +193,7 @@ footer {
   transform: translateY(-2px);
 }
 
-/* ================= FADE ================= */
+/* ================= FADE EFFECT ================= */
 .fade-item {
   opacity: 0;
   transform: translateY(24px);
