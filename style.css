@@ -20,7 +20,7 @@ body {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: url("background.jpg") center / cover no-repeat;
+  background: url("assets/backgroundv.jpg") center / cover no-repeat;
   filter: blur(6px) brightness(1.05);
   z-index: -2;
 }
