@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* Fade in */
+  /* Fade in theo thứ tự */
   const items = document.querySelectorAll(".fade-item");
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -16,14 +16,16 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(item);
   });
 
-  /* Clock Vietnam (GMT+7) */
+  /* Clock Việt Nam */
   const clock = document.getElementById("vnClock");
 
   function updateClock() {
     const now = new Date();
-    const vnTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
-    const h = String(vnTime.getHours()).padStart(2, "0");
-    const m = String(vnTime.getMinutes()).padStart(2, "0");
+    const vn = new Date(
+      now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
+    );
+    const h = String(vn.getHours()).padStart(2, "0");
+    const m = String(vn.getMinutes()).padStart(2, "0");
     clock.textContent = `${h}:${m}`;
   }
 
