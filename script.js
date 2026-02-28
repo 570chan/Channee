@@ -38,44 +38,79 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  /* ================= AUTO ZOOM + FULLSCREEN WHEN LANDSCAPE ================= */
+  /* ================= AUTO ZOOM + FADE + LIVE WALLPAPER ================= */
+  let isLandscape = false;
+  let fadeTimeout;
+
   function handleOrientationChange() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    const isLandscape = width > height;
+    const newIsLandscape = width > height;
 
-    if (isLandscape) {
-      // Ngang: zoom out để fit 1024×1024 + fullscreen
-      const zoomWidth = width / 1024;
-      const zoomHeight = height / 1024;
-      const zoomFactor = Math.min(zoomWidth, zoomHeight);
-      document.documentElement.style.zoom = zoomFactor;
-
-      // Yêu cầu fullscreen nếu có thể
-      const elem = document.documentElement;
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen().catch(err => console.log("Fullscreen request denied"));
-      } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-      } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-      } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-      }
-    } else {
-      // Dọc: reset zoom + thoát fullscreen
-      document.documentElement.style.zoom = 1;
-
-      if (document.fullscreenElement) {
-        document.exitFullscreen().catch(err => console.log("Fullscreen exit denied"));
-      } else if (document.webkitFullscreenElement) {
-        document.webkitExitFullscreen();
-      } else if (document.mozFullScreenElement) {
-        document.mozCancelFullScreen();
-      } else if (document.msFullscreenElement) {
-        document.msExitFullscreen();
-      }
+    if (newIsLandscape && !isLandscape) {
+      // Từ dọc sang ngang
+      applyLandscapeZoom();
+      startFadeTransition();
+    } else if (!newIsLandscape && isLandscape) {
+      // Từ ngang sang dọc
+      resetToPortrait();
     }
+
+    isLandscape = newIsLandscape;
+  }
+
+  function applyLandscapeZoom() {
+    // Zoom out để fit 1024×1024
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const zoomWidth = width / 1024;
+    const zoomHeight = height / 1024;
+    const zoomFactor = Math.min(zoomWidth, zoomHeight);
+    document.documentElement.style.zoom = zoomFactor;
+  }
+
+  function startFadeTransition() {
+    const staticBg = document.getElementById("staticBg");
+    const liveBg = document.getElementById("liveBg");
+    const page = document.querySelector(".page");
+    
+    // Fade to black nhanh (0.2s)
+    staticBg.style.opacity = "0";
+    page.style.opacity = "0";
+
+    // Sau 0.2s, hiển thị live wallpaper
+    fadeTimeout = setTimeout(() => {
+      // Ẩn ảnh tĩnh, hiển thị live wallpaper
+      staticBg.style.display = "none";
+      liveBg.style.opacity = "1";
+      
+      // Fade in lại nhanh (0.2s)
+      page.style.opacity = "1";
+    }, 200);
+  }
+
+  function resetToPortrait() {
+    clearTimeout(fadeTimeout);
+    
+    // Reset zoom
+    document.documentElement.style.zoom = 1;
+    
+    const staticBg = document.getElementById("staticBg");
+    const liveBg = document.getElementById("liveBg");
+    const page = document.querySelector(".page");
+    
+    // Fade to black
+    page.style.opacity = "0";
+    liveBg.style.opacity = "0";
+
+    // Sau 0.2s, quay lại ảnh tĩnh
+    fadeTimeout = setTimeout(() => {
+      staticBg.style.display = "block";
+      staticBg.style.opacity = "1";
+      
+      // Fade in lại
+      page.style.opacity = "1";
+    }, 200);
   }
 
   // Kiểm tra lần đầu
