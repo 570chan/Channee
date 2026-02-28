@@ -39,8 +39,15 @@
 </head>
 <body>
 
-  <!-- Background -->
-  <div class="background"></div>
+  <!-- Background - Ảnh tĩnh (Portrait) -->
+  <div class="background static-bg" id="staticBg"></div>
+
+  <!-- Background - Live Wallpaper Video (Landscape) -->
+  <div class="background live-bg" id="liveBg">
+    <video id="liveWallpaper" autoplay muted loop playsinline>
+      <source src="https://example.com/live-wallpaper.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Clock (TÁCH RIÊNG – FIX LỖI) -->
   <div class="clock-text" id="vnClock"></div>
