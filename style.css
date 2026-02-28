@@ -20,16 +20,49 @@ body {
   inset: 0;
   width: 100vw;
   height: 100vh;
-  background: url("assets/backgroundv.jpg") center / cover no-repeat;
-  filter: blur(6px) brightness(1.05);
   z-index: -2;
+  top: 0;
+  left: 0;
 }
 
-.background::after {
+/* Ảnh tĩnh - Portrait */
+.static-bg {
+  background: url("assets/backgroundv.jpg") center / cover no-repeat fixed;
+  filter: blur(6px) brightness(1.05);
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.static-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,0.25);
+  z-index: -1;
+}
+
+/* Live Wallpaper Video - Landscape */
+.live-bg {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.live-bg video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.live-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.25);
+  z-index: -1;
 }
 
 /* ================= CLOCK ================= */
@@ -54,6 +87,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
 }
 
 /* ================= HEADER ================= */
