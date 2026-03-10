@@ -37,4 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+
+  /* Video background autoplay fix */
+  const videoElement = document.querySelector(".background");
+  if (videoElement) {
+    videoElement.play().catch(error => {
+      console.log("Autoplay blocked:", error);
+    });
+  }
+
 });
