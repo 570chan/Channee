@@ -253,6 +253,14 @@ color:#fff;
 
 transform:translateY(-2px);
 
+box-shadow:0 8px 20px rgba(246, 165, 192, 0.5);
+
+}
+
+.socials a.active{
+
+box-shadow:0 8px 20px rgba(246, 165, 192, 0.6);
+
 }
 
 /* ================= FOOTER ================= */
