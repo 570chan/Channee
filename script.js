@@ -46,4 +46,26 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* Social links active state */
+  const socialLinks = document.querySelectorAll(".socials a");
+  
+  socialLinks.forEach(link => {
+    link.addEventListener("mouseenter", () => {
+      link.classList.add("active");
+    });
+    
+    link.addEventListener("mouseleave", () => {
+      link.classList.remove("active");
+    });
+  });
+
+  /* Remove active class when clicking outside */
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".socials a")) {
+      socialLinks.forEach(link => {
+        link.classList.remove("active");
+      });
+    }
+  });
+
 });
