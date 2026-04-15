@@ -1,7 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* Fade in theo thứ tự */
+  /* Loading Overlay */
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  const bgMusic = document.getElementById("bgMusic");
   const items = document.querySelectorAll(".fade-item");
+
+  if (loadingOverlay) {
+    loadingOverlay.addEventListener("click", () => {
+      // Hide overlay
+      loadingOverlay.classList.add("hide");
+      
+      /* Trigger fade animations */
+      items.forEach((item, i) => {
+        item.style.transitionDelay = `${i * 0.12}s`;
+        item.classList.add("show");
+      });
+      
+      /* Play background music */
+      if (bgMusic) {
+        bgMusic.play().catch(error => {
+          console.log("Music autoplay blocked:", error);
+        });
+      }
+    });
+  }
+
+  /* Fade in theo thứ tự */
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
