@@ -4,61 +4,114 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Nechanne</title>
+  <title>Nechanne | Cherry Blossom</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+
+  <meta name="description" content="Cherry Blossom – Liệu tôi còn nhớ mình là ai không?.">
+  <meta name="author" content="Nechanne (X)">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="Profile Channee">
+  <meta property="og:description" content="Liệu tôi còn nhớ mình là ai không?">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="_.570channe">
+  <meta property="og:url" content="https://nechan.vercel.app/?v=7">
+  <meta property="og:image" content="https://i.ibb.co/v6X5K3Fw/avatar.jpg">
+
+  <meta name="theme-color" content="#f4b6c2">
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- Overlay -->
+<!-- Loading Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
-  <div class="overlay-content">>_<</div>
+  <div class="overlay-content">
+    <span class="overlay-text">>_<</span>
+  </div>
 </div>
 
-<!-- Nhạc -->
+<!-- Background Music -->
 <audio id="bgMusic" loop>
   <source src="YOUR_MUSIC_URL_HERE" type="audio/mpeg">
 </audio>
 
-<!-- Background -->
-<video class="background" autoplay muted loop>
-  <source src="https://ik.imagekit.io/3ikgdzk0r/anime-girl-tank-flower-field-moewalls-com.mp4" type="video/mp4">
+<video class="background" autoplay muted loop playsinline>
+  <source src="https://ik.imagekit.io/3ikgdzk0r/anime-girl-tank-flower-field-moewalls-com.mp4?updatedAt=1772285370354" type="video/mp4">
 </video>
 
-<!-- Clock -->
-<div class="clock-wrapper">
-  <div id="vnClock" class="fade-item clock-text"></div>
-  <div class="fade-item clock-status">🌙 Idle</div>
-</div>
+<div class="clock-text" id="vnClock"></div>
 
-<!-- Content -->
+<!-- Status Box -->
+<div class="status-box">online</div>
+
 <div class="page">
 
-<header class="fade-item">
+<header class="site-header fade-item">
   <img src="assets/avatar.jpg">
 </header>
 
 <main class="content">
 
 <div class="profile-container">
-
+  
+  <!-- Main Profile Card -->
   <div class="profile-card fade-item">
     <img src="assets/avatar.jpg" class="avatar-side">
-    <div>
+    <div class="profile-text">
       <h1>.X</h1>
-      <p>Tôi không còn nhớ mình là ai không?.</p>
+      <p class="profile-subtitle">Tôi không còn nhớ mình là ai không?.</p>
+      <p class="profile-date">joined October 10, 2025</p>
     </div>
   </div>
 
-  <div class="fade-item">📍 Hà Nội, Việt Nam</div>
+  <!-- Location -->
+  <div class="location fade-item">
+    <i class="fa-solid fa-location-dot"></i>
+    <span>Hà Nội, Việt Nam</span>
+  </div>
+
+  <!-- Secondary Info Card -->
+  <div class="info-card fade-item">
+    <img src="assets/001.png" class="info-avatar">
+    <div class="info-content">
+      <h3>570channee</h3>
+      <p class="info-subtitle">last seen 4 minutes ago</p>
+    </div>
+  </div>
+
+  <!-- Socials -->
+  <div class="socials fade-item">
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="https://github.com/570chan">
+      <i class="fab fa-github"></i>
+    </a>
+  </div>
 
 </div>
 
 </main>
 
 <footer class="fade-item">
-  © 2026
+
+<div class="footer-icons">
+  <a href="#" id="backToTop">
+    <i class="fa-solid fa-house"></i>
+  </a>
+  <a href="#"><i class="fab fa-facebook-f"></i></a>
+  <a href="#"><i class="fab fa-instagram"></i></a>
+</div>
+
+<p>© 2026 _.570chan. All rights reserved.</p>
+<span>570channee@gmail.com</span>
+
 </footer>
 
 </div>
