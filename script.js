@@ -1,15 +1,29 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* Fade in theo thứ tự - chạy độc lập từ overlay */
   const items = document.querySelectorAll(".fade-item");
-  
-  // Bắt đầu fade-in animation ngay khi DOM loaded
-  const fadeInTimer = setTimeout(() => {
-    items.forEach((item, i) => {
-      item.style.transitionDelay = `${i * 0.12}s`;
-      item.classList.add("show");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  const bgMusic = document.getElementById("bgMusic");
+
+  /* Loading Overlay - Trigger fade only on click */
+  if (loadingOverlay) {
+    loadingOverlay.addEventListener("click", () => {
+      // Hide overlay
+      loadingOverlay.classList.add("hide");
+      
+      /* Trigger fade animations */
+      items.forEach((item, i) => {
+        item.style.transitionDelay = `${i * 0.12}s`;
+        item.classList.add("show");
+      });
+      
+      /* Play background music */
+      if (bgMusic) {
+        bgMusic.play().catch(error => {
+          console.log("Music autoplay blocked:", error);
+        });
+      }
     });
-  }, 100);
+  }
 
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -24,24 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
     item.style.transitionDelay = `${i * 0.12}s`;
     observer.observe(item);
   });
-
-  /* Loading Overlay */
-  const loadingOverlay = document.getElementById("loadingOverlay");
-  const bgMusic = document.getElementById("bgMusic");
-
-  if (loadingOverlay) {
-    loadingOverlay.addEventListener("click", () => {
-      // Hide overlay
-      loadingOverlay.classList.add("hide");
-      
-      /* Play background music */
-      if (bgMusic) {
-        bgMusic.play().catch(error => {
-          console.log("Music autoplay blocked:", error);
-        });
-      }
-    });
-  }
 
   /* Clock Việt Nam */
   const clock = document.getElementById("vnClock");
