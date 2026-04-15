@@ -75,7 +75,7 @@ z-index:-1;
 }
 
 .overlay-content {
-  font-size: 48px;
+  font-size: 32px;
   color: #fff;
   font-weight: 700;
   text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
@@ -101,6 +101,30 @@ pointer-events:none;
 
 text-shadow:0 2px 6px rgba(0,0,0,0.35);
 
+}
+
+/* ================= STATUS BOX ================= */
+
+.status-box {
+  position: fixed;
+  top: calc(env(safe-area-inset-top,0px) + 50px);
+  right: 16px;
+  
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  padding: 6px 12px;
+  border-radius: 12px;
+  
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+  
+  z-index: 9998;
+  pointer-events: none;
+  
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* ================= PAGE ================= */
@@ -189,8 +213,8 @@ gap:16px;
 
 .avatar-side{
 
-width:80px;
-height:80px;
+width:100px;
+height:100px;
 
 border-radius:50%;
 
