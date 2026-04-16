@@ -109,5 +109,24 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
+const audio = document.getElementById("bgMusic");
 
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({
+    title: "303 PM",
+    artist: "しゃろう (Sharou)",
+    album: "30分耐久フリーBGM",
+    artwork: [
+      { src: "assets/avatar.jpg", sizes: "512x512", type: "image/png" }
+    ]
+  });
+
+  navigator.mediaSession.setActionHandler('play', () => {
+    audio.play();
+  });
+
+  navigator.mediaSession.setActionHandler('pause', () => {
+    audio.pause();
+  });
+}
 });
