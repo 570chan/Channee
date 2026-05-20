@@ -30,34 +30,63 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tự động chạy fade khi trang load
   startFade();
 
-  /* ================= BLUR EFFECT - CONTINUOUS ================= */
+  /* ================= BLUR EFFECT - UPDATED ================= */
 
   function triggerBlurSequence() {
-    // Random 2 hoặc 3 blur (80% = 2, 20% = 3)
-    const blurCount = Math.random() < 0.8 ? 2 : 3;
-    
-    // Chạy blur sequence
-    for (let i = 0; i < blurCount; i++) {
+    if (!blurOverlay) return;
+
+    // Random xem đây là "Blur đơn" (true) hay "Blur chuỗi" (false)
+    const isSingleBlur = Math.random() < 0.5; 
+    let totalSequenceDuration = 0;
+
+    if (isSingleBlur) {
+      // --- BLUR ĐƠN ---
+      // Thời gian kéo dài từ 1s đến 1.5s
+      const blurDuration = Math.random() * 0.5 + 1.0; 
+      
+      // Chỉnh transition mượt phù hợp với blur đơn
+      blurOverlay.style.transition = "all 0.4s ease-in-out";
+      blurOverlay.classList.add("active");
+
       setTimeout(() => {
-        // Blur time: 0.5-1s
-        const blurDuration = Math.random() * 0.5 + 0.5;
-        
-        blurOverlay.classList.add("active");
-        
+        blurOverlay.classList.remove("active");
+      }, blurDuration * 1000);
+
+      totalSequenceDuration = blurDuration * 1000;
+    } else {
+      // --- BLUR CHUỖI (CẶP) ---
+      // Tỉ lệ: 80% ra 2 cái (cặp), 20% ra 3 cái liên tiếp
+      const blurCount = Math.random() < 0.8 ? 2 : 3;
+      const gap = 600; // Khoảng cách giữa các đợt phát blur: 600ms
+
+      // Blur chuỗi cần nhấp nháy nhanh hơn nên giảm transition xuống 0.2s
+      blurOverlay.style.transition = "all 0.2s ease-in-out";
+
+      for (let i = 0; i < blurCount; i++) {
         setTimeout(() => {
-          blurOverlay.classList.remove("active");
-        }, blurDuration * 1000);
-      }, i * 600); // Gap giữa các blur: 600ms
+          // Mỗi đợt nháy đơn ngắn từ 0.5s đến 1s
+          const blurDuration = Math.random() * 0.5 + 0.5;
+          
+          blurOverlay.classList.add("active");
+          
+          setTimeout(() => {
+            blurOverlay.classList.remove("active");
+          }, blurDuration * 1000);
+          
+        }, i * gap);
+      }
+
+      totalSequenceDuration = (blurCount - 1) * gap + 1000;
     }
 
-    // Trigger sequence tiếp theo sau khi sequence kết thúc
-    const totalDuration = blurCount * 600 + 500;
-    const nextTriggerDelay = Math.random() * 3000 + 2000; // 2-5s sau sequence kết thúc
+    // --- RANDOM THỜI GIAN CHỜ LƯỢT TIẾP THEO ---
+    // Ngẫu nhiên từ 10s (10000ms) đến 20s (20000ms)
+    const nextTriggerDelay = Math.random() * 10000 + 10000; 
     
-    setTimeout(triggerBlurSequence, totalDuration + nextTriggerDelay);
+    setTimeout(triggerBlurSequence, totalSequenceDuration + nextTriggerDelay);
   }
 
-  // Bắt đầu blur effect sau 2s
+  // Bắt đầu kích hoạt hiệu ứng Blur đầu tiên sau khi load trang 2s
   setTimeout(triggerBlurSequence, 2000);
 
   /* ================= CLOCK VN ================= */
