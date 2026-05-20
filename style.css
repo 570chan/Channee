@@ -49,12 +49,33 @@ z-index: 450;
 pointer-events: none;
 background: rgba(255, 255, 255, 0);
 backdrop-filter: blur(0px);
-/* transition được điều khiển linh hoạt qua JS */
 }
 
-.blur-overlay.active {
-background: rgba(255, 255, 255, 0.1);
-backdrop-filter: blur(8px);
+.blur-overlay.animate-blur {
+animation: cinematicBlur var(--blur-duration, 1s) ease-in-out forwards;
+}
+
+@keyframes cinematicBlur {
+0% {
+  backdrop-filter: blur(0px);
+  background: rgba(255, 255, 255, 0);
+}
+25% {
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.05);
+}
+60% {
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.1);
+}
+85% {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.15);
+}
+100% {
+  backdrop-filter: blur(0px);
+  background: rgba(255, 255, 255, 0);
+}
 }
 
 /* ================= CLOCK ================= */
