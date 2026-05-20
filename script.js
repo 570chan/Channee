@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const items = document.querySelectorAll(".fade-item");
-  const loadingOverlay = document.getElementById("loadingOverlay");
-  const bgMusic = document.getElementById("bgMusic");
 
   let started = false;
 
@@ -26,27 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
       item.style.transitionDelay = `${i * 0.12}s`;
       observer.observe(item);
     });
-
-    // Nhạc nền
-    if (bgMusic) {
-      bgMusic.play().catch(err => {
-        console.log("Music autoplay blocked:", err);
-      });
-    }
   }
 
-  /* CLICK bất kỳ để bắt đầu */
-  document.addEventListener("click", () => {
-    startFade();
-  }, { once: true });
-
-  /* Overlay click */
-  if (loadingOverlay) {
-    loadingOverlay.addEventListener("click", () => {
-      loadingOverlay.classList.add("hide");
-      startFade();
-    });
-  }
+  // Tự động chạy fade khi trang load
+  startFade();
 
   /* ================= CLOCK VN ================= */
 
@@ -109,24 +90,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   });
-const audio = document.getElementById("bgMusic");
-
-if ('mediaSession' in navigator) {
-  navigator.mediaSession.metadata = new MediaMetadata({
-    title: "303 PM",
-    artist: "しゃろう (Sharou)",
-    album: "30分耐久フリーBGM",
-    artwork: [
-      { src: "assets/avatar.jpg", sizes: "512x512", type: "image/png" }
-    ]
-  });
-
-  navigator.mediaSession.setActionHandler('play', () => {
-    audio.play();
-  });
-
-  navigator.mediaSession.setActionHandler('pause', () => {
-    audio.pause();
-  });
-}
 });
