@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const items = document.querySelectorAll(".fade-item");
-  const rainContainer = document.getElementById("rainContainer");
   const blurOverlay = document.getElementById("blurOverlay");
 
   let started = false;
@@ -31,181 +30,35 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tự động chạy fade khi trang load
   startFade();
 
-  /* ================= RAIN EFFECT - REALISTIC ================= */
+  /* ================= BLUR EFFECT - CONTINUOUS ================= */
 
-  // Hạt mưa rơi xuống thẳng (from top)
-  function createVerticalRaindrop() {
-    const drop = document.createElement("div");
-    drop.className = "raindrop vertical";
+  function triggerBlurSequence() {
+    // Random 2 hoặc 3 blur (80% = 2, 20% = 3)
+    const blurCount = Math.random() < 0.8 ? 2 : 3;
     
-    // Variation kích cỡ: 60% nhỏ, 30% vừa, 10% lớn
-    const sizeRand = Math.random();
-    let size, opacity;
-    if (sizeRand < 0.6) {
-      size = Math.random() * 2 + 1; // 1-3px
-      opacity = 0.5 + Math.random() * 0.3; // 0.5-0.8
-    } else if (sizeRand < 0.9) {
-      size = Math.random() * 3 + 3; // 3-6px
-      opacity = 0.6 + Math.random() * 0.3; // 0.6-0.9
-    } else {
-      size = Math.random() * 2 + 6; // 6-8px
-      opacity = 0.7 + Math.random() * 0.2; // 0.7-0.9
+    // Chạy blur sequence
+    for (let i = 0; i < blurCount; i++) {
+      setTimeout(() => {
+        // Blur time: 0.5-1s
+        const blurDuration = Math.random() * 0.5 + 0.5;
+        
+        blurOverlay.classList.add("active");
+        
+        setTimeout(() => {
+          blurOverlay.classList.remove("active");
+        }, blurDuration * 1000);
+      }, i * 600); // Gap giữa các blur: 600ms
     }
 
-    const x = Math.random() * window.innerWidth;
-    const duration = Math.random() * 0.8 + 1.2; // 1.2-2s
-
-    drop.style.left = x + "px";
-    drop.style.top = "-10px";
-    drop.style.width = size + "px";
-    drop.style.height = size * 4 + "px";
-    drop.style.opacity = opacity;
-    drop.style.animation = `fallVertical ${duration}s linear forwards`;
-
-    rainContainer.appendChild(drop);
-
-    setTimeout(() => drop.remove(), duration * 1000);
+    // Trigger sequence tiếp theo sau khi sequence kết thúc
+    const totalDuration = blurCount * 600 + 500;
+    const nextTriggerDelay = Math.random() * 3000 + 2000; // 2-5s sau sequence kết thúc
+    
+    setTimeout(triggerBlurSequence, totalDuration + nextTriggerDelay);
   }
 
-  // Hạt mưa bay vào từ cạnh & chạy xuống (hitting glass effect)
-  function createHitGlassRaindrop() {
-    const drop = document.createElement("div");
-    drop.className = "raindrop glass-hit";
-    
-    // Variation
-    const sizeRand = Math.random();
-    let size, opacity;
-    if (sizeRand < 0.6) {
-      size = Math.random() * 2 + 1.5; // 1.5-3.5px
-      opacity = 0.6 + Math.random() * 0.2;
-    } else if (sizeRand < 0.9) {
-      size = Math.random() * 3 + 3.5; // 3.5-6.5px
-      opacity = 0.7 + Math.random() * 0.2;
-    } else {
-      size = Math.random() * 2 + 6.5; // 6.5-8.5px
-      opacity = 0.8 + Math.random() * 0.15;
-    }
-
-    // Random cạnh (left, right, hoặc top-left/top-right)
-    const side = Math.random();
-    let startX, startY, endX, streakLength;
-
-    if (side < 0.4) {
-      // From left
-      startX = -20;
-      startY = Math.random() * window.innerHeight * 0.3;
-      endX = Math.random() * (window.innerWidth * 0.15);
-    } else if (side < 0.8) {
-      // From right
-      startX = window.innerWidth + 20;
-      startY = Math.random() * window.innerHeight * 0.3;
-      endX = window.innerWidth - Math.random() * (window.innerWidth * 0.15);
-    } else {
-      // From top corners
-      startX = Math.random() < 0.5 ? -20 : window.innerWidth + 20;
-      startY = -20;
-      endX = startX + (Math.random() * 100 - 50);
-    }
-
-    streakLength = Math.random() * 40 + 30; // 30-70px streak
-
-    drop.style.left = startX + "px";
-    drop.style.top = startY + "px";
-    drop.style.width = size + "px";
-    drop.style.height = size + "px";
-    drop.style.opacity = opacity;
-
-    rainContainer.appendChild(drop);
-
-    // Animation: Bay vào + chạy xuống
-    const hitDuration = Math.random() * 0.3 + 0.4; // 0.4-0.7s bay vào
-    const streakDuration = Math.random() * 0.8 + 1.2; // 1.2-2s chạy xuống
-
-    // Bay vào
-    drop.style.animation = `hitGlass ${hitDuration}s ease-out forwards`;
-    drop.style.setProperty('--endX', endX + "px");
-    drop.style.setProperty('--endY', startY + Math.random() * 100 + 50 + "px");
-
-    // Sau khi bay vào, chạy xuống
-    setTimeout(() => {
-      drop.style.animation = `streakDown ${streakDuration}s linear forwards`;
-      drop.style.setProperty('--streakLength', streakLength + "px");
-    }, hitDuration * 1000);
-
-    setTimeout(() => drop.remove(), (hitDuration + streakDuration) * 1000);
-  }
-
-  // Thêm keyframes vào style
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes fallVertical {
-      to {
-        transform: translateY(${window.innerHeight + 20}px);
-      }
-    }
-
-    @keyframes hitGlass {
-      0% {
-        opacity: 0;
-        transform: translate(0, 0);
-        filter: blur(2px);
-      }
-      100% {
-        opacity: var(--opacity, 0.7);
-        transform: translate(calc(var(--endX) - var(--startX, 0px)), calc(var(--endY) - var(--startY, 0px)));
-        filter: blur(0);
-      }
-    }
-
-    @keyframes streakDown {
-      0% {
-        transform: translateY(0);
-        opacity: var(--opacity, 0.7);
-      }
-      50% {
-        opacity: var(--opacity, 0.7);
-      }
-      100% {
-        transform: translateY(var(--streakLength));
-        opacity: 0;
-      }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Tạo mưa
-  setInterval(() => {
-    // Mưa rơi thẳng
-    const verticalCount = Math.floor(Math.random() * 2) + 2; // 2-3
-    for (let i = 0; i < verticalCount; i++) {
-      setTimeout(() => createVerticalRaindrop(), i * 40);
-    }
-
-    // Mưa bay vào & chạy xuống
-    const hitCount = Math.floor(Math.random() * 2) + 1; // 1-2
-    for (let i = 0; i < hitCount; i++) {
-      setTimeout(() => createHitGlassRaindrop(), i * 100);
-    }
-  }, 400);
-
-  /* ================= BLUR EFFECT ================= */
-
-  function triggerBlur() {
-    const duration = Math.random() * 2000 + 2000; // 2-4 giây
-    
-    blurOverlay.classList.add("active");
-    
-    setTimeout(() => {
-      blurOverlay.classList.remove("active");
-    }, duration);
-
-    // Trigger lại sau 5-12 giây
-    const nextTrigger = Math.random() * 7000 + 5000;
-    setTimeout(triggerBlur, nextTrigger);
-  }
-
-  // Bắt đầu blur effect
-  setTimeout(triggerBlur, 3000);
+  // Bắt đầu blur effect sau 2s
+  setTimeout(triggerBlurSequence, 2000);
 
   /* ================= CLOCK VN ================= */
 
