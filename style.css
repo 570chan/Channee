@@ -41,28 +41,6 @@ background:rgba(255,255,255,0.25);
 z-index:-1;
 }
 
-/* ================= RAIN EFFECT ================= */
-.rain-container {
-position: fixed;
-inset: 0;
-z-index: 400;
-pointer-events: none;
-overflow: hidden;
-}
-
-.raindrop {
-position: absolute;
-width: 1px;
-background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-opacity: 0.6;
-}
-
-.raindrop.heavy {
-width: 2px;
-opacity: 0.4;
-filter: blur(0.5px);
-}
-
 /* ================= BLUR OVERLAY ================= */
 .blur-overlay {
 position: fixed;
@@ -71,7 +49,7 @@ z-index: 450;
 pointer-events: none;
 background: rgba(255, 255, 255, 0);
 backdrop-filter: blur(0px);
-transition: all 2s ease-in-out;
+/* transition được điều khiển linh hoạt qua JS */
 }
 
 .blur-overlay.active {
@@ -309,10 +287,8 @@ height:100dvh;
 .location,
 .footer-icons a,
 .clock-text {
-
 text-shadow: 
   0 3px 6px rgba(0,0,0,0.9),
   0 6px 18px rgba(0,0,0,0.8),
   0 0 25px rgba(0,0,0,0.7);
-
 }
