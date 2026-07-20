@@ -13,6 +13,3 @@ fixing, deleting, reusing old code, and even going back to the first version.
 After tebi.com stopped providing its service,
 I faced many challenges, especially with background videos.
 
-## License
-
-© 2026 _.570channee. All rights reserved.
