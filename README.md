@@ -35,7 +35,6 @@ Channee/
 ├── assets/
 │   ├── avatar.jpg
 │   ├── backgroundv.jpg
-│   ├── 001.png
 │   └── *.mp4
 │
 ├── index.html
@@ -76,13 +75,7 @@ You can easily replace:
 assets/avatar.jpg
 ```
 
-- **Background**
-
-```
-assets/backgroundv.jpg
-```
-
-or replace the video inside
+- or replace the video inside
 
 ```
 assets/*.mp4
@@ -116,7 +109,7 @@ script.js
 
 # 📸 Preview
 
-<img src="assets/001.png" width="900">
+<img src="" width="900">
 
 ---
 
