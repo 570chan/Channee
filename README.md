@@ -10,7 +10,7 @@ A minimal personal profile website with animated background and custom UI.
 ![Responsive](https://img.shields.io/badge/Responsive-Yes-22c55e?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
-<img src="assets/001.png" width="900">
+<img src="https://i.ibb.co/dwfgZbZ5/1.jpg" width="900">
 
 </div>
 
