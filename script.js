@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let started = false;
 
-  /* ================= FADE SYSTEM ================= */
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -20,17 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (started) return;
     started = true;
 
-    // Fade các item
     items.forEach((item, i) => {
       item.style.transitionDelay = `${i * 0.12}s`;
       observer.observe(item);
     });
   }
 
-  // Tự động chạy fade khi trang load
   startFade();
-
-  /* ================= CLOCK VN ================= */
 
   const clock = document.getElementById("vnClock");
 
@@ -51,8 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
   updateClock();
   setInterval(updateClock, 1000);
 
-  /* ================= BACK TO TOP ================= */
-
   const backToTop = document.getElementById("backToTop");
   if (backToTop) {
     backToTop.addEventListener("click", e => {
@@ -61,16 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ================= VIDEO BG ================= */
-
   const videoElement = document.querySelector(".background");
   if (videoElement) {
     videoElement.play().catch(err => {
       console.log("Autoplay blocked:", err);
     });
   }
-
-  /* ================= SOCIAL LINKS ================= */
 
   const socialLinks = document.querySelectorAll(".socials a");
 
